@@ -15,11 +15,7 @@
                 // your application here.
 
                 var content = document.getElementById('content');
-                var remote = new Transmission.Runtime.Remote(localSettings.values.servername, localSettings.values.username, localSettings.values.password);
-                remote.getSession().then(function (val) {
-                    var obj = JSON.parse(val);
-                    content.innerText = obj.arguments['alt-speed-down'];
-                });
+
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.
@@ -45,15 +41,22 @@
     };
 
     // AngularJS Stuff
-    var myApp = angular.module('app', []);
+    var myApp = angular.module('app', ['winjs']);
 
-    myApp.controller('MainCtrl', function ($scope) {
-        $scope.greeting = 'Hello AngularJS!';
-        $scope.messages = [];
-        $scope.addMessage = function (m) {
-            $scope.messages.unshift(m);
-            $scope.message = '';
-        }
+    myApp.factory('remoteService', function () {
+        var remote = new Transmission.Runtime.Remote(localSettings.values.servername, localSettings.values.username, localSettings.values.password);
+        return {
+            getTorrentMetaData: function () {
+                return remote.getTorrents();
+            }
+        };
+    });
+
+    myApp.controller('MainCtrl', function ($scope, remoteService) {
+        remoteService.getTorrentMetaData().then(function (val) {
+            $scope.torrents = JSON.parse(val).arguments.torrents;
+            $scope.$apply();
+        });
     });
 
     app.start();

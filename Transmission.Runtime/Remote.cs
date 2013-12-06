@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Transmission.Remote;
 using Windows.Foundation;
 
 namespace Transmission.Runtime
@@ -15,18 +16,34 @@ namespace Transmission.Runtime
             _server = server;
             _username = username;
             _password = password;
+
+            //TODO: store session id
+        }
+
+        private Client GetClient()
+        {
+            return new Transmission.Remote.Client(_server, _username, _password);
         }
 
         private async Task<String> GetSessionAsync()
         {
-            var client = new Transmission.Remote.Client(_server, _username, _password);
-            
-            return await client.GetSession();
+            return await GetClient().GetSession();
         }
 
         public IAsyncOperation<String> GetSession()
         {
             return GetSessionAsync().AsAsyncOperation();
+        }
+
+        private async Task<String> GetTorrentsAsync()
+        {
+            return await GetClient().GetTorrents();
+        }
+
+        public IAsyncOperation<String> GetTorrents()
+        {
+            //TODO: pass params like ids and fields
+            return GetTorrentsAsync().AsAsyncOperation();
         }
     }
 }

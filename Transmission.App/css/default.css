@@ -1,2 +1,14 @@
-﻿body {
+﻿.win-listview {
+    height: 500px;
+}
+
+.win-listview .win-container {
+    height: 50px;
+}
+
+.win-listview .win-item {
+    background-color: #5888DB;
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
+    padding: 10px;
 }

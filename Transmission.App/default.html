@@ -8,24 +8,31 @@
     <link href="//Microsoft.WinJS.2.0/css/ui-dark.css" rel="stylesheet" />
     <script src="//Microsoft.WinJS.2.0/js/base.js"></script>
     <script src="//Microsoft.WinJS.2.0/js/ui.js"></script>
-
-    <!-- Transmission references -->
-    <link href="/css/default.css" rel="stylesheet" />
     <script src="/js/lib/jquery-2.0.3.js"></script>
     <script type="text/javascript">
         jQuery.isUnsafe = true;
     </script>
     <script src="/js/lib/angular.js"></script>
+    <script src="/js/lib/angular-winjs.js"></script>
+
+    <!-- Transmission references -->
+    <link href="/css/default.css" rel="stylesheet" />
     <script src="/js/default.js"></script>
 </head>
 <body ng-controller="MainCtrl">
-    <h1>{{greeting}}</h1>
-    <p>Leave a message.</p>
-    <input id="messageInput" ng-model="message" type="text" />
-    <button id="messageButton" ng-click="addMessage(message)">Say "Hello"</button>
-    <div id="greetingOutput">
-        <p ng-repeat="m in messages">{{m}}</p>
-    </div>
+    <button id="menuAnchor">Show a menu!</button>
+    <win-menu anchor="'#menuAnchor'">
+        <win-menu-command label="'command the first'"></win-menu-command>
+        <win-menu-command label="'command the second'"></win-menu-command>
+        <win-menu-command label="'this would be a great place for ng-repeater...'"></win-menu-command>
+    </win-menu>
+    <win-list-view item-data-source="torrents">
+        <win-item-template class="win-interactive">
+            {{item.data.name}}
+        </win-item-template>
+        <win-list-layout></win-list-layout>
+    </win-list-view>
+
     <div id="content">
 
     </div>
