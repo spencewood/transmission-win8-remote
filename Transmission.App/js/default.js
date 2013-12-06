@@ -14,7 +14,6 @@
                 // TODO: This application has been newly launched. Initialize
                 // your application here.
 
-                var content = document.getElementById('content');
 
             } else {
                 // TODO: This application has been reactivated from suspension.
@@ -46,8 +45,24 @@
     myApp.factory('remoteService', function () {
         var remote = new Transmission.Runtime.Remote(localSettings.values.servername, localSettings.values.username, localSettings.values.password);
         return {
+            sessionStats: function () {
+                return remote.sessionStats();
+            },
+
+            getSession: function(){
+                return remote.getSession();
+            },
+
+            getFreeSpace: function(){
+                return remote.getFreeSpace();
+            },
+
             getTorrentMetaData: function () {
-                return remote.getTorrents();
+                return remote.getTorrentMetaData();
+            },
+
+            getTorrentStats: function () {
+                return remote.getTorrentStats();
             }
         };
     });
@@ -57,6 +72,7 @@
             $scope.torrents = JSON.parse(val).arguments.torrents;
             $scope.$apply();
         });
+
     });
 
     app.start();

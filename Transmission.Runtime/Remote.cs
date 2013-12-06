@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Transmission.Remote;
 using Windows.Foundation;
@@ -35,15 +36,71 @@ namespace Transmission.Runtime
             return GetSessionAsync().AsAsyncOperation();
         }
 
-        private async Task<String> GetTorrentsAsync()
+        private async Task<String> SessionStatsAsync()
         {
-            return await GetClient().GetTorrents();
+            return await GetClient().SessionStats();
         }
 
-        public IAsyncOperation<String> GetTorrents()
+        public IAsyncOperation<String> SessionStats()
         {
-            //TODO: pass params like ids and fields
-            return GetTorrentsAsync().AsAsyncOperation();
+            return SessionStatsAsync().AsAsyncOperation();
+        }
+
+        private async Task<String> GetTorrentsAsync(List<string> fields)
+        {
+            return await GetClient().GetTorrents(fields);
+        }
+
+        public IAsyncOperation<String> GetTorrentMetaData()
+        {
+            var fields = new List<string>{ 
+                "addedDate",
+                "name",
+                "totalSize"
+            };
+            return GetTorrentsAsync(fields).AsAsyncOperation();
+        }
+
+        public IAsyncOperation<String> GetTorrentStats()
+        {
+            var fields = new List<string>{
+                "error",
+	            "errorString",
+	            "eta",
+	            "isFinished",
+	            "isStalled",
+	            "leftUntilDone",
+	            "metadataPercentComplete",
+	            "peersConnected",
+	            "peersGettingFromUs",
+	            "peersSendingToUs",
+	            "percentDone",
+	            "queuePosition",
+	            "rateDownload",
+	            "rateUpload",
+	            "recheckProgress",
+	            "seedRatioMode",
+	            "seedRatioLimit",
+	            "sizeWhenDone",
+	            "status",
+	            "trackers",
+	            "downloadDir",
+	            "uploadedEver",
+	            "uploadRatio",
+	            "webseedsSendingToUs"
+            };
+            return GetTorrentsAsync(fields).AsAsyncOperation();
+        }
+
+        private async Task<String> GetFreeSpaceAsync()
+        {
+            return await GetClient().GetFreeSpace();
+        }
+
+        public IAsyncOperation<String> GetFreeSpace()
+        {
+            //TODO: pass in directory
+            return GetFreeSpaceAsync().AsAsyncOperation();
         }
     }
 }

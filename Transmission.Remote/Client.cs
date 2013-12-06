@@ -17,7 +17,8 @@ namespace Transmission.Remote
         private readonly string _user = "";
         private readonly string _pass = "";
 
-        public Client(string url, string user, string pass){
+        public Client(string url, string user, string pass)
+        {
             _url = url;
             _user = user;
             _pass = pass;
@@ -77,11 +78,19 @@ namespace Transmission.Remote
             return await SendRequest("session-stats", null);
         }
 
-        public async Task<String> GetTorrents()
+        public async Task<String> GetTorrents(List<string> fields)
         {
             return await SendRequest("torrent-get", new
             {
-                fields = new[] { "addedDate", "name", "totalSize" }
+                fields = fields
+            });
+        }
+
+        public async Task<String> GetFreeSpace()
+        {
+            return await SendRequest("free-space", new
+            {
+                path = "/"
             });
         }
     }

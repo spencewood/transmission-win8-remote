@@ -66,6 +66,7 @@
     <Content Include="js\lib\angular-winjs.js" />
     <Content Include="js\lib\angular.js" />
     <Content Include="js\lib\jquery-2.0.3.js" />
+    <Content Include="js\lib\lodash.min.js" />
     <Content Include="pages\settings\options.html" />
     <None Include="Transmission_TemporaryKey.pfx" />
   </ItemGroup>

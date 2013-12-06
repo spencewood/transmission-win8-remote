@@ -5,7 +5,7 @@
     <title>Transmission</title>
 
     <!-- WinJS references -->
-    <link href="//Microsoft.WinJS.2.0/css/ui-dark.css" rel="stylesheet" />
+    <link href="//Microsoft.WinJS.2.0/css/ui-light.css" rel="stylesheet" />
     <script src="//Microsoft.WinJS.2.0/js/base.js"></script>
     <script src="//Microsoft.WinJS.2.0/js/ui.js"></script>
     <script src="/js/lib/jquery-2.0.3.js"></script>
@@ -14,27 +14,54 @@
     </script>
     <script src="/js/lib/angular.js"></script>
     <script src="/js/lib/angular-winjs.js"></script>
+    <script src="/js/lib/lodash.min.js"></script>
 
     <!-- Transmission references -->
     <link href="/css/default.css" rel="stylesheet" />
     <script src="/js/default.js"></script>
 </head>
 <body ng-controller="MainCtrl">
-    <button id="menuAnchor">Show a menu!</button>
+    <!--<button id="menuAnchor">Show a menu!</button>
     <win-menu anchor="'#menuAnchor'">
         <win-menu-command label="'command the first'"></win-menu-command>
         <win-menu-command label="'command the second'"></win-menu-command>
         <win-menu-command label="'this would be a great place for ng-repeater...'"></win-menu-command>
     </win-menu>
+    <win-flip-view item-data-source="torrents">
+        <win-item-template>This flip view item's rating is: {{item.data.totalSize}}</win-item-template>
+    </win-flip-view>
+    
+    <win-hub>
+        <win-hub-section header="'First section'">
+            Hubs are useful for varied content
+        </win-hub-section>
+        <win-hub-section header="'The second section'">
+            This hub is boring however, it just has things like data bindings: {{torrents.length}}
+        </win-hub-section>
+        <win-hub-section header="'The tail...'">
+            Because it's only purpose is to show how to create a hub
+        </win-hub-section>
+    </win-hub>
+    
+    <win-item-container>
+        An ItemContainer is a wrapper around content that adds pressed
+        and cross-slide selection behaviors!
+    </win-item-container>
+    
+    <win-nav-bar>
+        <win-nav-bar-container>
+            <win-nav-bar-command label="'Home'" icon="'home'" tooltip="'Go home!!'"></win-nav-bar-command>
+            <win-nav-bar-command label="'Save'" icon="'save'"></win-nav-bar-command>
+        </win-nav-bar-container>
+    </win-nav-bar>
+    -->
+
+    <h1>Torrents</h1>
     <win-list-view item-data-source="torrents">
         <win-item-template class="win-interactive">
             {{item.data.name}}
         </win-item-template>
         <win-list-layout></win-list-layout>
     </win-list-view>
-
-    <div id="content">
-
-    </div>
 </body>
 </html>
