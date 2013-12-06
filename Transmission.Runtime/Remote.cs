@@ -6,20 +6,20 @@ namespace Transmission.Runtime
 {
     public sealed class Remote
     {
-        private string _server;
-        private string _username;
-        private string _password;
+        private readonly string _server;
+        private readonly string _username;
+        private readonly string _password;
 
-        public Remote(object server)//string server, string username, string password)
+        public Remote(string server, string username, string password)
         {
-            //_server = server;
-            //_username = username;
-            //_password = password;
+            _server = server;
+            _username = username;
+            _password = password;
         }
 
         private async Task<String> GetSessionAsync()
         {
-            var client = new Transmission.Remote.Client();
+            var client = new Transmission.Remote.Client(_server, _username, _password);
             
             return await client.GetSession();
         }

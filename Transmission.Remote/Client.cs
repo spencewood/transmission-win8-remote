@@ -13,9 +13,15 @@ namespace Transmission.Remote
 {
     public class Client
     {
-        private static String url = "";
-        private static String user = "";
-        private static String pass = "";
+        private readonly string _url = "";
+        private readonly string _user = "";
+        private readonly string _pass = "";
+
+        public Client(string url, string user, string pass){
+            _url = url;
+            _user = user;
+            _pass = pass;
+        }
 
         public async Task<String> SendRequest(string method, string sessionId = "")
         {
@@ -25,14 +31,14 @@ namespace Transmission.Remote
             filters.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
             
             var client = new HttpClient(filters);
-            var request = new HttpRequestMessage(HttpMethod.Post, new Uri(url));
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri(_url));
             var payload = new
             {
                 method = method
             };
             request.Headers.Add("X-Transmission-Session-Id", sessionId);
             request.Headers.Authorization = new HttpCredentialsHeaderValue("Basic",
-                Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(String.Format("{0}:{1}", user, pass))));
+                Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(String.Format("{0}:{1}", _user, _pass))));
             request.Content = new HttpStringContent(JsonConvert.SerializeObject(payload), UnicodeEncoding.Utf8 , "application/json");
             
             var response = await client.SendRequestAsync(request);

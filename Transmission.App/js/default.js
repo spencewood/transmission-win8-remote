@@ -5,6 +5,8 @@
 
     var app = WinJS.Application;
     var activation = Windows.ApplicationModel.Activation;
+    var applicationData = Windows.Storage.ApplicationData.current;
+    var localSettings = applicationData.localSettings;
 
     app.onactivated = function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
@@ -13,9 +15,7 @@
                 // your application here.
 
                 var content = document.getElementById('content');
-                var ser = document.getElementById('server');
-                
-                var remote = new Transmission.Runtime.Remote('asdf');//appData.server, appData.username, appData.password);
+                var remote = new Transmission.Runtime.Remote(localSettings.values.servername, localSettings.values.username, localSettings.values.password);
                 remote.getSession().then(function (val) {
                     var obj = JSON.parse(val);
                     content.innerText = obj.arguments['alt-speed-down'];
