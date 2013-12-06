@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <title>Transmission</title>
+
+    <!-- WinJS references -->
+    <link href="//Microsoft.WinJS.2.0/css/ui-dark.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.2.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.2.0/js/ui.js"></script>
+
+    <!-- Transmission references -->
+    <link href="/css/default.css" rel="stylesheet" />
+    <script src="/js/lib/jquery-2.0.3.js"></script>
+    <script type="text/javascript">
+        jQuery.isUnsafe = true;
+    </script>
+    <script src="/js/lib/angular.js"></script>
+    <script src="/js/default.js"></script>
+</head>
+<body ng-controller="MainCtrl">
+    <h1>{{greeting}}</h1>
+    <p>Leave a message.</p>
+    <input id="messageInput" ng-model="message" type="text" />
+    <button id="messageButton" ng-click="addMessage(message)">Say "Hello"</button>
+    <div id="greetingOutput">
+        <p ng-repeat="m in messages">{{m}}</p>
+    </div>
+    <div id="content">
+
+    </div>
+</body>
+</html>
