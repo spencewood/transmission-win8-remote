@@ -5,8 +5,6 @@
 
     var app = WinJS.Application;
     var activation = Windows.ApplicationModel.Activation;
-    var applicationData = Windows.Storage.ApplicationData.current;
-    var localSettings = applicationData.localSettings;
 
     app.onactivated = function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
@@ -38,42 +36,6 @@
         };
         WinJS.UI.SettingsFlyout.populateSettings(e);
     };
-
-    // AngularJS Stuff
-    var myApp = angular.module('app', ['winjs']);
-
-    myApp.factory('remoteService', function () {
-        var remote = new Transmission.Runtime.Remote(localSettings.values.servername, localSettings.values.username, localSettings.values.password);
-        return {
-            sessionStats: function () {
-                return remote.sessionStats();
-            },
-
-            getSession: function(){
-                return remote.getSession();
-            },
-
-            getFreeSpace: function(){
-                return remote.getFreeSpace();
-            },
-
-            getTorrentMetaData: function () {
-                return remote.getTorrentMetaData();
-            },
-
-            getTorrentStats: function () {
-                return remote.getTorrentStats();
-            }
-        };
-    });
-
-    myApp.controller('MainCtrl', function ($scope, remoteService) {
-        remoteService.getTorrentMetaData().then(function (val) {
-            $scope.torrents = JSON.parse(val).arguments.torrents;
-            $scope.$apply();
-        });
-
-    });
 
     app.start();
 })();
