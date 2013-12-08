@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Transmission.Remote;
+using Transmission.Remote.Models;
+using Transmission.Remote.Extensions;
 using Windows.Foundation;
+using System.Linq;
 
 namespace Transmission.Runtime
 {
@@ -26,81 +30,86 @@ namespace Transmission.Runtime
             return new Transmission.Remote.Client(_server, _username, _password);
         }
 
-        private async Task<String> GetSessionAsync()
+        //private async Task<String> GetSessionAsync()
+        //{
+        //    return await GetClient().GetSession();
+        //}
+
+        //public IAsyncOperation<String> GetSession()
+        //{
+        //    return GetSessionAsync().AsAsyncOperation();
+        //}
+
+        //private async Task<String> SessionStatsAsync()
+        //{
+        //    return await GetClient().SessionStats();
+        //}
+
+        //public IAsyncOperation<String> SessionStats()
+        //{
+        //    return SessionStatsAsync().AsAsyncOperation();
+        //}
+
+        private async Task<List<TorrentMeta>> GetTorrentsAsync(List<String> fields)
         {
-            return await GetClient().GetSession();
+            var torrents = await GetClient().GetTorrents(fields);
+            return torrents;
         }
 
-        public IAsyncOperation<String> GetSession()
+        public IAsyncOperation<String> GetTorrents(String status)
         {
-            return GetSessionAsync().AsAsyncOperation();
-        }
-
-        private async Task<String> SessionStatsAsync()
-        {
-            return await GetClient().SessionStats();
-        }
-
-        public IAsyncOperation<String> SessionStats()
-        {
-            return SessionStatsAsync().AsAsyncOperation();
-        }
-
-        private async Task<String> GetTorrentsAsync(List<string> fields)
-        {
-            return await GetClient().GetTorrents(fields);
-        }
-
-        public IAsyncOperation<String> GetTorrentMetaData()
-        {
-            var fields = new List<string>{ 
+            var fields = new List<String>{ 
                 "name",
                 "queuePosition",
                 "totalSize",
                 "percentDone",
                 "rateDownload",
 	            "rateUpload",
-                "status"
+                "status",
+                "error"
             };
-            return GetTorrentsAsync(fields).AsAsyncOperation();
+
+            return GetTorrentsAsync(fields)
+                .ContinueWith(x => x.Result.FilterByStatus(status))
+                .ContinueWith(x => JsonConvert.SerializeObject(x.Result))
+                .AsAsyncOperation();
         }
 
-        public IAsyncOperation<String> GetTorrentStats()
-        {
-            var fields = new List<string>{
-                "addedDate",
-                "error",
-	            "errorString",
-	            "eta",
-	            "isFinished",
-	            "isStalled",
-	            "leftUntilDone",
-	            "metadataPercentComplete",
-	            "peersConnected",
-	            "peersGettingFromUs",
-	            "peersSendingToUs",
-	            "recheckProgress",
-	            "seedRatioMode",
-	            "seedRatioLimit",
-	            "sizeWhenDone",
-	            "trackers",
-	            "downloadDir",
-	            "uploadedEver",
-	            "uploadRatio",
-	            "webseedsSendingToUs"
-            };
-            return GetTorrentsAsync(fields).AsAsyncOperation();
-        }
+        //public IAsyncOperation<String> GetTorrentStats()
+        //{
+        //    var fields = new List<String>{
+        //        "addedDate",
+        //        "errorstring",
+        //        "eta",
+        //        "isStalled",
+        //        "leftUntilDone",
+        //        "metadataPercentComplete",
+        //        "peersConnected",
+        //        "peersGettingFromUs",
+        //        "peersSendingToUs",
+        //        "recheckProgress",
+        //        "seedRatioMode",
+        //        "seedRatioLimit",
+        //        "isFinished",
+        //        "sizeWhenDone",
+        //        "trackers",
+        //        "downloadDir",
+        //        "uploadedEver",
+        //        "uploadRatio",
+        //        "webseedsSendingToUs"
+        //    };
+        //    return GetTorrentsAsync(fields).AsAsyncOperation();
+        //}
 
-        private async Task<String> GetFreeSpaceAsync()
-        {
-            return await GetClient().GetFreeSpace();
-        }
+        //private async Task<String> GetFreeSpaceAsync()
+        //{
+        //    return await GetClient().GetFreeSpace();
+        //}
 
-        public IAsyncOperation<String> GetFreeSpace()
-        {
-            //TODO: pass in directory
-            return GetFreeSpaceAsync().AsAsyncOperation();
-        }
+        //public IAsyncOperation<String> GetFreeSpace()
+        //{
+        //    //TODO: pass in directory
+        //    return GetFreeSpaceAsync().AsAsyncOperation();
+        //}
     }
 }

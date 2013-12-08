@@ -18,8 +18,8 @@
             return remote.getFreeSpace();
         },
 
-        getTorrentMetaData: function () {
-            return remote.getTorrentMetaData();
+        getTorrents: function (status) {
+            return remote.getTorrents(status);
         },
 
         getTorrentStats: function () {

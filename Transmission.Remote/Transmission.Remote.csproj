@@ -9,8 +9,8 @@
     <ProjectGuid>{17A71CE3-22E6-443D-B619-6BEDACBB7EF1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RemoteClient</RootNamespace>
-    <AssemblyName>RemoteClient</AssemblyName>
+    <RootNamespace>Transmission.Remote</RootNamespace>
+    <AssemblyName>Transmission.Remote</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
@@ -102,6 +102,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="Enums\TorrentStatus.cs" />
+    <Compile Include="Extensions\TorrentMetaListExtensions.cs" />
+    <Compile Include="Models\TorrentMeta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

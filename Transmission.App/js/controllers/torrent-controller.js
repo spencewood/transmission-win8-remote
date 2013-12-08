@@ -1,12 +1,13 @@
 ﻿mainApp
     .config(function ($routeProvider, $locationProvider) {
-        $routeProvider.when('/all', {
+        $routeProvider.when('/status/:status', {
             templateUrl: '/views/torrents.html',
             controller: 'TorrentController',
             resolve: {
-                torrents: function (remoteService) {
-                    return remoteService.getTorrentMetaData().then(function(val){
-                        return JSON.parse(val).arguments.torrents
+                torrents: function ($route, remoteService) {
+                    var status = $route.current.params.status;
+                    return remoteService.getTorrents(status).then(function(val){
+                        return JSON.parse(val);
                     });
                 }
             }
