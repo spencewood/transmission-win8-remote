@@ -54,9 +54,13 @@ namespace Transmission.Runtime
         public IAsyncOperation<String> GetTorrentMetaData()
         {
             var fields = new List<string>{ 
-                "addedDate",
                 "name",
-                "totalSize"
+                "queuePosition",
+                "totalSize",
+                "percentDone",
+                "rateDownload",
+	            "rateUpload",
+                "status"
             };
             return GetTorrentsAsync(fields).AsAsyncOperation();
         }
@@ -64,6 +68,7 @@ namespace Transmission.Runtime
         public IAsyncOperation<String> GetTorrentStats()
         {
             var fields = new List<string>{
+                "addedDate",
                 "error",
 	            "errorString",
 	            "eta",
@@ -74,15 +79,10 @@ namespace Transmission.Runtime
 	            "peersConnected",
 	            "peersGettingFromUs",
 	            "peersSendingToUs",
-	            "percentDone",
-	            "queuePosition",
-	            "rateDownload",
-	            "rateUpload",
 	            "recheckProgress",
 	            "seedRatioMode",
 	            "seedRatioLimit",
 	            "sizeWhenDone",
-	            "status",
 	            "trackers",
 	            "downloadDir",
 	            "uploadedEver",

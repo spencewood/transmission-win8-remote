@@ -32,7 +32,7 @@
 
     app.onsettings = function (e) {
         e.detail.applicationcommands = {
-            "options": { title: "Options", href: "/pages/settings/options.html" },
+            "options": { title: "Options", href: "/views/settings/options.html" },
         };
         WinJS.UI.SettingsFlyout.populateSettings(e);
     };

@@ -62,16 +62,20 @@
     <Content Include="images\storelogo.scale-100.png" />
     <Content Include="js\app.js" />
     <Content Include="js\app\options.js" />
+    <Content Include="js\controllers\main-controller.js" />
     <Content Include="js\controllers\torrent-controller.js" />
+    <Content Include="js\controllers\tree-controller.js" />
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
+    <Content Include="js\lib\angular-route.js" />
     <Content Include="js\lib\angular-winjs.js" />
     <Content Include="js\lib\angular.js" />
     <Content Include="js\lib\jquery-2.0.3.js" />
     <Content Include="js\lib\lodash.min.js" />
     <Content Include="js\services\local-settings-service.js" />
     <Content Include="js\services\remote-service.js" />
-    <Content Include="pages\settings\options.html" />
+    <Content Include="views\settings\options.html" />
+    <Content Include="views\torrents.html" />
     <None Include="Transmission_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

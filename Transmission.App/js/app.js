@@ -1,1 +1,1 @@
-﻿var mainApp = angular.module('app', ['winjs']);
+﻿var mainApp = angular.module('app', ['winjs', 'ngRoute']);

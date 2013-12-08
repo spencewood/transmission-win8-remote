@@ -13,6 +13,7 @@
         jQuery.isUnsafe = true;
     </script>
     <script src="/js/lib/angular.js"></script>
+    <script src="/js/lib/angular-route.js"></script>
     <script src="/js/lib/angular-winjs.js"></script>
     <script src="/js/lib/lodash.min.js"></script>
 
@@ -22,35 +23,36 @@
     <script src="/js/app.js"></script>
     <script src="/js/services/local-settings-service.js"></script>
     <script src="/js/services/remote-service.js"></script>
+    <script src="/js/controllers/main-controller.js"></script>
+    <script src="/js/controllers/tree-controller.js"></script>
     <script src="/js/controllers/torrent-controller.js"></script>
 </head>
-<body ng-controller="TorrentController">
-    <div class="left-sidebar">
+<body ng-controller="MainController">
+    <div class="left-sidebar" ng-controller="TreeController">
         <header>
             <h2>Server name</h2>
         </header>
         <section>
             <ul class="selection-list">
-                <li class="selected"><a href="#">All torrents</a></li>
-                <li><a href="#">Downloading</a></li>
-                <li><a href="#">Completed</a></li>
-                <li><a href="#">Active</a></li>
-                <li><a href="#">Inactive</a></li>
-                <li><a href="#">Stopped</a></li>
-                <li><a href="#">Error</a></li>
+                <li ng-class="{ active: isActive('/all') }"><a href="#/all">All torrents</a></li>
+                <li ng-class="{ active: isActive('/downloading') }"><a href="#/downloading">Downloading</a></li>
+                <li ng-class="{ active: isActive('/active') }"><a href="#/active">Active</a></li>
+                <li ng-class="{ active: isActive('/inactive') }"><a href="#/inactive">Inactive</a></li>
+                <li ng-class="{ active: isActive('/stopped') }"><a href="#/stopped">Stopped</a></li>
+                <li ng-class="{ active: isActive('/error') }"><a href="#/error">Error</a></li>
             </ul>
         </section>
         <section>
             <h4>Folders</h4>
             <ul class="selection-list">
-                <li><a href="#">completed</a></li>
+                <li ng-class="{ active: isActive('/completed') }"><a href="#/completed">completed</a></li>
             </ul>
         </section>
         <section>
             <h4>Trackers</h4>
             <ul class="selection-list">
-                <li><a href="#">Tracker 1</a></li>
-                <li><a href="#">Tracker 2</a></li>
+                <li ng-class="{ active: isActive('/tracker1') }"><a href="#/tracker1">Tracker 1</a></li>
+                <li ng-class="{ active: isActive('/tracker2') }"><a href="#/tracker2">Tracker 2</a></li>
             </ul>
         </section>
     </div>
@@ -58,29 +60,8 @@
         <header class="filters">
         </header>
         <div class="torrent-content">
-            <win-list-view item-data-source="torrents">
-                <win-item-template class="win-interactive torrent-slice" win-options="{uri: '/pages/details.html', data: '{{item.data.name}}'}">
-                    <div class="row">
-                        <div class="pull-right">
-                            <progress id="determinateProgressBar" value="30" max="100"></progress>
-                        </div>
-                        {{item.data.name}}
-                    </div>
-                    <div class="row">
-                        <div class="pull-right">
-                            UL:
-                        </div>
-                        status
-                    </div>
-                    <div class="row">
-                        <div class="pull-right">
-                            DL:
-                        </div>
-                        seeds: xxx / peers: xxx
-                    </div>
-                </win-item-template>
-                <win-list-layout></win-list-layout>
-            </win-list-view>
+            <div class="ng-view">
+            </div>
         </div>
     </div>
 
