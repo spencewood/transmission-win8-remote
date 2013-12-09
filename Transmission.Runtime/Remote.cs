@@ -12,19 +12,39 @@ namespace Transmission.Runtime
         private readonly string _server;
         private readonly string _username;
         private readonly string _password;
+        private string _sessionId;
 
         public Remote(string server, string username, string password)
         {
             _server = server;
             _username = username;
             _password = password;
-
-            //TODO: store session id
         }
 
         private Client GetClient()
         {
+            if(_sessionId != null){
+                return new Transmission.Remote.Client(_server, _username, _password, _sessionId);
+            }
             return new Transmission.Remote.Client(_server, _username, _password);
+        }
+
+        public void SetSession(string sessionId)
+        {
+            _sessionId = sessionId;
+        }
+
+        private async Task<String> StoreSessionIdAsync()
+        {
+            var client = GetClient();
+            await client.GetFreeSpace();
+            _sessionId = client._sessionId;
+            return client._sessionId;
+        }
+
+        public IAsyncOperation<String> StoreSessionId()
+        {
+            return StoreSessionIdAsync().AsAsyncOperation();
         }
 
         private async Task<String> GetSessionAsync()
@@ -52,7 +72,7 @@ namespace Transmission.Runtime
             return await GetClient().GetTorrents(fields);
         }
 
-        public IAsyncOperation<String> GetTorrents(String status)
+        public IAsyncOperation<String> GetTorrents()
         {
             var fields = new List<String>{ 
                 "name",

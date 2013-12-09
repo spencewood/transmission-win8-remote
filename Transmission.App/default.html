@@ -14,8 +14,8 @@
     </script>
     <script src="/js/lib/angular.js"></script>
     <script src="/js/lib/angular-route.js"></script>
-    <script src="/js/lib/angular-winjs.js"></script>
-    <script src="/js/lib/lodash.min.js"></script>
+    <!--<script src="/js/lib/angular-winjs.js"></script>-->
+    <!--<script src="/js/lib/lodash.min.js"></script>-->
 
     <!-- Transmission references -->
     <link href="/css/default.css" rel="stylesheet" />
@@ -23,9 +23,11 @@
     <script src="/js/app.js"></script>
     <script src="/js/services/local-settings-service.js"></script>
     <script src="/js/services/remote-service.js"></script>
+    <script src="/js/directives/active-link-directive.js"></script>
     <script src="/js/controllers/main-controller.js"></script>
     <script src="/js/controllers/tree-controller.js"></script>
     <script src="/js/controllers/torrent-controller.js"></script>
+    <script src="/js/controllers/stats-controller.js"></script>
 </head>
 <body ng-controller="MainController">
     <div class="left-sidebar" ng-controller="TreeController">
@@ -34,39 +36,103 @@
         </header>
         <section>
             <ul class="selection-list">
-                <li ng-class="{ active: isActive('/status/all') }"><a href="#/status/all">All torrents</a></li>
-                <li ng-class="{ active: isActive('/status/downloading') }"><a href="#/status/downloading">Downloading</a></li>
-                <li ng-class="{ active: isActive('/status/active') }"><a href="#/status/active">Active</a></li>
-                <li ng-class="{ active: isActive('/status/inactive') }"><a href="#/status/inactive">Inactive</a></li>
-                <li ng-class="{ active: isActive('/status/stopped') }"><a href="#/status/stopped">Stopped</a></li>
-                <li ng-class="{ active: isActive('/status/error') }"><a href="#/status/error">Error</a></li>
+                <li>
+                    <a href="#/status/all" active-link>All torrents ({{torrents.length}})</a>
+                </li>
+                <li>
+                    <a href="#/status/downloading" active-link>Downloading ({{(torrents|filter:downloading()).length}})</a>
+                </li>
+                <li>
+                    <a href="#/status/active" active-link>Active ({{(torrents|filter:active()).length}})</a>
+                </li>
+                <li>
+                    <a href="#/status/inactive" active-link>Inactive ({{(torrents|filter:inactive()).length}})</a>
+                </li>
+                <li>
+                    <a href="#/status/stopped" active-link>Stopped ({{(torrents|filter:stopped()).length}})</a>
+                </li>
+                <li>
+                    <a href="#/status/error" active-link>Error ({{(torrents|filter:error()).length}})</a>
+                </li>
             </ul>
         </section>
         <section>
             <h4>Folders</h4>
             <ul class="selection-list">
-                <li ng-class="{ active: isActive('/completed') }"><a href="#/completed">completed</a></li>
+                <li><a href="#/completed" active-link>completed</a></li>
             </ul>
         </section>
         <section>
             <h4>Trackers</h4>
             <ul class="selection-list">
-                <li ng-class="{ active: isActive('/tracker1') }"><a href="#/tracker1">Tracker 1</a></li>
-                <li ng-class="{ active: isActive('/tracker2') }"><a href="#/tracker2">Tracker 2</a></li>
+                <li><a href="#/tracker1" active-link>Tracker 1</a></li>
+                <li><a href="#/tracker2" active-link>Tracker 2</a></li>
             </ul>
         </section>
     </div>
     <div class="main-content">
         <header class="filters">
-            <div id="loadingWidget" class="row-fluid ui-corner-all" loading-widget>
-                <div class="loadingContent">
-                    <progress class="win-ring"></progress>
-                </div>
-            </div>
+            <progress class="win-ring"></progress>
         </header>
-        <div class="torrent-content">
-            <ng-view>
-            </ng-view>
+        <div class="torrent-content" ng-controller="TorrentController">
+            <div id="mediumListIconTextTemplate" data-win-control="WinJS.Binding.Template">
+                <div class="row">
+                    <div class="pull-right">
+                        <progress data-win-bind="value:percentDone"></progress>
+                    </div>
+                    <div data-win-bind="innerText:name"></div>
+                </div>
+                <div class="row">
+                    <div class="pull-right">
+                        <!--UL: {{item.data.rateUpload}} bytes/sec-->
+                    </div>
+                    <div data-win-bind="innerText:status"></div>
+                </div>
+                <div class="row">
+                    <div class="pull-right">
+                        <!--DL: {{item.data.rateDownload}} bytes/sec-->
+                    </div>
+                    <div>
+                        <!--seeds: xxx / peers: xxx-->
+                    </div>
+                </div>
+            </div>   
+            <div id="basicListView" data-win-control="WinJS.UI.ListView"
+                 data-win-options="{itemDataSource : TorrentList.torrents.dataSource,
+                                    itemTemplate: select('#mediumListIconTextTemplate'),
+                                    layout: {type: WinJS.UI.ListLayout},
+                                    itemsReorderable: true}">
+            </div>
+
+            <!--<win-list-view item-data-source="torrents | filter:limitTo(4)">
+                <win-item-template class="win-interactive torrent-slice">
+                    <div class="row">
+                        <div class="pull-right">
+                            <progress value="{{item.dasta.percentDone}}"></progress>
+                        </div>
+                        <div>
+                            {{item.data.name}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            UL: {{item.data.rateUpload}} bytes/sec
+                        </div>
+                        <div>
+                            {{item.data.status}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            DL: {{item.data.rateDownload}} bytes/sec
+                        </div>
+                        <div>
+                            seeds: xxx / peers: xxx
+                        </div>
+                    </div>
+                </win-item-template>
+                <win-list-layout></win-list-layout>
+            </win-list-view>-->
         </div>
     </div>
 </body>

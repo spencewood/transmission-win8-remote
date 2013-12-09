@@ -57,7 +57,11 @@ header{
     padding: 10px 0 10px 60px;
 }
 
-.selection-list li.active a{
+/*.selection-list li.active a{
+    background-color: #222;
+}*/
+
+.selection-list li a.active{
     background-color: #222;
 }
 

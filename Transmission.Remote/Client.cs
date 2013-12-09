@@ -17,15 +17,25 @@ namespace Transmission.Remote
         private readonly string _url = "";
         private readonly string _user = "";
         private readonly string _pass = "";
+        public string _sessionId { get; private set; }
 
         public Client(string url, string user, string pass)
         {
             _url = url;
             _user = user;
             _pass = pass;
+            _sessionId = "";
         }
 
-        public async Task<String> SendRequest(string method, object data, string sessionId = "")
+        public Client(string url, string user, string pass, string sessionId)
+        {
+            _url = url;
+            _user = user;
+            _pass = pass;
+            _sessionId = sessionId;
+        }
+
+        public async Task<String> SendRequest(string method, object data)
         {
             var filters = new HttpBaseProtocolFilter();
             filters.IgnorableServerCertificateErrors.Add(ChainValidationResult.Expired);
@@ -53,7 +63,7 @@ namespace Transmission.Remote
                 };
             }
 
-            request.Headers.Add("X-Transmission-Session-Id", sessionId);
+            request.Headers.Add("X-Transmission-Session-Id", _sessionId);
             request.Headers.Authorization = new HttpCredentialsHeaderValue("Basic",
                 Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(String.Format("{0}:{1}", _user, _pass))));
             request.Content = new HttpStringContent(JsonConvert.SerializeObject(payload), UnicodeEncoding.Utf8, "application/json");
@@ -63,7 +73,8 @@ namespace Transmission.Remote
             if (response.StatusCode == HttpStatusCode.Conflict)
             {
                 var id = response.Headers.FirstOrDefault(x => x.Key == "X-Transmission-Session-Id");
-                return await SendRequest(method, data, id.Value);
+                _sessionId = id.Value;
+                return await SendRequest(method, data);
             }
 
             return await response.Content.ReadAsStringAsync();

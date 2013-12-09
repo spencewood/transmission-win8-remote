@@ -1,18 +1,15 @@
-﻿mainApp
-    .config(function ($routeProvider, $locationProvider) {
-        $routeProvider.when('/status/:status', {
-            templateUrl: '/views/torrents.html',
-            controller: 'TorrentController',
-            resolve: {
-                torrents: function ($route, remoteService) {
-                    var status = $route.current.params.status;
-                    return remoteService.getTorrents(status).then(function(val){
-                        return JSON.parse(val).arguments.torrents;
-                    });
-                }
-            }
+﻿mainApp.controller('TorrentController', function ($scope, $rootScope, $location) {
+    WinJS.Namespace.define("TorrentList", { torrents: new WinJS.Binding.List() });
+
+    $scope.$on('torrents:updated', function (e, torrents) {
+        //$scope.torrents = torrents;
+        //$scope.$apply();
+        torrents.forEach(function (torrent) {
+            TorrentList.torrents.push(WinJS.Binding.as(torrent));
         });
-    })
-    .controller('TorrentController', function ($scope, $route, $timeout, torrents) {
-        $scope.torrents = torrents;
     });
+
+    $rootScope.$on('$locationChangeSuccess', function(event) {
+        $scope.filter = $location.url().match(/\/(\w+)$/)[1];
+    });
+});

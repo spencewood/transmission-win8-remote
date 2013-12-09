@@ -1,7 +1,8 @@
 ﻿mainApp.controller('TreeController', function ($scope,  $location) {
-    $location.path('/status/all');
+    $scope.$on('torrents:updated', function (e, torrents) {
+        $scope.torrents = torrents;
+        $scope.$apply();
+    });
 
-    $scope.isActive = function (viewLocation) {
-        return viewLocation === $location.path();
-    };
+    $location.path('/status/all');
 });

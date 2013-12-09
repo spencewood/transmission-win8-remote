@@ -5,12 +5,18 @@
         localSettingsService.get('password')
     );
 
+    var sessionId = '';
+
     return {
+        init: function () {
+            return remote.storeSessionId();
+        },
+
         sessionStats: function () {
             return remote.sessionStats();
         },
 
-        getSession: function () {
+        getSettings: function () {
             return remote.getSession();
         },
 
@@ -18,8 +24,8 @@
             return remote.getFreeSpace();
         },
 
-        getTorrents: function (status) {
-            return remote.getTorrents(status);
+        getTorrents: function () {
+            return remote.getTorrents();
         },
 
         getTorrentStats: function () {
