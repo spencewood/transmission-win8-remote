@@ -8,7 +8,6 @@ using Windows.Web.Http.Headers;
 using Windows.Web.Http.Filters;
 using Windows.Storage.Streams;
 using Windows.Security.Cryptography.Certificates;
-using Transmission.Remote.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Transmission.Remote
@@ -70,33 +69,30 @@ namespace Transmission.Remote
             return await response.Content.ReadAsStringAsync();
         }
 
-        //public async Task<String> GetSession()
-        //{
-        //    return await SendRequest("session-get", null);
-        //}
-
-        //public async Task<String> SessionStats()
-        //{
-        //    return await SendRequest("session-stats", null);
-        //}
-
-        public async Task<List<TorrentMeta>> GetTorrents(List<String> fields)
+        public async Task<String> GetSession()
         {
-            var torrentString = await SendRequest("torrent-get", new
+            return await SendRequest("session-get", null);
+        }
+
+        public async Task<String> SessionStats()
+        {
+            return await SendRequest("session-stats", null);
+        }
+
+        public async Task<String> GetTorrents(List<String> fields)
+        {
+            return await SendRequest("torrent-get", new
             {
                 fields = fields
             });
-
-            var torrentData = JObject.Parse(torrentString)["arguments"]["torrents"].ToString();
-            return JsonConvert.DeserializeObject<List<TorrentMeta>>(torrentData);
         }
 
-        //public async Task<String> GetFreeSpace()
-        //{
-        //    return await SendRequest("free-space", new
-        //    {
-        //        path = "/"
-        //    });
-        //}
+        public async Task<String> GetFreeSpace()
+        {
+            return await SendRequest("free-space", new
+            {
+                path = "/"
+            });
+        }
     }
 }

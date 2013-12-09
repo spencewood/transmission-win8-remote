@@ -102,9 +102,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="Enums\TorrentStatus.cs" />
-    <Compile Include="Extensions\TorrentMetaListExtensions.cs" />
-    <Compile Include="Models\TorrentMeta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
