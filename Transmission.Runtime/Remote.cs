@@ -74,7 +74,8 @@ namespace Transmission.Runtime
 
         public IAsyncOperation<String> GetTorrents()
         {
-            var fields = new List<String>{ 
+            var fields = new List<String>{
+                "id",
                 "name",
                 "queuePosition",
                 "totalSize",

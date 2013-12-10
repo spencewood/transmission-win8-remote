@@ -1,7 +1,6 @@
-﻿mainApp.controller('MainController', function ($scope, $timeout, remoteService) {
+﻿mainApp.controller('MainController', function ($scope, $timeout, remoteService, torrentService) {
     var poll = function () {
-        remoteService.getTorrents().then(function (val) {
-            $scope.$broadcast('torrents:updated', JSON.parse(val).arguments.torrents);
+        torrentService.updateTorrents().then(function (val) {
             $timeout(poll, 10 * 1000);
         });
     };

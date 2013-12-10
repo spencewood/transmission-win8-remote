@@ -15,7 +15,8 @@
     <script src="/js/lib/angular.js"></script>
     <script src="/js/lib/angular-route.js"></script>
     <!--<script src="/js/lib/angular-winjs.js"></script>-->
-    <!--<script src="/js/lib/lodash.min.js"></script>-->
+    <script src="/js/lib/lodash.min.js"></script>
+    <!--<script src="/js/util/lodash-mixins.js"></script>-->
 
     <!-- Transmission references -->
     <link href="/css/default.css" rel="stylesheet" />
@@ -23,6 +24,7 @@
     <script src="/js/app.js"></script>
     <script src="/js/services/local-settings-service.js"></script>
     <script src="/js/services/remote-service.js"></script>
+    <script src="/js/services/torrent-service.js"></script>
     <script src="/js/directives/active-link-directive.js"></script>
     <script src="/js/controllers/main-controller.js"></script>
     <script src="/js/controllers/tree-controller.js"></script>
@@ -75,64 +77,35 @@
             <progress class="win-ring"></progress>
         </header>
         <div class="torrent-content" ng-controller="TorrentController">
-            <div id="mediumListIconTextTemplate" data-win-control="WinJS.Binding.Template">
+            <div id="torrent-template" data-win-control="WinJS.Binding.Template">
                 <div class="row">
                     <div class="pull-right">
                         <progress data-win-bind="value:percentDone"></progress>
                     </div>
                     <div data-win-bind="innerText:name"></div>
+                    <div data-win-bind="innerText:id"></div>
                 </div>
                 <div class="row">
                     <div class="pull-right">
-                        <!--UL: {{item.data.rateUpload}} bytes/sec-->
+                        UL: <span data-win-bind="innerText:rateUpload"></span> bytes/sec
                     </div>
                     <div data-win-bind="innerText:status"></div>
                 </div>
                 <div class="row">
                     <div class="pull-right">
-                        <!--DL: {{item.data.rateDownload}} bytes/sec-->
+                        DL: <span data-win-bind="innerText:rateDownload"></span> bytes/sec
                     </div>
                     <div>
-                        <!--seeds: xxx / peers: xxx-->
+                        seeds: xxx / peers: xxx
                     </div>
                 </div>
             </div>   
             <div id="basicListView" data-win-control="WinJS.UI.ListView"
                  data-win-options="{itemDataSource : TorrentList.torrents.dataSource,
-                                    itemTemplate: select('#mediumListIconTextTemplate'),
+                                    itemTemplate: select('#torrent-template'),
                                     layout: {type: WinJS.UI.ListLayout},
                                     itemsReorderable: true}">
             </div>
-
-            <!--<win-list-view item-data-source="torrents | filter:limitTo(4)">
-                <win-item-template class="win-interactive torrent-slice">
-                    <div class="row">
-                        <div class="pull-right">
-                            <progress value="{{item.dasta.percentDone}}"></progress>
-                        </div>
-                        <div>
-                            {{item.data.name}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="pull-right">
-                            UL: {{item.data.rateUpload}} bytes/sec
-                        </div>
-                        <div>
-                            {{item.data.status}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="pull-right">
-                            DL: {{item.data.rateDownload}} bytes/sec
-                        </div>
-                        <div>
-                            seeds: xxx / peers: xxx
-                        </div>
-                    </div>
-                </win-item-template>
-                <win-list-layout></win-list-layout>
-            </win-list-view>-->
         </div>
     </div>
 </body>
