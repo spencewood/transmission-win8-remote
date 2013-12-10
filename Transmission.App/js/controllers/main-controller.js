@@ -12,34 +12,4 @@
     $scope.$on('service:initialized', function () {
         poll();
     });
-
-    $scope.downloading = function () {
-        return function (item) {
-            return item.rateDownload > 0;
-        };
-    };
-
-    $scope.active = function () {
-        return function (item) {
-            return item.rateDownload + item.rateUpload > 0;
-        }
-    };
-
-    $scope.inactive = function () {
-        return function (item) {
-            return item.rateDownload + item.rateUpload === 0;
-        }
-    };
-
-    $scope.stopped = function () {
-        return function (item) {
-            return item.status === 0;
-        }
-    };
-
-    $scope.error = function () {
-        return function (item) {
-            return item.error;
-        }
-    };
 });

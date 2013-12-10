@@ -1,4 +1,4 @@
-﻿mainApp.controller('TorrentController', function ($scope, $rootScope, $location, torrentService) {
+﻿mainApp.controller('TorrentController', function ($scope, $rootScope, $location, torrentService, statusService) {
     WinJS.Namespace.define('TorrentList', { torrents: new WinJS.Binding.List() });
     var filter = 'all';
 
@@ -14,8 +14,16 @@
         var filtered = newTorrents
             .filter(function (torrent) {
                 switch (filter) {
+                    case 'downloading':
+                        return statusService.downloading(torrent);
                     case 'active':
-                        return torrent.rateUpload + torrent.rateDownload > 0;
+                        return statusService.active(torrent);
+                    case 'inactive':
+                        return statusService.inactive(torrent);
+                    case 'stopped':
+                        return statusService.stopped(torrent);
+                    case 'error':
+                        return statusService.error(torrent);
                     default:
                         return true;
                 }

@@ -76,6 +76,7 @@
     <Content Include="js\lib\lodash.min.js" />
     <Content Include="js\services\local-settings-service.js" />
     <Content Include="js\services\remote-service.js" />
+    <Content Include="js\services\status-service.js" />
     <Content Include="js\services\torrent-service.js" />
     <Content Include="js\util\lodash-mixins.js" />
     <Content Include="views\settings\options.html" />

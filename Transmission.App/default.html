@@ -25,6 +25,7 @@
     <script src="/js/services/local-settings-service.js"></script>
     <script src="/js/services/remote-service.js"></script>
     <script src="/js/services/torrent-service.js"></script>
+    <script src="/js/services/status-service.js"></script>
     <script src="/js/directives/active-link-directive.js"></script>
     <script src="/js/controllers/main-controller.js"></script>
     <script src="/js/controllers/tree-controller.js"></script>
@@ -42,19 +43,19 @@
                     <a href="#/status/all" active-link>All torrents ({{torrents.length}})</a>
                 </li>
                 <li>
-                    <a href="#/status/downloading" active-link>Downloading ({{(torrents|filter:downloading()).length}})</a>
+                    <a href="#/status/downloading" active-link>Downloading ({{(torrents|filter:downloading).length}})</a>
                 </li>
                 <li>
-                    <a href="#/status/active" active-link>Active ({{(torrents|filter:active()).length}})</a>
+                    <a href="#/status/active" active-link>Active ({{(torrents|filter:active).length}})</a>
                 </li>
                 <li>
-                    <a href="#/status/inactive" active-link>Inactive ({{(torrents|filter:inactive()).length}})</a>
+                    <a href="#/status/inactive" active-link>Inactive ({{(torrents|filter:inactive).length}})</a>
                 </li>
                 <li>
-                    <a href="#/status/stopped" active-link>Stopped ({{(torrents|filter:stopped()).length}})</a>
+                    <a href="#/status/stopped" active-link>Stopped ({{(torrents|filter:stopped).length}})</a>
                 </li>
                 <li>
-                    <a href="#/status/error" active-link>Error ({{(torrents|filter:error()).length}})</a>
+                    <a href="#/status/error" active-link>Error ({{(torrents|filter:error).length}})</a>
                 </li>
             </ul>
         </section>
