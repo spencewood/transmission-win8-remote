@@ -4,8 +4,6 @@
         $scope.$apply();
     });
 
-    $scope.showSpinner = false;
-
     $scope.$on('spinner:stop', function () {
         $scope.showSpinner = false;
         $scope.$apply();

@@ -2,12 +2,6 @@
     WinJS.Namespace.define('TorrentList', { torrents: new WinJS.Binding.List() });
     var filter = 'all';
 
-    var differenceObjects = function (a, b) {
-        return a.filter(function (obj) {
-            return !_.findWhere(b, { id: obj.id });
-        });
-    };
-
     var processTorrentData = function () {
         var newTorrents = torrentService.getTorrents();
         
@@ -34,18 +28,14 @@
                     return oldTorrent.id === newTorrent.id;
                 });
                 if (same.length > 0) {
-                    for (var prop in newTorrent) {
-                        if (newTorrent.hasOwnProperty(prop)) {
-                            same[0][prop] = newTorrent[prop];
-                        }
-                    }
+                    _.extend(same[0], newTorrent);
                 }
                 else {
                     TorrentList.torrents.push(WinJS.Binding.as(newTorrent));
                 }
             });
 
-        var toRemove = differenceObjects(TorrentList.torrents, filtered);
+        var toRemove = _.differenceObjectsById(TorrentList.torrents, filtered);
 
         toRemove.forEach(function (rm) {
             TorrentList.torrents.forEach(function (torrent, idx) {

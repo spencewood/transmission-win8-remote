@@ -1,19 +1,19 @@
-﻿mainApp.directive('activeLink', ['$location', function (location) {
+﻿mainApp.directive('activeLink', function ($location) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs, controller) {
-            var clazz = attrs.activeLink || 'active';
+            var cls = attrs.activeLink || 'active';
             var path = attrs.href;
-            path = path.substring(1); //hack because path does bot return including hashbang
-            scope.location = location;
+            path = path.substring(1); // remove the #
+            scope.location = $location;
             scope.$watch('location.path()', function (newPath) {
                 if (path === newPath) {
-                    element.addClass(clazz);
+                    element.addClass(cls);
                 } else {
-                    element.removeClass(clazz);
+                    element.removeClass(cls);
                 }
             });
         }
     };
 
-}]);
+});

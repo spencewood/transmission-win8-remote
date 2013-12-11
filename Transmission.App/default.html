@@ -15,7 +15,7 @@
     <script src="/js/lib/angular.js"></script>
     <script src="/js/lib/angular-route.js"></script>
     <script src="/js/lib/lodash.min.js"></script>
-    <!--<script src="/js/util/lodash-mixins.js"></script>-->
+    <script src="/js/util/lodash-mixins.js"></script>
 
     <!-- Transmission references -->
     <link href="/css/default.css" rel="stylesheet" />
@@ -30,8 +30,10 @@
     <script src="/js/controllers/tree-controller.js"></script>
     <script src="/js/controllers/torrent-controller.js"></script>
     <script src="/js/controllers/stats-controller.js"></script>
+    <script src="/js/controllers/app-bar-controller.js"></script>
 </head>
 <body ng-controller="MainController">
+    <!-- Left Sidebar -->
     <div class="left-sidebar" ng-controller="TreeController">
         <header>
             <progress class="win-ring pull-right" ng-show="showSpinner"></progress>
@@ -40,22 +42,22 @@
         <section>
             <ul class="selection-list">
                 <li>
-                    <a href="#/status/all" active-link>All torrents ({{torrents.length}})</a>
+                    <a href="#/status/all" active-link><em class="pull-right">{{torrents.length}}</em> All torrents</a>
                 </li>
                 <li>
-                    <a href="#/status/downloading" active-link>Downloading ({{(torrents|filter:downloading).length}})</a>
+                    <a href="#/status/downloading" active-link><em class="pull-right">{{(torrents|filter:downloading).length}}</em> Downloading</a>
                 </li>
                 <li>
-                    <a href="#/status/active" active-link>Active ({{(torrents|filter:active).length}})</a>
+                    <a href="#/status/active" active-link><em class="pull-right">{{(torrents|filter:active).length}}</em> Active</a>
                 </li>
                 <li>
-                    <a href="#/status/inactive" active-link>Inactive ({{(torrents|filter:inactive).length}})</a>
+                    <a href="#/status/inactive" active-link><em class="pull-right">{{(torrents|filter:inactive).length}}</em> Inactive</a>
                 </li>
                 <li>
-                    <a href="#/status/stopped" active-link>Stopped ({{(torrents|filter:stopped).length}})</a>
+                    <a href="#/status/stopped" active-link><em class="pull-right">{{(torrents|filter:stopped).length}}</em> Stopped</a>
                 </li>
                 <li>
-                    <a href="#/status/error" active-link>Error ({{(torrents|filter:error).length}})</a>
+                    <a href="#/status/error" active-link><em class="pull-right">{{(torrents|filter:error).length}}</em> Error</a>
                 </li>
             </ul>
         </section>
@@ -73,6 +75,9 @@
             </ul>
         </section>
     </div>
+    <!-- /Left Sidebar -->
+
+    <!-- Main Content -->
     <div class="main-content">
         <header class="filters" ng-controller="StatsController">
             
@@ -96,12 +101,18 @@
                         DL: <span data-win-bind="innerText:rateDownload"></span> bytes/sec
                     </div>
                     <div>
-                        seeds: xxx / peers: xxx
+                        seeds: 
+                        <span data-win-bind="innerText:peersSendingToUs"></span> 
+                        peers:
+                        <span data-win-bind="innerText:peersGettingFromUs"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="pull-right">
                         Ratio : <span data-win-bind="innerText:uploadRatio"></span>
+                    </div>
+                    <div>
+                        Size: <span data-win-bind="innerText:sizeWhenDone"></span>
                     </div>
                 </div>
             </div>   
@@ -113,5 +124,25 @@
             </div>
         </div>
     </div>
+    <!-- /Main Content -->
+
+    <!-- App Bar -->
+    <div id="appBar" data-win-control="WinJS.UI.AppBar" data-win-options="" ng-controller="AppBarController">
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdRemoveWithData',label:'Remove With Data',icon:'delete',
+                section:'global',tooltip:'Remove With Data'}" ng-click="removeWithData()"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',
+                section:'global',tooltip:'Remove item'}" ng-click="remove()"></button>
+        <hr data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{type:'separator',section:'global'}" />
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdDelete',label:'Delete',icon:'delete',
+                section:'global',tooltip:'Delete item'}"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdCamera',label:'Camera',icon:'camera',
+                section:'selection',tooltip:'Take a picture'}"></button>
+    </div>
+    <!-- /App Bar -->
 </body>
 </html>

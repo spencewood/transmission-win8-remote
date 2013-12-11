@@ -84,7 +84,13 @@ namespace Transmission.Runtime
 	            "rateUpload",
                 "status",
                 "error",
-                "uploadRatio"
+                "uploadRatio",
+                "sizeWhenDone",
+                "webseedsSendingToUs",
+                "peersConnected",
+                "peersGettingFromUs",
+                "peersSendingToUs",
+                "isFinished",
             };
 
             return GetTorrentsAsync(fields).AsAsyncOperation();
@@ -99,18 +105,12 @@ namespace Transmission.Runtime
                 "isStalled",
                 "leftUntilDone",
                 "metadataPercentComplete",
-                "peersConnected",
-                "peersGettingFromUs",
-                "peersSendingToUs",
                 "recheckProgress",
                 "seedRatioMode",
                 "seedRatioLimit",
-                "isFinished",
-                "sizeWhenDone",
                 "trackers",
                 "downloadDir",
-                "uploadedEver",
-                "webseedsSendingToUs"
+                "uploadedEver"
             };
             return GetTorrentsAsync(fields).AsAsyncOperation();
         }
