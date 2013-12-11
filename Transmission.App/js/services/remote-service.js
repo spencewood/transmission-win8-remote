@@ -1,11 +1,17 @@
-﻿mainApp.factory('remoteService', function (localSettingsService) {
+﻿mainApp.factory('remoteService', function ($rootScope, localSettingsService) {
     var remote = new Transmission.Runtime.Remote(
         localSettingsService.get('servername'),
         localSettingsService.get('username'),
         localSettingsService.get('password')
     );
 
-    var sessionId = '';
+    var spinnerStop = function () {
+        $rootScope.$broadcast('spinner:stop');
+    };
+
+    var spinnerStart = function () {
+        $rootScope.$broadcast('spinner:start');
+    };
 
     return {
         init: function () {
@@ -25,7 +31,10 @@
         },
 
         getTorrents: function () {
-            return remote.getTorrents();
+            spinnerStart();
+            var sess = remote.getTorrents();
+            sess.then(spinnerStop)
+            return sess;
         },
 
         getTorrentStats: function () {

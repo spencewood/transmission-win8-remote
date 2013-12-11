@@ -83,7 +83,8 @@ namespace Transmission.Runtime
                 "rateDownload",
 	            "rateUpload",
                 "status",
-                "error"
+                "error",
+                "uploadRatio"
             };
 
             return GetTorrentsAsync(fields).AsAsyncOperation();
@@ -109,7 +110,6 @@ namespace Transmission.Runtime
                 "trackers",
                 "downloadDir",
                 "uploadedEver",
-                "uploadRatio",
                 "webseedsSendingToUs"
             };
             return GetTorrentsAsync(fields).AsAsyncOperation();

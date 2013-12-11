@@ -14,7 +14,6 @@
     </script>
     <script src="/js/lib/angular.js"></script>
     <script src="/js/lib/angular-route.js"></script>
-    <!--<script src="/js/lib/angular-winjs.js"></script>-->
     <script src="/js/lib/lodash.min.js"></script>
     <!--<script src="/js/util/lodash-mixins.js"></script>-->
 
@@ -35,6 +34,7 @@
 <body ng-controller="MainController">
     <div class="left-sidebar" ng-controller="TreeController">
         <header>
+            <progress class="win-ring pull-right" ng-show="showSpinner"></progress>
             <h2>Server name</h2>
         </header>
         <section>
@@ -74,8 +74,8 @@
         </section>
     </div>
     <div class="main-content">
-        <header class="filters">
-            <progress class="win-ring"></progress>
+        <header class="filters" ng-controller="StatsController">
+            
         </header>
         <div class="torrent-content" ng-controller="TorrentController">
             <div id="torrent-template" data-win-control="WinJS.Binding.Template">
@@ -84,7 +84,6 @@
                         <progress data-win-bind="value:percentDone"></progress>
                     </div>
                     <div data-win-bind="innerText:name"></div>
-                    <div data-win-bind="innerText:id"></div>
                 </div>
                 <div class="row">
                     <div class="pull-right">
@@ -98,6 +97,11 @@
                     </div>
                     <div>
                         seeds: xxx / peers: xxx
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="pull-right">
+                        Ratio : <span data-win-bind="innerText:uploadRatio"></span>
                     </div>
                 </div>
             </div>   
