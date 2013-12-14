@@ -72,6 +72,7 @@
     <Content Include="css\default.css" />
     <Content Include="js\directives\active-link-directive.js" />
     <Content Include="js\directives\item-count-directive.js" />
+    <Content Include="js\directives\winjs-listview-selection-directive.js" />
     <Content Include="js\lib\angular-route.js" />
     <Content Include="js\lib\angular-winjs.js" />
     <Content Include="js\lib\angular.js" />

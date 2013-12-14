@@ -26,6 +26,7 @@
     <script src="/js/services/torrent-service.js"></script>
     <script src="/js/services/status-service.js"></script>
     <script src="/js/directives/active-link-directive.js"></script>
+    <script src="/js/directives/winjs-listview-selection-directive.js"></script>
     <script src="/js/controllers/main-controller.js"></script>
     <script src="/js/controllers/tree-controller.js"></script>
     <script src="/js/controllers/torrent-controller.js"></script>
@@ -101,8 +102,8 @@
                         DL: <span data-win-bind="innerText:rateDownload"></span> bytes/sec
                     </div>
                     <div>
-                        seeds: 
-                        <span data-win-bind="innerText:peersSendingToUs"></span> 
+                        seeds:
+                        <span data-win-bind="innerText:peersSendingToUs"></span>
                         peers:
                         <span data-win-bind="innerText:peersGettingFromUs"></span>
                     </div>
@@ -120,7 +121,7 @@
                  data-win-options="{itemDataSource : TorrentList.torrents.dataSource,
                                     itemTemplate: select('#torrent-template'),
                                     layout: {type: WinJS.UI.ListLayout},
-                                    itemsReorderable: true}">
+                                    itemsReorderable: true}" selection-changed>
             </div>
         </div>
     </div>
@@ -129,19 +130,50 @@
     <!-- App Bar -->
     <div id="appBar" data-win-control="WinJS.UI.AppBar" data-win-options="" ng-controller="AppBarController">
         <button data-win-control="WinJS.UI.AppBarCommand"
-                data-win-options="{id:'cmdRemoveWithData',label:'Remove With Data',icon:'delete',
-                section:'global',tooltip:'Remove With Data'}" ng-click="removeWithData()"></button>
+                data-win-options="{id:'cmdStart',label:'Start',icon:'play',
+                section:'global',tooltip:'Start torrent'}" ng-click="start()"></button>
         <button data-win-control="WinJS.UI.AppBarCommand"
-                data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',
-                section:'global',tooltip:'Remove item'}" ng-click="remove()"></button>
+                data-win-options="{id:'cmdStop',label:'Stop',icon:'pause',
+                section:'global',tooltip:'Stop torrent'}" ng-click="stop()"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdVerify',label:'Verify',icon:'zoom',
+                section:'global',tooltip:'Verify torrent'}" ng-click="verify()"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id: 'cmdReannounce',label:'Reannounce',icon:'people',
+                section:'global',tooltip:'Reannounce torrent'}" ng-click="reannounce()"></button>
+        
         <hr data-win-control="WinJS.UI.AppBarCommand"
             data-win-options="{type:'separator',section:'global'}" />
+        
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id: 'cmdMoveUp',label:'Move Up',icon:'up',
+                section:'global',tooltip:'Move up'}" ng-click="moveUp()"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id: 'cmdMoveDown',label:'Move Down',icon:'up',
+                section:'global',tooltip:'Move down'}" ng-click="moveDown()" class="rotate180"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id: 'cmdMoveTop',label:'Move Top',icon:'upload',
+                section:'global',tooltip:'Move top'}" ng-click="moveTop()"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id: 'cmdMoveBottom',label:'Move Bottom',icon:'download',
+                section:'global',tooltip:'Move bottom'}" ng-click="moveBottom()"></button>
+        
+        <hr data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{type:'separator',section:'global'}" />
+        
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdRemoveWithData',label:'Remove With Data',icon:'delete',
+                section:'global',tooltip:'Remove torrent and data'}" ng-click="remove(true)"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',
+                section:'global',tooltip:'Remove torrent'}" ng-click="remove()"></button>
+        <!--
         <button data-win-control="WinJS.UI.AppBarCommand"
                 data-win-options="{id:'cmdDelete',label:'Delete',icon:'delete',
                 section:'global',tooltip:'Delete item'}"></button>
         <button data-win-control="WinJS.UI.AppBarCommand"
                 data-win-options="{id:'cmdCamera',label:'Camera',icon:'camera',
-                section:'selection',tooltip:'Take a picture'}"></button>
+                section:'selection',tooltip:'Take a picture'}"></button>-->
     </div>
     <!-- /App Bar -->
 </body>

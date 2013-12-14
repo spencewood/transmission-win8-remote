@@ -125,5 +125,95 @@ namespace Transmission.Runtime
             //TODO: pass in directory
             return GetFreeSpaceAsync().AsAsyncOperation();
         }
+
+        private async Task<String> StartTorrentsAsync(IEnumerable<int> ids)
+        {
+            return await GetClient().StartTorrents(ids.ToList());
+        }
+
+        public IAsyncOperation<String> StartTorrents(IEnumerable<int> ids)
+        {
+            return StartTorrentsAsync(ids).AsAsyncOperation();
+        }
+
+        private async Task<String> StopTorrentsAsync(IEnumerable<int> ids)
+        {
+            return await GetClient().StopTorrents(ids.ToList());
+        }
+
+        public IAsyncOperation<String> StopTorrents(IEnumerable<int> ids)
+        {
+            return StopTorrentsAsync(ids).AsAsyncOperation();
+        }
+
+        private async Task<String> VerifyTorrentsAsync(IEnumerable<int> ids)
+        {
+            return await GetClient().VerifyTorrents(ids.ToList());
+        }
+
+        public IAsyncOperation<String> VerifyTorrents(IEnumerable<int> ids)
+        {
+            return VerifyTorrentsAsync(ids).AsAsyncOperation();
+        }
+
+        private async Task<String> ReannounceTorrentsAsync(IEnumerable<int> ids)
+        {
+            return await GetClient().ReannounceTorrents(ids.ToList());
+        }
+
+        public IAsyncOperation<String> ReannounceTorrents(IEnumerable<int> ids)
+        {
+            return ReannounceTorrentsAsync(ids).AsAsyncOperation();
+        }
+
+        private async Task<String> RemoveTorrentsAsync(IEnumerable<int> ids, bool deleteLocal)
+        {
+            return await GetClient().RemoveTorrents(ids.ToList(), deleteLocal);
+        }
+
+        public IAsyncOperation<String> RemoveTorrents(IEnumerable<int> ids, bool deleteLocal)
+        {
+            return RemoveTorrentsAsync(ids, deleteLocal).AsAsyncOperation();
+        }
+
+        private async Task<String> MoveTorrentsToTopAsync(IEnumerable<int> ids)
+        {
+            return await GetClient().MoveTorrentsToTop(ids.ToList());
+        }
+
+        public IAsyncOperation<String> MoveTorrentsToTop(IEnumerable<int> ids)
+        {
+            return MoveTorrentsToTopAsync(ids).AsAsyncOperation();
+        }
+
+        private async Task<String> MoveTorrentsToBottomAsync(IEnumerable<int> ids)
+        {
+            return await GetClient().MoveTorrentsToBottom(ids.ToList());
+        }
+
+        public IAsyncOperation<String> MoveTorrentsToBottom(IEnumerable<int> ids)
+        {
+            return MoveTorrentsToBottomAsync(ids).AsAsyncOperation();
+        }
+
+        private async Task<String> MoveTorrentsUpAsync(IEnumerable<int> ids)
+        {
+            return await GetClient().MoveTorrentsUp(ids.ToList());
+        }
+
+        public IAsyncOperation<String> MoveTorrentsUp(IEnumerable<int> ids)
+        {
+            return MoveTorrentsUpAsync(ids).AsAsyncOperation();
+        }
+
+        private async Task<String> MoveTorrentsDownAsync(IEnumerable<int> ids)
+        {
+            return await GetClient().MoveTorrentsDown(ids.ToList());
+        }
+
+        public IAsyncOperation<String> MoveTorrentsDown(IEnumerable<int> ids)
+        {
+            return MoveTorrentsDownAsync(ids).AsAsyncOperation();
+        }
     }
 }

@@ -1,5 +1,12 @@
 ﻿mainApp.controller('TorrentController', function ($scope, $rootScope, $location, torrentService, statusService) {
     WinJS.Namespace.define('TorrentList', { torrents: new WinJS.Binding.List() });
+
+    $scope.selection = [];
+
+    $scope.$watch('selection', function (selection) {
+        $rootScope.selectedTorrentIds = _.pluck(_.pluck(selection._value, 'data'), 'id');
+    });
+
     var filter = 'all';
 
     var processTorrentData = function () {

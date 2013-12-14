@@ -33,12 +33,48 @@
         getTorrents: function () {
             spinnerStart();
             var sess = remote.getTorrents();
-            sess.then(spinnerStop)
+            sess.then(spinnerStop);
             return sess;
         },
 
         getTorrentStats: function () {
             return remote.getTorrentStats();
+        },
+
+        startTorrents: function (ids) {
+            return remote.startTorrents(ids);
+        },
+
+        stopTorrents: function (ids) {
+            return remote.stopTorrents(ids);
+        },
+
+        verifyTorrents: function (ids) {
+            return remote.verifyTorrents(ids);
+        },
+
+        reannounceTorrents: function (ids) {
+            return remote.reannounceTorrents(ids);
+        },
+
+        removeTorrents: function (ids) {
+            return remote.remove(ids);
+        },
+
+        moveTorrentsToTop: function (ids) {
+            return remote.moveTorrentsToTop(ids);
+        },
+
+        moveTorrentsToBottom: function (ids) {
+            return remote.moveTorrentsToBottom(ids);
+        },
+
+        moveTorrentsUp: function (ids) {
+            return remote.moveTorrentsUp(ids);
+        },
+
+        moveTorrentsDown: function (ids) {
+            return remote.moveTorrentsDown(ids);
         }
     };
 });
