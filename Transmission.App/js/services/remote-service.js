@@ -57,8 +57,8 @@
             return remote.reannounceTorrents(ids);
         },
 
-        removeTorrents: function (ids) {
-            return remote.remove(ids);
+        removeTorrents: function (ids, removeData) {
+            return remote.removeTorrents(ids, removeData);
         },
 
         moveTorrentsToTop: function (ids) {

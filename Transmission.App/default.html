@@ -25,6 +25,7 @@
     <script src="/js/services/remote-service.js"></script>
     <script src="/js/services/torrent-service.js"></script>
     <script src="/js/services/status-service.js"></script>
+    <script src="/js/services/dialog-service.js"></script>
     <script src="/js/directives/active-link-directive.js"></script>
     <script src="/js/directives/winjs-listview-selection-directive.js"></script>
     <script src="/js/controllers/main-controller.js"></script>
@@ -79,11 +80,11 @@
     <!-- /Left Sidebar -->
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="main-content" ng-controller="TorrentController">
         <header class="filters" ng-controller="StatsController">
-            
+            <input ng-change="processTorrentData()" ng-model="search.filter" placeholder="Filter results" class="pull-right">
         </header>
-        <div class="torrent-content" ng-controller="TorrentController">
+        <div class="torrent-content">
             <div id="torrent-template" data-win-control="WinJS.Binding.Template">
                 <div class="row">
                     <div class="pull-right">
@@ -116,12 +117,11 @@
                         Size: <span data-win-bind="innerText:sizeWhenDone"></span>
                     </div>
                 </div>
-            </div>   
+            </div>
             <div id="basicListView" data-win-control="WinJS.UI.ListView"
                  data-win-options="{itemDataSource : TorrentList.torrents.dataSource,
                                     itemTemplate: select('#torrent-template'),
-                                    layout: {type: WinJS.UI.ListLayout},
-                                    itemsReorderable: true}" selection-changed>
+                                    layout: {type: WinJS.UI.ListLayout}}" selection-changed>
             </div>
         </div>
     </div>

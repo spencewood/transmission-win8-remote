@@ -15,6 +15,17 @@
             return ret;
         },
 
+        findById: function (id) {
+            return _.findWhere(this.torrents, { id: id });
+        },
+
+        getNameById: function (id) {
+            var torrent = this.findById(id);
+            if (torrent !== null) {
+                return torrent.name;
+            }
+        },
+
         start: function (ids) {
             remoteService.startTorrents(ids);
         },

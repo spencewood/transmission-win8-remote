@@ -1,11 +1,22 @@
-﻿mainApp.controller('AppBarController', function ($scope, $rootScope, torrentService) {
+﻿mainApp.controller('AppBarController', function ($scope, $rootScope, torrentService, dialogService) {
     /*$rootScope.$watch('selectedTorrentIds', function (ids) {
         var a = 'asdf';
     });*/
 
     $scope.remove = function (removeData) {
-        var a = 'asdf';
-        //torrentService.remove($rootScope.selectedTorrentIds);
+        var prompt = [
+            'Remove the following torrents',
+            removeData ? ' and associated data' : '',
+            '?\n\n',
+            $rootScope.selectedTorrentIds.map(torrentService.getNameById.bind(torrentService)).join('\n')
+        ].join('');
+
+        dialogService.prompt(prompt, 'Cancel', 'Ok')
+            .then(function (command) {
+                if (command.label === 'Ok') {
+                    torrentService.remove($rootScope.selectedTorrentIds, removeData);
+                }
+            });
     };
 
     $scope.start = function () {
