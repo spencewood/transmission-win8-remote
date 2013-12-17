@@ -1,18 +1,27 @@
 ﻿mainApp.factory('torrentService', function ($rootScope, remoteService) {
     return {
         torrents: [],
+        timeoutToken: null,
 
         getTorrents: function () {
             return this.torrents;
         },
 
+        pollForTorrents: function () {
+            if (this.timeoutToken != null) {
+                clearTimeout(this.timeoutToken);
+                this.timeoutToken = null;
+            }
+            return this.updateTorrents().then(function (val) {
+                this.timeoutToken = setTimeout(this.pollForTorrents.bind(this), 10 * 1000);
+            }.bind(this));
+        },
+
         updateTorrents: function () {
-            var ret = remoteService.getTorrents()
-            ret.then(function (val) {
+            return remoteService.getTorrents().then(function (val) {
                 var torrents = this.torrents = JSON.parse(val).arguments.torrents;
                 $rootScope.$broadcast('torrents:updated', torrents);
             }.bind(this));
-            return ret;
         },
 
         findById: function (id) {
@@ -27,43 +36,43 @@
         },
 
         start: function (ids) {
-            remoteService.startTorrents(ids);
+            return remoteService.startTorrents(ids).then(this.pollForTorrents.bind(this));
         },
 
         stop: function (ids) {
-            remoteService.stopTorrents(ids);
+            return remoteService.stopTorrents(ids).then(this.pollForTorrents.bind(this));
         },
 
         verify: function (ids) {
-            remoteService.verifyTorrents(ids);
+            return remoteService.verifyTorrents(ids).then(this.pollForTorrents.bind(this));
         },
 
         reannounce: function (ids) {
-            remoteService.reannounceTorrents(ids);
+            return remoteService.reannounceTorrents(ids).then(this.pollForTorrents.bind(this));
         },
 
         remove: function (ids, removeData) {
-            remoteService.removeTorrents(ids, removeData);
+            return remoteService.removeTorrents(ids, removeData).then(this.pollForTorrents.bind(this));
         },
 
         moveToTop: function (ids) {
-            remoteService.moveTorrentsToTop(ids);
+            return remoteService.moveTorrentsToTop(ids).then(this.pollForTorrents.bind(this));
         },
 
         moveToBottom: function (ids) {
-            remoteService.moveTorrentsToBottom(ids);
+            return remoteService.moveTorrentsToBottom(ids).then(this.pollForTorrents.bind(this));
         },
 
         moveUp: function (ids) {
-            remoteService.moveTorrentsUp(ids);
+            return remoteService.moveTorrentsUp(ids).then(this.pollForTorrents.bind(this));
         },
 
         moveDown: function (ids) {
-            remoteService.moveTorrentsDown(ids);
+            return remoteService.moveTorrentsDown(ids).then(this.pollForTorrents.bind(this));
         },
 
         add: function (metainfo) {
-            remoteService.addTorrent(metainfo);
+            return remoteService.addTorrent(metainfo).then(this.pollForTorrents.bind(this));
         }
     }
 });

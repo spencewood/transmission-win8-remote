@@ -81,6 +81,7 @@
 
     $rootScope.$on('$locationChangeSuccess', function (event) {
         filter = $location.url().match(/\/(\w+)$/)[1];
+        //torrentService.pollForTorrents();
         clearList();
         processTorrentData();
     });
