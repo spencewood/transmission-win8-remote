@@ -33,6 +33,7 @@
     <script src="/js/controllers/torrent-controller.js"></script>
     <script src="/js/controllers/stats-controller.js"></script>
     <script src="/js/controllers/torrent-bar-controller.js"></script>
+    <script src="/js/controllers/session-bar-controller.js"></script>
     <script src="/js/filters/bytes-filter.js"></script>
 </head>
 <body ng-controller="MainController">
@@ -126,9 +127,13 @@
         </div>
     </div>
     <!-- /Main Content -->
-    <!-- App Bar -->
-    <div id="torrent-bar" data-win-control="WinJS.UI.AppBar" data-win-options="" ng-controller="TorrentBarController">
+    <!-- Session App Bar -->
+    <div id="session-bar" data-win-control="WinJS.UI.AppBar" data-win-options="{placement: 'top'}" ng-controller="SessionBarController">
 
+    </div>
+    <!-- /Session App Bar -->
+    <!-- Torrent App Bar -->
+    <div id="torrent-bar" data-win-control="WinJS.UI.AppBar" data-win-options="{placement: 'bottom', disabled: 'true'}" ng-controller="TorrentBarController">
         <button data-win-control="WinJS.UI.AppBarCommand"
                 data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',
                 section:'selection',tooltip:'Remove torrent'}" ng-click="remove()"></button>
@@ -162,20 +167,12 @@
                 data-win-options="{id:'cmdVerify',label:'Verify',icon:'zoom',
                 section:'global',tooltip:'Verify torrent'}" ng-click="verify()"></button>
         <button data-win-control="WinJS.UI.AppBarCommand"
-                data-win-options="{id:'cmdStop',label:'Stop',icon:'pause',
+                data-win-options="{id:'cmdStop',label:'Stop',icon:'stop',
                 section:'global',tooltip:'Stop torrent'}" ng-click="stop()"></button>
         <button data-win-control="WinJS.UI.AppBarCommand"
                 data-win-options="{id:'cmdStart',label:'Start',icon:'play',
                 section:'global',tooltip:'Start torrent'}" ng-click="start()"></button>
-
-        <!--
-        <button data-win-control="WinJS.UI.AppBarCommand"
-                data-win-options="{id:'cmdDelete',label:'Delete',icon:'delete',
-                section:'global',tooltip:'Delete item'}"></button>
-        <button data-win-control="WinJS.UI.AppBarCommand"
-                data-win-options="{id:'cmdCamera',label:'Camera',icon:'camera',
-                section:'selection',tooltip:'Take a picture'}"></button>-->
     </div>
-    <!-- /App Bar -->
+    <!-- /Torrent Bar -->
 </body>
 </html>

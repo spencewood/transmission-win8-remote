@@ -63,6 +63,7 @@
     <Content Include="images\transmission.png" />
     <Content Include="js\app.js" />
     <Content Include="js\app\options.js" />
+    <Content Include="js\controllers\session-bar-controller.js" />
     <Content Include="js\controllers\torrent-bar-controller.js" />
     <Content Include="js\controllers\main-controller.js" />
     <Content Include="js\controllers\server-settings-controller.js" />
