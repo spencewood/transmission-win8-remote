@@ -1,5 +1,15 @@
-﻿mainApp.controller('AppBarController', function ($scope, $rootScope, torrentService, dialogService) {
-    //TODO: disable commands when nothing selected
+﻿mainApp.controller('TorrentBarController', function ($scope, $rootScope, torrentService, dialogService) {
+    var torrentBar = document.getElementById('torrent-bar');
+
+    $rootScope.$watch('selectedTorrentIds', function (ids) {
+        var appBar = torrentBar.winControl;
+        if (typeof appBar !== 'undefined') {
+            var hasIds = !_.isEmpty(ids);
+            appBar.sticky = hasIds;
+            appBar.disabled = !hasIds;
+            hasIds ? appBar.show() : appBar.hide();
+        }
+    });
 
     $scope.remove = function (removeData) {
         var prompt = [
@@ -9,7 +19,7 @@
             $rootScope.selectedTorrentIds.map(torrentService.getNameById.bind(torrentService)).join('\n')
         ].join('');
 
-        dialogService.prompt(prompt, 'Cancel', 'Ok')
+        dialogService.prompt(prompt, 'Yes', 'No')
             .then(function (command) {
                 if (command.label === 'Ok') {
                     torrentService.remove($rootScope.selectedTorrentIds, removeData);
