@@ -7,6 +7,11 @@
     var activation = Windows.ApplicationModel.Activation;
 
     app.onactivated = function (args) {
+        var rootScope = angular.element(document).scope();
+        if (args.detail.kind === Windows.ApplicationModel.Activation.ActivationKind.file) {
+            rootScope.$broadcast('torrents:add', args.detail.files);
+        }
+
         if (args.detail.kind === activation.ActivationKind.launch) {
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 // TODO: This application has been newly launched. Initialize
@@ -32,7 +37,7 @@
 
     app.onsettings = function (e) {
         e.detail.applicationcommands = {
-            "options": { title: "Options", href: "/views/settings/options.html" },
+            'server-settings': { title: "Server Settings", href: "/views/settings/server-settings.html" },
         };
         WinJS.UI.SettingsFlyout.populateSettings(e);
     };

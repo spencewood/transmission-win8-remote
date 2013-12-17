@@ -98,3 +98,15 @@ header{
 .rotate180 .win-commandimage {
     transform: rotate(180deg);
 }
+
+.win-backbutton,
+.win-backbutton:hover{
+    color: #fff;
+    border-color: #fff;
+}
+
+/* Settings */
+.win-settingsflyout .win-header { 
+    background-color: #464646;
+    color: #fff; 
+}

@@ -180,5 +180,34 @@ namespace Transmission.Remote
                 ids = ids
             });
         }
+
+        public async Task<String> AddTorrent(Byte[] metainfo)
+        {
+            var args = new JObject();
+
+            args["metainfo"] = Convert.ToBase64String(metainfo);
+            return await SendRequest("torrent-add", args);
+        }
+
+        public async Task<String> AddTorrent(String url)
+        {
+            var args = new JObject();
+            args["filename"] = url;
+
+            return await SendRequest("torrent-add", args);
+            /*
+               "download-dir"       | string      path to download the torrent to
+               "filename"           | string      filename or URL of the .torrent file
+               "metainfo"           | string      base64-encoded .torrent content
+               "paused"             | boolean     if true, don't start the torrent
+               "peer-limit"         | number      maximum number of peers
+               "bandwidthPriority"  | number      torrent's bandwidth tr_priority_t 
+               "files-wanted"       | array       indices of file(s) to download
+               "files-unwanted"     | array       indices of file(s) to not download
+               "priority-high"      | array       indices of high-priority file(s)
+               "priority-low"       | array       indices of low-priority file(s)
+               "priority-normal"    | array       indices of normal-priority file(s)
+             */
+        }
     }
 }

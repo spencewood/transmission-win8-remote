@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Transmission.Remote;
 using Windows.Foundation;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Transmission.Runtime
 {
@@ -214,6 +215,16 @@ namespace Transmission.Runtime
         public IAsyncOperation<String> MoveTorrentsDown(IEnumerable<int> ids)
         {
             return MoveTorrentsDownAsync(ids).AsAsyncOperation();
+        }
+
+        private async Task<String> AddTorrentAsync(byte[] metainfo)
+        {
+            return await GetClient().AddTorrent(metainfo);
+        }
+
+        public IAsyncOperation<String> AddTorrent([ReadOnlyArray()] byte[] metainfo)
+        {
+            return AddTorrentAsync(metainfo).AsAsyncOperation();
         }
     }
 }

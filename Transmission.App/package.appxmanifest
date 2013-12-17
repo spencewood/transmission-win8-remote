@@ -18,6 +18,16 @@
       <m2:VisualElements DisplayName="Transmission" Description="Transmission" ForegroundText="light" BackgroundColor="#464646" Square150x150Logo="images/transmission.png" Square30x30Logo="images\SmallLogo.png">
         <m2:SplashScreen Image="images\splashscreen.png" />
       </m2:VisualElements>
+      <Extensions>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="torrent">
+            <Logo>images\Icon.png</Logo>
+            <SupportedFileTypes>
+              <FileType>.torrent</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

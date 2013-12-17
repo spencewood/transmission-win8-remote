@@ -75,6 +75,10 @@
 
         moveTorrentsDown: function (ids) {
             return remote.moveTorrentsDown(ids);
+        },
+
+        addTorrent: function (metainfo) {
+            return remote.addTorrent(metainfo);
         }
     };
 });

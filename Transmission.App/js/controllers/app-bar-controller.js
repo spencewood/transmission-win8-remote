@@ -1,7 +1,5 @@
 ﻿mainApp.controller('AppBarController', function ($scope, $rootScope, torrentService, dialogService) {
-    /*$rootScope.$watch('selectedTorrentIds', function (ids) {
-        var a = 'asdf';
-    });*/
+    //TODO: disable commands when nothing selected
 
     $scope.remove = function (removeData) {
         var prompt = [

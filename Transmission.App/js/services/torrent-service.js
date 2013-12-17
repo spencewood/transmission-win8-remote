@@ -60,6 +60,10 @@
 
         moveDown: function (ids) {
             remoteService.moveTorrentsDown(ids);
+        },
+
+        add: function (metainfo) {
+            remoteService.addTorrent(metainfo);
         }
     }
 });

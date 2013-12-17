@@ -63,7 +63,21 @@
         });
     };
 
+    var addTorrent = function (file) {
+        Windows.Storage.FileIO.readBufferAsync(file).done(function (buffer) {
+            var bytes = new Uint8Array(buffer.length);
+            var dataReader = Windows.Storage.Streams.DataReader.fromBuffer(buffer);
+            dataReader.readBytes(bytes);
+            dataReader.close();
+
+            torrentService.add(bytes);
+        });
+    };
+
     $scope.$on('torrents:updated', processTorrentData);
+    $scope.$on('torrents:add', function (event, files) {
+        files.forEach(addTorrent);
+    });
 
     $rootScope.$on('$locationChangeSuccess', function (event) {
         filter = $location.url().match(/\/(\w+)$/)[1];
