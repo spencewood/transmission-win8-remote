@@ -81,6 +81,7 @@
     <Content Include="js\lib\angular.js" />
     <Content Include="js\lib\jquery-2.0.3.js" />
     <Content Include="js\lib\lodash.min.js" />
+    <Content Include="js\services\db-service.js" />
     <Content Include="js\services\dialog-service.js" />
     <Content Include="js\services\local-settings-service.js" />
     <Content Include="js\services\remote-service.js" />

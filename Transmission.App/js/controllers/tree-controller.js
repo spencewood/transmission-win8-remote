@@ -1,7 +1,9 @@
-﻿mainApp.controller('TreeController', function ($scope,  $location, statusService) {
-    $scope.$on('torrents:updated', function (e, torrents) {
-        $scope.torrents = torrents;
-        $scope.$apply();
+﻿mainApp.controller('TreeController', function ($scope, $location, torrentService, statusService) {
+    $scope.$on('torrents:updated', function () {
+        torrentService.getTorrents().then(function (torrents) {
+            $scope.torrents = torrents;
+            $scope.$apply();
+        });
     });
 
     $scope.$on('spinner:stop', function () {

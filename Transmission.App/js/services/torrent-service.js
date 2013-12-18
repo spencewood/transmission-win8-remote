@@ -1,10 +1,9 @@
-﻿mainApp.factory('torrentService', function ($rootScope, remoteService) {
+﻿mainApp.factory('torrentService', function ($rootScope, remoteService, dbService) {
     return {
-        torrents: [],
         timeoutToken: null,
 
         getTorrents: function () {
-            return this.torrents;
+            return dbService.getAll();
         },
 
         pollForTorrents: function () {
@@ -19,9 +18,12 @@
 
         updateTorrents: function () {
             return remoteService.getTorrents().then(function (val) {
-                var torrents = this.torrents = JSON.parse(val).arguments.torrents;
-                $rootScope.$broadcast('torrents:updated', torrents);
-            }.bind(this));
+                dbService.clear().then(function () {
+                    return dbService.add(JSON.parse(val).arguments.torrents);
+                }).then(function () {
+                    $rootScope.$broadcast('torrents:updated');
+                });
+            });
         },
 
         findById: function (id) {
