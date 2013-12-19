@@ -63,6 +63,8 @@
     <Content Include="images\transmission.png" />
     <Content Include="js\app.js" />
     <Content Include="js\app\options.js" />
+    <Content Include="js\app\winjs-local-settings.js" />
+    <Content Include="js\controllers\login-controller.js" />
     <Content Include="js\controllers\session-bar-controller.js" />
     <Content Include="js\controllers\torrent-bar-controller.js" />
     <Content Include="js\controllers\main-controller.js" />
@@ -76,19 +78,23 @@
     <Content Include="js\directives\item-count-directive.js" />
     <Content Include="js\directives\winjs-listview-selection-directive.js" />
     <Content Include="js\filters\bytes-filter.js" />
-    <Content Include="js\lib\angular-route.js" />
     <Content Include="js\lib\angular-winjs.js" />
     <Content Include="js\lib\angular.js" />
     <Content Include="js\lib\jquery-2.0.3.js" />
     <Content Include="js\lib\lodash.min.js" />
+    <Content Include="js\lib\navigator.js" />
+    <Content Include="js\login.js" />
     <Content Include="js\services\db-service.js" />
     <Content Include="js\services\dialog-service.js" />
     <Content Include="js\services\local-settings-service.js" />
     <Content Include="js\services\remote-service.js" />
     <Content Include="js\services\status-service.js" />
     <Content Include="js\services\torrent-service.js" />
+    <Content Include="js\torrents.js" />
     <Content Include="js\util\lodash-mixins.js" />
+    <Content Include="views\login.html" />
     <Content Include="views\settings\server-settings.html" />
+    <Content Include="views\torrents.html" />
     <None Include="Transmission_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
