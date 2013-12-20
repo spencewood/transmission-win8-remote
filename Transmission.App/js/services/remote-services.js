@@ -1,106 +1,12 @@
-﻿angular.module('RemoteServices', ['WinServices'])
-    .provider('dbService', function () {
-
-        const DB_NAME = 'transmission2';
-        const DB_VERSION = 1;
-        const DB_STORE_NAME = 'torrents';
-
-        var openDb = function () {
-            return new WinJS.Promise(function (complete, error) {
-                var req = indexedDB.open(DB_NAME, DB_VERSION);
-                req.onsuccess = function (res) {
-                    return complete(res.target.result);
-                };
-                req.onerror = error;
-
-                req.onupgradeneeded = function (evt) {
-                    console.log("openDb.onupgradeneeded");
-                    var store = evt.currentTarget.result.createObjectStore(
-                      DB_STORE_NAME, { keyPath: 'id' });
-
-                    store.createIndex('name', 'name', { unique: true });
-                };
+﻿angular.module('RemoteServices', ['WinServices', 'xc.indexedDB'])
+    .constant('objectStore', 'torrents')
+    .config(function ($indexedDBProvider) {
+        $indexedDBProvider
+            .connection('transmissionDB1')
+            .upgradeDatabase(1, function (event, db, tx) {
+                var objStore = db.createObjectStore('torrents', { keyPath: 'id' });
+                objStore.createIndex('name', 'name', { unique: true });
             });
-        }
-
-        this.$get = function () {
-            return {
-                clear: function () {
-                    return new WinJS.Promise(function (complete, error) {
-                        return openDb().then(function (db) {
-                            var transaction = db.transaction(['torrents'], 'readwrite');
-                            var store = transaction.objectStore('torrents');
-                            var request = store.clear();
-
-                            request.onsuccess = complete;
-                            request.onerror = error;
-                        });
-                    });
-                },
-                add: function (items) {
-                    return new WinJS.Promise(function (complete, error) {
-                        return openDb().then(function (db) {
-                            var transaction = db.transaction(['torrents'], 'readwrite');
-                            var store = transaction.objectStore('torrents');
-
-                            putNext();
-
-                            function putNext(i) {
-                                i = i || 0;
-                                if (i < items.length) {
-                                    store.put(items[i]).onsuccess = putNext(++i);
-                                }
-                                else {
-                                    complete();
-                                }
-                            }
-
-                            transaction.onerror = error;
-                        });
-                    });
-                },
-                merge: function (items) {
-
-                },
-                get: function (key) {
-                    return new WinJS.Promise(function (complete, error) {
-                        return openDb().then(function (db) {
-                            var transaction = db.transaction(['torrents'], 'readonly');
-                            var store = transaction.objectStore('torrents');
-                            var request = store.get(key);
-
-                            request.onsuccess = function (res) {
-                                return complete(res.target.result);
-                            };
-                            request.onerror = error;
-                        });
-                    });
-                },
-                getAll: function (fields) {
-                    return new WinJS.Promise(function (complete, error) {
-                        return openDb().then(function (db) {
-                            var transaction = db.transaction(['torrents'], 'readonly');
-                            var store = transaction.objectStore('torrents');
-
-                            var torrents = [];
-
-                            store.openCursor().onsuccess = function (event) {
-                                var cursor = event.target.result;
-                                if (cursor) {
-                                    torrents.push(cursor.value);
-                                    cursor.continue();
-                                }
-                                else {
-                                    complete(torrents);
-                                }
-                            };
-
-                            transaction.onerror = error;
-                        });
-                    });
-                }
-            }
-        };
     })
     .factory('remoteService', function ($rootScope, localSettingsService) {
         var remote = null;
@@ -188,83 +94,101 @@
             }
         };
     })
-    .factory('torrentService', function ($rootScope, remoteService, dbService) {
-        return {
-            timeoutToken: null,
+    .provider('torrentService', function () {
+        this.$get = function ($rootScope, $indexedDB, objectStore, remoteService) {
+            var store = $indexedDB.objectStore(objectStore);
 
-            getTorrents: function () {
-                return dbService.getAll();
-            },
+            return {
+                timeoutToken: null,
 
-            pollForTorrents: function () {
-                if (this.timeoutToken != null) {
-                    clearTimeout(this.timeoutToken);
-                    this.timeoutToken = null;
-                }
-                return this.updateTorrents().then(function (val) {
-                    this.timeoutToken = setTimeout(this.pollForTorrents.bind(this), 10 * 1000);
-                }.bind(this));
-            },
+                getTorrents: function () {
+                    return store.getAll();
+                },
 
-            updateTorrents: function () {
-                return remoteService.getTorrents().then(function (val) {
-                    dbService.clear().then(function () {
-                        return dbService.add(JSON.parse(val).arguments.torrents);
-                    }).then(function () {
-                        $rootScope.$broadcast('torrents:updated');
+                pollForTorrents: function () {
+                    if (this.timeoutToken != null) {
+                        clearTimeout(this.timeoutToken);
+                        this.timeoutToken = null;
+                    }
+                    return this.updateTorrents().then(function (val) {
+                        this.timeoutToken = setTimeout(this.pollForTorrents.bind(this), 10 * 1000);
+                    }.bind(this));
+                },
+
+                updateTorrents: function () {
+                    return remoteService.getTorrents().then(function (val) {
+                        store
+                            .clear()
+                            .then(function () {
+                                return store.insert(JSON.parse(val).arguments.torrents);
+                            })
+                            .then(function () {
+                                $rootScope.$broadcast('torrents:updated');
+                            });
                     });
-                });
-            },
+                },
 
-            findById: function (id) {
-                return _.findWhere(this.torrents, { id: id });
-            },
+                findById: function (id) {
+                    return _.findWhere(this.torrents, { id: id });
+                },
 
-            getNameById: function (id) {
-                var torrent = this.findById(id);
-                if (torrent !== null) {
-                    return torrent.name;
+                getNameById: function (id) {
+                    var torrent = this.findById(id);
+                    if (torrent !== null) {
+                        return torrent.name;
+                    }
+                },
+
+                start: function (ids) {
+                    return remoteService.startTorrents(ids).then(this.pollForTorrents.bind(this));
+                },
+
+                stop: function (ids) {
+                    return remoteService.stopTorrents(ids).then(this.pollForTorrents.bind(this));
+                },
+
+                verify: function (ids) {
+                    return remoteService.verifyTorrents(ids).then(this.pollForTorrents.bind(this));
+                },
+
+                reannounce: function (ids) {
+                    return remoteService.reannounceTorrents(ids).then(this.pollForTorrents.bind(this));
+                },
+
+                remove: function (ids, removeData) {
+                    return remoteService.removeTorrents(ids, removeData).then(this.pollForTorrents.bind(this));
+                },
+
+                moveToTop: function (ids) {
+                    return remoteService.moveTorrentsToTop(ids).then(this.pollForTorrents.bind(this));
+                },
+
+                moveToBottom: function (ids) {
+                    return remoteService.moveTorrentsToBottom(ids).then(this.pollForTorrents.bind(this));
+                },
+
+                moveUp: function (ids) {
+                    return remoteService.moveTorrentsUp(ids).then(this.pollForTorrents.bind(this));
+                },
+
+                moveDown: function (ids) {
+                    return remoteService.moveTorrentsDown(ids).then(this.pollForTorrents.bind(this));
+                },
+
+                addTorrent: function (torrent) {
+                    return Windows.Storage.FileIO.readBufferAsync(torrent).done(function (buffer) {
+                        var bytes = new Uint8Array(buffer.length);
+                        var dataReader = Windows.Storage.Streams.DataReader.fromBuffer(buffer);
+                        dataReader.readBytes(bytes);
+                        dataReader.close();
+
+                        return remoteService.addTorrent(bytes);
+                    }.bind(this));
+                },
+
+                addTorrents: function (torrents) {
+                    torrents.forEach(this.addTorrent.bind(this));
                 }
-            },
-
-            start: function (ids) {
-                return remoteService.startTorrents(ids).then(this.pollForTorrents.bind(this));
-            },
-
-            stop: function (ids) {
-                return remoteService.stopTorrents(ids).then(this.pollForTorrents.bind(this));
-            },
-
-            verify: function (ids) {
-                return remoteService.verifyTorrents(ids).then(this.pollForTorrents.bind(this));
-            },
-
-            reannounce: function (ids) {
-                return remoteService.reannounceTorrents(ids).then(this.pollForTorrents.bind(this));
-            },
-
-            remove: function (ids, removeData) {
-                return remoteService.removeTorrents(ids, removeData).then(this.pollForTorrents.bind(this));
-            },
-
-            moveToTop: function (ids) {
-                return remoteService.moveTorrentsToTop(ids).then(this.pollForTorrents.bind(this));
-            },
-
-            moveToBottom: function (ids) {
-                return remoteService.moveTorrentsToBottom(ids).then(this.pollForTorrents.bind(this));
-            },
-
-            moveUp: function (ids) {
-                return remoteService.moveTorrentsUp(ids).then(this.pollForTorrents.bind(this));
-            },
-
-            moveDown: function (ids) {
-                return remoteService.moveTorrentsDown(ids).then(this.pollForTorrents.bind(this));
-            },
-
-            add: function (metainfo) {
-                return remoteService.addTorrent(metainfo).then(this.pollForTorrents.bind(this));
-            }
-        }
+            };
+        };
     });

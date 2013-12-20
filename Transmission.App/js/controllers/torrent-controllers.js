@@ -14,7 +14,6 @@
         $scope.$on('torrents:updated', function () {
             torrentService.getTorrents().then(function (torrents) {
                 $scope.torrents = torrents;
-                $scope.$apply();
             });
         });
 
@@ -53,25 +52,17 @@
             TorrentList.torrents.splice(0, TorrentList.torrents.length);
         };
 
-        var processTorrentData = $scope.processTorrentData = function () {
-            torrentService.getTorrents().then(function (newTorrents) {
-                var filtered = newTorrents
-                    .filter(function (torrent) {
-                        switch (filter) {
-                            case 'downloading':
-                                return statusService.downloading(torrent);
-                            case 'active':
-                                return statusService.active(torrent);
-                            case 'inactive':
-                                return statusService.inactive(torrent);
-                            case 'stopped':
-                                return statusService.stopped(torrent);
-                            case 'error':
-                                return statusService.error(torrent);
-                            default:
-                                return true;
-                        }
-                    });
+    var processTorrentData = $scope.processTorrentData = function () {
+        torrentService.getTorrents().then(function(newTorrents){
+            var filtered = newTorrents
+                .filter(function (torrent) {
+                    if (filter in statusService) {
+                        return statusService[filter](torrent);
+                    }
+                    else {
+                        return true;
+                    }
+                });
 
                 if ($scope.search.filter !== '') {
                     filtered = filtered.filter(function (torrent) {
@@ -79,50 +70,25 @@
                     });
                 }
 
-                filtered.forEach(function (newTorrent) {
-                    var same = TorrentList.torrents.filter(function (oldTorrent) {
-                        return oldTorrent.id === newTorrent.id;
-                    });
-                    if (same.length > 0) {
-                        _.extend(same[0], newTorrent);
-                    }
-                    else {
-                        TorrentList.torrents.push(WinJS.Binding.as(newTorrent));
-                    }
-                });
-
-                var toRemove = _.differenceObjectsById(TorrentList.torrents, filtered);
-
-                toRemove.forEach(function (rm) {
-                    TorrentList.torrents.forEach(function (torrent, idx) {
-                        if (torrent.id === rm.id) {
-                            TorrentList.torrents.splice(idx, 1);
-                        }
-                    });
-                });
-            });
-        };
-
-        var addTorrent = function (file) {
-            Windows.Storage.FileIO.readBufferAsync(file).done(function (buffer) {
-                var bytes = new Uint8Array(buffer.length);
-                var dataReader = Windows.Storage.Streams.DataReader.fromBuffer(buffer);
-                dataReader.readBytes(bytes);
-                dataReader.close();
-
-                torrentService.add(bytes);
-            });
-        };
-
-        $scope.$on('torrents:updated', processTorrentData);
-        $scope.$on('torrents:add', function (event, files) {
-            files.forEach(addTorrent);
+            _.addUpdateDelete(TorrentList.torrents, filtered, 'id', _.extend, function (item) {
+                return WinJS.Binding.as(item);
+            }, _.removeElement);
         });
+    };
 
-        $rootScope.$on('$locationChangeSuccess', function (event) {
-            filter = $location.url().match(/\/(\w+)$/)[1];
-            //torrentService.pollForTorrents();
-            clearList();
-            processTorrentData();
-        });
+    var eventDealer = function (fun) {
+        return function () {
+            //drop the first argument for event 
+            fun.apply(this, _.rest(arguments));
+        };
+    };
+
+    $scope.$on('torrents:updated', processTorrentData);
+    $scope.$on('torrents:add', eventDealer(torrentService.addTorrents.bind(torrentService)));
+
+    $rootScope.$on('$locationChangeSuccess', function (event) {
+        filter = $location.url().match(/\/(\w+)$/)[1];
+        clearList();
+        processTorrentData();
     });
+});

@@ -69,8 +69,8 @@
     <Content Include="css\default.css" />
     <Content Include="js\directives\directives.js" />
     <Content Include="js\filters\bytes-filter.js" />
-    <Content Include="js\lib\angular-winjs.js" />
     <Content Include="js\lib\angular.js" />
+    <Content Include="js\lib\angular-indexeddb.js" />
     <Content Include="js\lib\jquery-2.0.3.js" />
     <Content Include="js\lib\lodash.min.js" />
     <Content Include="js\lib\navigator.js" />
