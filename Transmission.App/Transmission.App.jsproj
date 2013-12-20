@@ -63,20 +63,21 @@
     <Content Include="images\transmission.png" />
     <Content Include="js\app.js" />
     <Content Include="js\app\options.js" />
-    <Content Include="js\app\winjs-local-settings.js" />
-    <Content Include="js\controllers\login-controller.js" />
-    <Content Include="js\controllers\session-bar-controller.js" />
-    <Content Include="js\controllers\torrent-bar-controller.js" />
-    <Content Include="js\controllers\main-controller.js" />
-    <Content Include="js\controllers\server-settings-controller.js" />
-    <Content Include="js\controllers\stats-controller.js" />
-    <Content Include="js\controllers\torrent-controller.js" />
-    <Content Include="js\controllers\tree-controller.js" />
+    <Content Include="js\controllers\appbar-controllers.js" />
+    <Content Include="js\controllers\bars\session-bar-controller.js" />
+    <Content Include="js\controllers\bars\torrent-bar-controller.js" />
+    <Content Include="js\controllers\login-controllers.js" />
+    <Content Include="js\controllers\torrent-controllers.js" />
+    <Content Include="js\controllers\main\stats-controller.js" />
+    <Content Include="js\controllers\main\torrent-controller.js" />
+    <Content Include="js\controllers\main\tree-controller.js" />
+    <Content Include="js\controllers\settings\server-settings-controller.js" />
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
-    <Content Include="js\directives\active-link-directive.js" />
-    <Content Include="js\directives\item-count-directive.js" />
-    <Content Include="js\directives\winjs-listview-selection-directive.js" />
+    <Content Include="js\directives\directives.js" />
+    <Content Include="js\directives\old\active-link-directive.js" />
+    <Content Include="js\directives\old\item-count-directive.js" />
+    <Content Include="js\directives\old\winjs-listview-selection-directive.js" />
     <Content Include="js\filters\bytes-filter.js" />
     <Content Include="js\lib\angular-winjs.js" />
     <Content Include="js\lib\angular.js" />
@@ -84,12 +85,16 @@
     <Content Include="js\lib\lodash.min.js" />
     <Content Include="js\lib\navigator.js" />
     <Content Include="js\login.js" />
-    <Content Include="js\services\db-service.js" />
-    <Content Include="js\services\dialog-service.js" />
-    <Content Include="js\services\local-settings-service.js" />
-    <Content Include="js\services\remote-service.js" />
-    <Content Include="js\services\status-service.js" />
-    <Content Include="js\services\torrent-service.js" />
+    <Content Include="js\services\old\db-service.js" />
+    <Content Include="js\services\old\dialog-service.js" />
+    <Content Include="js\services\old\local-settings-service.js" />
+    <Content Include="js\services\old\navigation-service.js" />
+    <Content Include="js\services\old\remote-service.js" />
+    <Content Include="js\services\old\status-service.js" />
+    <Content Include="js\services\old\torrent-service.js" />
+    <Content Include="js\services\remote-services.js" />
+    <Content Include="js\services\status-services.js" />
+    <Content Include="js\services\win-services.js" />
     <Content Include="js\torrents.js" />
     <Content Include="js\util\lodash-mixins.js" />
     <Content Include="views\login.html" />
@@ -102,6 +107,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Transmission.Runtime\Transmission.Runtime.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="js\controllers\login\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\$(WMSJSProjectDirectory)\Microsoft.VisualStudio.$(WMSJSProject).targets" />
   <!-- To modify your build process, add your task inside one of the targets below then uncomment

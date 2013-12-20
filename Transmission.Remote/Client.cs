@@ -76,7 +76,10 @@ namespace Transmission.Remote
                 _sessionId = id.Value;
                 return await SendRequest(method, data);
             }
-
+            else if (response.StatusCode != HttpStatusCode.Ok)
+            {
+                throw new Exception(response.ReasonPhrase);
+            }
             return await response.Content.ReadAsStringAsync();
         }
 

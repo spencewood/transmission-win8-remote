@@ -1,159 +1,152 @@
-﻿<script src="/js/app/winjs-local-settings.js"></script>
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Transmission</title>
 
-<!-- Angular -->
-<script src="/js/app.js"></script>
-<script src="/js/services/local-settings-service.js"></script>
-<script src="/js/services/remote-service.js"></script>
-<script src="/js/services/torrent-service.js"></script>
-<script src="/js/services/status-service.js"></script>
-<script src="/js/services/dialog-service.js"></script>
-<script src="/js/services/db-service.js"></script>
-<script src="/js/directives/active-link-directive.js"></script>
-<script src="/js/directives/winjs-listview-selection-directive.js"></script>
-<script src="/js/controllers/main-controller.js"></script>
-<script src="/js/controllers/tree-controller.js"></script>
-<script src="/js/controllers/torrent-controller.js"></script>
-<script src="/js/controllers/stats-controller.js"></script>
-<script src="/js/controllers/torrent-bar-controller.js"></script>
-<script src="/js/controllers/session-bar-controller.js"></script>
-<script src="/js/filters/bytes-filter.js"></script>
-
-
-<!-- Left Sidebar -->
-<div class="left-sidebar" ng-controller="TreeController">
-    <header>
-        <progress class="win-ring pull-right" ng-show="showSpinner"></progress>
-        <h2>Server name</h2>
-    </header>
-    <section>
-        <ul class="selection-list">
-            <li>
-                <a href="#/status/all" active-link><em class="pull-right">{{torrents.length}}</em> All torrents</a>
-            </li>
-            <li>
-                <a href="#/status/downloading" active-link><em class="pull-right">{{(torrents|filter:downloading).length}}</em> Downloading</a>
-            </li>
-            <li>
-                <a href="#/status/active" active-link><em class="pull-right">{{(torrents|filter:active).length}}</em> Active</a>
-            </li>
-            <li>
-                <a href="#/status/inactive" active-link><em class="pull-right">{{(torrents|filter:inactive).length}}</em> Inactive</a>
-            </li>
-            <li>
-                <a href="#/status/stopped" active-link><em class="pull-right">{{(torrents|filter:stopped).length}}</em> Stopped</a>
-            </li>
-            <li>
-                <a href="#/status/error" active-link><em class="pull-right">{{(torrents|filter:error).length}}</em> Error</a>
-            </li>
-        </ul>
-    </section>
-    <section>
-        <h4>Folders</h4>
-        <ul class="selection-list">
-            <li><a href="#/completed" active-link>completed</a></li>
-        </ul>
-    </section>
-    <section>
-        <h4>Trackers</h4>
-        <ul class="selection-list">
-            <li><a href="#/tracker1" active-link>Tracker 1</a></li>
-            <li><a href="#/tracker2" active-link>Tracker 2</a></li>
-        </ul>
-    </section>
-</div>
-<!-- /Left Sidebar -->
-<!-- Main Content -->
-<div class="main-content" ng-controller="TorrentController">
-    <header class="filters" ng-controller="StatsController">
-        <input ng-change="processTorrentData()" ng-model="search.filter" placeholder="Filter results" class="pull-right">
-    </header>
-    <div class="torrent-content">
-        <div id="torrent-template" data-win-control="WinJS.Binding.Template">
-            <div class="row">
-                <div class="pull-right">
-                    <progress data-win-bind="value:percentDone"></progress>
+    <!-- Page -->
+    <script src="/js/torrents.js"></script>
+</head>
+<body>
+    <div ng-controller="MainController">
+        <!-- Left Sidebar -->
+        <div class="left-sidebar" ng-controller="TreeController">
+            <header>
+                <progress class="win-ring pull-right" ng-show="showSpinner"></progress>
+                <h2>Server name</h2>
+            </header>
+            <section>
+                <ul class="selection-list">
+                    <li>
+                        <a href="#/status/all" active-link><em class="pull-right">{{torrents.length}}</em> All torrents</a>
+                    </li>
+                    <li>
+                        <a href="#/status/downloading" active-link><em class="pull-right">{{(torrents|filter:downloading).length}}</em> Downloading</a>
+                    </li>
+                    <li>
+                        <a href="#/status/active" active-link><em class="pull-right">{{(torrents|filter:active).length}}</em> Active</a>
+                    </li>
+                    <li>
+                        <a href="#/status/inactive" active-link><em class="pull-right">{{(torrents|filter:inactive).length}}</em> Inactive</a>
+                    </li>
+                    <li>
+                        <a href="#/status/stopped" active-link><em class="pull-right">{{(torrents|filter:stopped).length}}</em> Stopped</a>
+                    </li>
+                    <li>
+                        <a href="#/status/error" active-link><em class="pull-right">{{(torrents|filter:error).length}}</em> Error</a>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h4>Folders</h4>
+                <ul class="selection-list">
+                    <li><a href="#/completed" active-link>completed</a></li>
+                </ul>
+            </section>
+            <section>
+                <h4>Trackers</h4>
+                <ul class="selection-list">
+                    <li><a href="#/tracker1" active-link>Tracker 1</a></li>
+                    <li><a href="#/tracker2" active-link>Tracker 2</a></li>
+                </ul>
+            </section>
+        </div>
+        <!-- /Left Sidebar -->
+        <!-- Torrent Controller -->
+        <div class="main-content" ng-controller="TorrentController">
+            <header class="filters" ng-controller="StatsController">
+                <input ng-change="processTorrentData()" ng-model="search.filter" placeholder="Filter results" class="pull-right">
+            </header>
+            <div class="torrent-content">
+                <div id="torrent-template" data-win-control="WinJS.Binding.Template">
+                    <div class="row">
+                        <div class="pull-right">
+                            <progress data-win-bind="value:percentDone"></progress>
+                        </div>
+                        <div data-win-bind="innerText:name"></div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            UL: <span data-win-bind="innerText:rateUpload"></span> bytes/sec
+                        </div>
+                        <div data-win-bind="innerText:status"></div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            DL: <span data-win-bind="innerText:rateDownload"></span> bytes/sec
+                        </div>
+                        <div>
+                            seeds:
+                            <span data-win-bind="innerText:peersSendingToUs"></span>
+                            peers:
+                            <span data-win-bind="innerText:peersGettingFromUs"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            Ratio : <span data-win-bind="innerText:uploadRatio"></span>
+                        </div>
+                        <div>
+                            Size: <span data-win-bind="innerText:sizeWhenDone"></span>
+                        </div>
+                    </div>
                 </div>
-                <div data-win-bind="innerText:name"></div>
-            </div>
-            <div class="row">
-                <div class="pull-right">
-                    UL: <span data-win-bind="innerText:rateUpload"></span> bytes/sec
-                </div>
-                <div data-win-bind="innerText:status"></div>
-            </div>
-            <div class="row">
-                <div class="pull-right">
-                    DL: <span data-win-bind="innerText:rateDownload"></span> bytes/sec
-                </div>
-                <div>
-                    seeds:
-                    <span data-win-bind="innerText:peersSendingToUs"></span>
-                    peers:
-                    <span data-win-bind="innerText:peersGettingFromUs"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="pull-right">
-                    Ratio : <span data-win-bind="innerText:uploadRatio"></span>
-                </div>
-                <div>
-                    Size: <span data-win-bind="innerText:sizeWhenDone"></span>
-                </div>
+                <!--<div id="basicListView" data-win-control="WinJS.UI.ListView"
+                     data-win-options="{itemDataSource : TorrentList.torrents.dataSource,
+                                        itemTemplate: select('#torrent-template'),
+                                        layout: {type: WinJS.UI.ListLayout}}" selection-changed>
+                </div>-->
             </div>
         </div>
-        <div id="basicListView" data-win-control="WinJS.UI.ListView"
-             data-win-options="{itemDataSource : TorrentList.torrents.dataSource,
-                                    itemTemplate: select('#torrent-template'),
-                                    layout: {type: WinJS.UI.ListLayout}}" selection-changed>
-        </div>
+        <!-- /Torrent Controller -->
     </div>
-</div>
-<!-- /Main Content -->
+    <!-- /Main Controller -->
+    <!-- Session App Bar -->
+    <div id="session-bar" data-win-control="WinJS.UI.AppBar" data-win-options="{placement: 'top'}" ng-controller="SessionBarController">
 
-<!-- Session App Bar -->
-<div id="session-bar" data-win-control="WinJS.UI.AppBar" data-win-options="{placement: 'top'}" ng-controller="SessionBarController">
-
-</div>
-<!-- /Session App Bar -->
-<!-- Torrent App Bar -->
-<div id="torrent-bar" data-win-control="WinJS.UI.AppBar" data-win-options="{placement: 'bottom', disabled: 'true'}" ng-controller="TorrentBarController">
-    <button data-win-control="WinJS.UI.AppBarCommand"
-            data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',
+    </div>
+    <!-- /Session App Bar -->
+    <!-- Torrent App Bar -->
+    <div id="torrent-bar" data-win-control="WinJS.UI.AppBar" data-win-options="{placement: 'bottom', disabled: 'true'}" ng-controller="TorrentBarController">
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',
                 section:'selection',tooltip:'Remove torrent'}" ng-click="remove()"></button>
-    <button data-win-control="WinJS.UI.AppBarCommand"
-            data-win-options="{id:'cmdRemoveWithData',label:'Remove With Data',icon:'delete',
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdRemoveWithData',label:'Remove With Data',icon:'delete',
                 section:'selection',tooltip:'Remove torrent and data'}" ng-click="remove(true)"></button>
 
-    <hr data-win-control="WinJS.UI.AppBarCommand"
-        data-win-options="{type:'separator',section:'global'}" />
+        <hr data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{type:'separator',section:'global'}" />
 
-    <button data-win-control="WinJS.UI.AppBarCommand"
-            data-win-options="{id: 'cmdMoveUp',label:'Move Up',icon:'up',
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id: 'cmdMoveUp',label:'Move Up',icon:'up',
                 section:'global',tooltip:'Move up'}" ng-click="moveUp()"></button>
-    <button data-win-control="WinJS.UI.AppBarCommand"
-            data-win-options="{id: 'cmdMoveDown',label:'Move Down',icon:'up',
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id: 'cmdMoveDown',label:'Move Down',icon:'up',
                 section:'global',tooltip:'Move down'}" ng-click="moveDown()" class="rotate180"></button>
-    <button data-win-control="WinJS.UI.AppBarCommand"
-            data-win-options="{id: 'cmdMoveTop',label:'Move Top',icon:'upload',
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id: 'cmdMoveTop',label:'Move Top',icon:'upload',
                 section:'global',tooltip:'Move top'}" ng-click="moveTop()"></button>
-    <button data-win-control="WinJS.UI.AppBarCommand"
-            data-win-options="{id: 'cmdMoveBottom',label:'Move Bottom',icon:'download',
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id: 'cmdMoveBottom',label:'Move Bottom',icon:'download',
                 section:'global',tooltip:'Move bottom'}" ng-click="moveBottom()"></button>
 
-    <hr data-win-control="WinJS.UI.AppBarCommand"
-        data-win-options="{type:'separator',section:'global'}" />
+        <hr data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{type:'separator',section:'global'}" />
 
-    <button data-win-control="WinJS.UI.AppBarCommand"
-            data-win-options="{id: 'cmdReannounce',label:'Reannounce',icon:'people',
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id: 'cmdReannounce',label:'Reannounce',icon:'people',
                 section:'global',tooltip:'Reannounce torrent'}" ng-click="reannounce()"></button>
-    <button data-win-control="WinJS.UI.AppBarCommand"
-            data-win-options="{id:'cmdVerify',label:'Verify',icon:'zoom',
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdVerify',label:'Verify',icon:'zoom',
                 section:'global',tooltip:'Verify torrent'}" ng-click="verify()"></button>
-    <button data-win-control="WinJS.UI.AppBarCommand"
-            data-win-options="{id:'cmdStop',label:'Stop',icon:'stop',
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdStop',label:'Stop',icon:'stop',
                 section:'global',tooltip:'Stop torrent'}" ng-click="stop()"></button>
-    <button data-win-control="WinJS.UI.AppBarCommand"
-            data-win-options="{id:'cmdStart',label:'Start',icon:'play',
+        <button data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{id:'cmdStart',label:'Start',icon:'play',
                 section:'global',tooltip:'Start torrent'}" ng-click="start()"></button>
-</div>
-<!-- /Torrent Bar -->
+    </div>
+    <!-- /Torrent Bar -->
+</body>
+</html>

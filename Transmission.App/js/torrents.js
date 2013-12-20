@@ -6,6 +6,9 @@
         // populates the page elements with the app's data.
         ready: function (element, options) {
             // TODO: Initialize the page here.
+            angular.module('mainApp', ['Torrent', 'AppBar']);
+
+            angular.bootstrap(element, ['mainApp']);
         },
 
         unload: function () {

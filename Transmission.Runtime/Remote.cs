@@ -5,6 +5,7 @@ using Transmission.Remote;
 using Windows.Foundation;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Net.Http;
 
 namespace Transmission.Runtime
 {

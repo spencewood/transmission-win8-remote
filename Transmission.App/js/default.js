@@ -8,6 +8,10 @@
     var nav = WinJS.Navigation;
 
     app.onactivated = function (args) {
+        //clear data
+        //Windows.Storage.ApplicationData.current.clearAsync();
+
+
         //var rootScope = angular.element(document).scope();
         //if (args.detail.kind === Windows.ApplicationModel.Activation.ActivationKind.file) {
         //    rootScope.$broadcast('torrents:add', args.detail.files);

@@ -9,12 +9,28 @@
     <script src="//Microsoft.WinJS.2.0/js/base.js"></script>
     <script src="//Microsoft.WinJS.2.0/js/ui.js"></script>
     <script src="/js/lib/navigator.js"></script>
+    <script src="/js/lib/jquery-2.0.3.js"></script>
+    <script type="text/javascript">
+        jQuery.isUnsafe = true;
+    </script>
+    <script src="/js/lib/angular.js"></script>
+    <script src="/js/lib/lodash.min.js"></script>
+    <script src="/js/util/lodash-mixins.js"></script>
 
     <!-- Transmission references -->
     <link href="/css/default.css" rel="stylesheet" />
     
     <!-- Winjs -->
     <script src="/js/default.js"></script>
+
+    <!-- Angular -->
+    <script src="/js/services/remote-services.js"></script>
+    <script src="/js/services/status-services.js"></script>
+    <script src="/js/services/win-services.js"></script>
+    <script src="/js/controllers/appbar-controllers.js"></script>
+    <script src="/js/controllers/login-controllers.js"></script>
+    <script src="/js/controllers/torrent-controllers.js"></script>
+    <script src="/js/directives/directives.js"></script>
 </head>
 <body>
     <div id="contenthost"

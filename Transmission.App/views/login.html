@@ -4,26 +4,8 @@
     <meta charset="utf-8" />
     <title>Transmission Login</title>
 
-    <!-- WinJS references -->
-    <link href="//Microsoft.WinJS.2.0/css/ui-light.css" rel="stylesheet" />
-    <script src="//Microsoft.WinJS.2.0/js/base.js"></script>
-    <script src="//Microsoft.WinJS.2.0/js/ui.js"></script>
-    <script src="/js/lib/jquery-2.0.3.js"></script>
-    <script type="text/javascript">
-        jQuery.isUnsafe = true;
-    </script>
-    <script src="/js/lib/angular.js"></script>
-    <script src="/js/lib/lodash.min.js"></script>
-    <script src="/js/util/lodash-mixins.js"></script>
-
-    <!-- WinJS -->
+    <!-- Page -->
     <script src="/js/login.js"></script>
-    <script src="/js/app/winjs-local-settings.js"></script>
-
-    <!-- AngularJS -->
-    <script src="/js/app.js"></script>
-    <script src="/js/services/local-settings-service.js"></script>
-    <script src="/js/controllers/login-controller.js"></script>
 </head>
 <body>
     <div class="fragment">
@@ -45,6 +27,8 @@
                     <input ng-model="password" type="password" required />
                 </div>
                 <input type="submit" id="submit" value="Submit" />
+
+                <div ng-show="errorMessage.length > 0">{{errorMessage}}</div>
             </form>
         </section>
     </div>

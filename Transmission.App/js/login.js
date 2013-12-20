@@ -1,7 +1,4 @@
-﻿
-// For an introduction to the Page Control template, see the following documentation:
-// http://go.microsoft.com/fwlink/?LinkId=232511
-(function () {
+﻿(function () {
     "use strict";
 
     WinJS.UI.Pages.define("/views/login.html", {
@@ -9,7 +6,9 @@
         // populates the page elements with the app's data.
         ready: function (element, options) {
             // TODO: Initialize the page here.
-            angular.bootstrap(document, ['mainApp']);
+            angular.module('loginApp', ['Login']);
+
+            angular.bootstrap(element, ['loginApp']);
         },
 
         unload: function () {
