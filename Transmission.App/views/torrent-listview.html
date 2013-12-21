@@ -1,0 +1,35 @@
+﻿<div data-win-control="WinJS.UI.ListView" data-win-options="{layout: {type: WinJS.UI.ListLayout}}"></div>
+
+<div id="torrent-template" data-win-control="WinJS.Binding.Template">
+    <div class="row">
+        <div class="pull-right">
+            <progress data-win-bind="value:percentDone"></progress>
+        </div>
+        <div data-win-bind="innerText:name"></div>
+    </div>
+    <div class="row">
+        <div class="pull-right">
+            UL: <span data-win-bind="innerText:rateUpload Bytes.rate"></span>
+        </div>
+        <div data-win-bind="innerText:status"></div>
+    </div>
+    <div class="row">
+        <div class="pull-right">
+            DL: <span data-win-bind="innerText:rateDownload Bytes.rate"></span>
+        </div>
+        <div>
+            seeds:
+            <span data-win-bind="innerText:peersSendingToUs"></span>
+            peers:
+            <span data-win-bind="innerText:peersGettingFromUs"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="pull-right">
+            Ratio : <span data-win-bind="innerText:uploadRatio"></span>
+        </div>
+        <div>
+            Size: <span data-win-bind="innerText:sizeWhenDone Bytes.convert"></span>
+        </div>
+    </div>
+</div>

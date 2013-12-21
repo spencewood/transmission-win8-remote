@@ -5,7 +5,7 @@
     <title>Transmission</title>
 
     <!-- Page -->
-    <script src="/js/torrents.js"></script>
+    <script src="/js/torrents-page.js"></script>
 </head>
 <body>
     <div ng-controller="MainController">
@@ -58,42 +58,7 @@
                 <input ng-change="processTorrentData()" ng-model="search.filter" placeholder="Filter results" class="pull-right">
             </header>
             <div class="torrent-content">
-                <div id="torrent-template" data-win-control="WinJS.Binding.Template">
-                    <div class="row">
-                        <div class="pull-right">
-                            <progress data-win-bind="value:percentDone"></progress>
-                        </div>
-                        <div data-win-bind="innerText:name"></div>
-                    </div>
-                    <div class="row">
-                        <div class="pull-right">
-                            UL: <span data-win-bind="innerText:rateUpload"></span> bytes/sec
-                        </div>
-                        <div data-win-bind="innerText:status"></div>
-                    </div>
-                    <div class="row">
-                        <div class="pull-right">
-                            DL: <span data-win-bind="innerText:rateDownload"></span> bytes/sec
-                        </div>
-                        <div>
-                            seeds:
-                            <span data-win-bind="innerText:peersSendingToUs"></span>
-                            peers:
-                            <span data-win-bind="innerText:peersGettingFromUs"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="pull-right">
-                            Ratio : <span data-win-bind="innerText:uploadRatio"></span>
-                        </div>
-                        <div>
-                            Size: <span data-win-bind="innerText:sizeWhenDone"></span>
-                        </div>
-                    </div>
-                </div>
-                <div id="torrent-listview" data-win-control="WinJS.UI.ListView"
-                     data-win-options="{layout: {type: WinJS.UI.ListLayout}}">
-                </div>
+                <winjs-list-view></winjs-list-view>
             </div>
         </div>
         <!-- /Torrent Controller -->

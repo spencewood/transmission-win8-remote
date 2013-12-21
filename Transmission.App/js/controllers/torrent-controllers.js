@@ -38,11 +38,7 @@
 
     })
     .controller('TorrentController', function ($scope, $rootScope, $location, torrentService, statusService) {
-        WinJS.Namespace.define('TorrentList', { torrents: new WinJS.Binding.List() });
-
-        var torrentList = $('#torrent-listview').get(0);
-        torrentList.winControl.itemDataSource = TorrentList.torrents.dataSource;
-        torrentList.winControl.itemTemplate = $('#torrent-template').get(0);
+        $scope.torrents = new WinJS.Binding.List();
 
         $scope.selection = [];
         $scope.$watch('selection', function (selection) {
@@ -51,10 +47,6 @@
 
         $scope.search = { filter: '' };
         var filter = 'all';
-
-        var clearList = function () {
-            TorrentList.torrents.splice(0, TorrentList.torrents.length);
-        };
 
         var processTorrentData = $scope.processTorrentData = function () {
             torrentService.getTorrents().then(function (newTorrents) {
@@ -74,9 +66,13 @@
                     });
                 }
 
-                _.addUpdateDelete(TorrentList.torrents, filtered, 'id', _.extend, function (item) {
-                    return WinJS.Binding.as(item);
-                }, _.removeElement);
+                var addTorrent = function (torrent) {
+                    return WinJS.Binding.as(torrent);
+                };
+
+                WinJS.Utilities.markSupportedForProcessing(addTorrent);
+
+                _.updateAddDelete($scope.torrents, filtered, 'id', _.extend, addTorrent, _.removeElement);
             });
         };
 
@@ -92,7 +88,7 @@
 
         $rootScope.$on('$locationChangeSuccess', function (event) {
             filter = $location.url().match(/\/(\w+)$/)[1];
-            clearList();
+            _.clearArray($scope.torrents);
             processTorrentData();
         });
     });
