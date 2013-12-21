@@ -26,7 +26,7 @@
             template: '<span>({{(torrents|filter:filterBy).length}})</span>'
         };
     })
-    .directive('selectionChanged', function () {
+    .directive('winjsSelectionChanged', function () {
         return {
             restrict: 'A',
             scope: {

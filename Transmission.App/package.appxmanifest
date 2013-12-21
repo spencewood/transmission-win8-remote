@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="201b3393-be7e-4ef6-9c22-93922c063a75" Version="1.0.0.0" Publisher="CN=tyler" />
+  <Identity Name="Transmission.Connect1" Version="1.0.0.0" Publisher="CN=tyler" />
   <Properties>
     <DisplayName>Transmission</DisplayName>
     <PublisherDisplayName>tyler</PublisherDisplayName>

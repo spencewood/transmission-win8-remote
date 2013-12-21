@@ -3,9 +3,9 @@
     .config(function ($indexedDBProvider) {
         $indexedDBProvider
             .connection('transmissionDB1')
-            .upgradeDatabase(1, function (event, db, tx) {
+            .upgradeDatabase(2, function (event, db, tx) {
                 var objStore = db.createObjectStore('torrents', { keyPath: 'id' });
-                objStore.createIndex('name', 'name', { unique: true });
+                //objStore.createIndex('name', 'name', { unique: true });
             });
     })
     .factory('remoteService', function ($rootScope, localSettingsService) {
