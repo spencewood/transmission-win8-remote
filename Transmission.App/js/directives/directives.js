@@ -26,25 +26,25 @@
             template: '<span>({{(torrents|filter:filterBy).length}})</span>'
         };
     })
-    .directive('myCurrentTime', function($interval, dateFilter) {
+    .directive('myCurrentTime', function ($interval, dateFilter) {
         function link(scope, element, attrs) {
             var format = 'M/d/yy h:mm:ss a',
                 timeoutId;
- 
+
             function updateTime() {
                 element.text(dateFilter(new Date(), format));
             }
- 
-            element.on('$destroy', function() {
+
+            element.on('$destroy', function () {
                 $interval.cancel(timeoutId);
             });
- 
+
             // start the UI update process; save the timeoutId for canceling
-            timeoutId = $interval(function() {
+            timeoutId = $interval(function () {
                 updateTime(); // update DOM
             }, 1000);
         }
- 
+
         return {
             link: link
         };
@@ -55,28 +55,19 @@
             transclude: true,
             templateUrl: '/views/torrent-listview.html',
             link: function (scope, element) {
-                var el = element[0].children[0];
+                var list = element[0].children[0];
                 var tmpl = element[0].children[1];
-                WinJS.UI.processAll(el);
+                WinJS.UI.processAll(list);
                 WinJS.UI.processAll(tmpl);
 
-                el.winControl.itemDataSource = scope.torrents.dataSource;
-                el.winControl.itemTemplate = tmpl;
-            }
-        };
-    })
-    .directive('winjsSelectionChanged', function () {
-        return {
-            restrict: 'A',
-            scope: {
-                selection: '='
-            },
-            link: function (scope, el, attr) {
-                el.bind("selectionchanged", function (e) {
-                    scope.$parent.selection = el.get(0).winControl.selection.getItems();
+                var listControl = list.winControl;
+                listControl.itemDataSource = scope.torrents.dataSource;
+                listControl.itemTemplate = tmpl;
+
+                list.addEventListener("selectionchanged", function (e) {
+                    scope.selection = listControl.selection.getItems();
                     scope.$apply();
-                });
-            },
-            transclude: true
+                }, false);
+            }
         };
     });
