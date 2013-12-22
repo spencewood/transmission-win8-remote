@@ -55,7 +55,7 @@
         <!-- Torrent Controller -->
         <div class="main-content" ng-controller="TorrentController">
             <header class="filters" ng-controller="StatsController">
-                <input ng-change="processTorrentData()" ng-model="search.filter" placeholder="Filter results" class="pull-right">
+                <input type="search" ng-change="processTorrentData()" ng-model="search.filter" placeholder="Filter results" class="pull-right">
             </header>
             <div class="torrent-content">
                 <winjs-list-view></winjs-list-view>

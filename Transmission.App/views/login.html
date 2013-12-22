@@ -16,20 +16,38 @@
             </h1>
         </header>-->
         <section aria-label="Main content" role="main" ng-controller="LoginController">
-            <form ng-submit="login()">
-                <div>
-                    <input ng-model="servername" placeholder="server" required />
-                </div>
-                <div>
-                    <input ng-model="username" placeholder="username" required />
-                </div>
-                <div>
-                    <input ng-model="password" placeholder="password" type="password" required />
-                </div>
-                <input type="submit" id="submit" value="Submit" />
+            <div id="login-area">
+                <form ng-submit="login()">
+                    <div class="row">
+                        <div class="pull-right">
+                            <input ng-model="settings.port" placeholder="port" type="number" value="9091" required />
+                        </div>
+                        <input ng-model="settings.host" placeholder="host" type="text" required />
+                    </div>
+                    <div class="row">
+                        <label class="pull-right">
+                            <input ng-model="settings.useSsl" type="checkbox" />
+                            Use SSL
+                        </label>
+                        <input ng-model="settings.rpcPath" type="text" value="/transmission/rpc" />
+                    </div>
+                    <div class="row">
+                        <label>
+                            <input type="checkbox" />
+                            Ask for password
+                        </label>
+                    </div>
+                    <div class="row">
+                        <input ng-model="settings.username" placeholder="username" type="text" required />
+                    </div>
+                    <div class="row">
+                        <input ng-model="settings.password" placeholder="password" type="password" required />
+                    </div>
+                    <input type="submit" id="submit" value="Submit" />
 
-                <div ng-show="errorMessage.length > 0">{{errorMessage}}</div>
-            </form>
+                    <div ng-show="errorMessage.length > 0">{{errorMessage}}</div>
+                </form>
+            </div>
         </section>
     </div>
 </body>

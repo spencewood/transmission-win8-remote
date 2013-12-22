@@ -94,6 +94,13 @@ header{
     width: calc(100% - 20px);
 }
 
+/* Login */
+#login-area{
+    margin-top: 200px;
+    margin-left: 200px;
+    width: 300px;
+}
+
 /* Icons */
 .rotate180 .win-commandimage {
     transform: rotate(180deg);

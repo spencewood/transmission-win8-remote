@@ -22,12 +22,15 @@
         return {
             init: function () {
                 remote = new Transmission.Runtime.Remote(
-                    localSettingsService.get('servername'),
+                    localSettingsService.get('host'),
+                    localSettingsService.get('port'),
+                    localSettingsService.get('rpcPath'),
+                    localSettingsService.get('useSsl'),
                     localSettingsService.get('username'),
-                    localSettingsService.get('password')
+                    localSettingsService.get('password')                    
                 );
 
-                return remote.storeSessionId();
+                return this;
             },
 
             sessionStats: function () {

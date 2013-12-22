@@ -29,7 +29,25 @@
 
         return {
             get: get,
-            set: set
+            set: set,
+            getServerSettings: function () {
+                return {
+                    host: get('host'),
+                    port: get('port'),
+                    useSsl: get('useSsl'),
+                    rpcPath: get('rpcPath'),
+                    username: get('username'),
+                    password: get('password')
+                };
+            },
+            setServerSettings: function (settings) {
+                set('host', settings.host);
+                set('port', settings.port);
+                set('useSsl', settings.useSsl);
+                set('rpcPath', settings.rpcPath);
+                set('username', settings.username);
+                set('password', settings.password);
+            }
         };
     })
     .factory('navigationService', function () {

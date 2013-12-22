@@ -11,47 +11,21 @@ namespace Transmission.Runtime
 {
     public sealed class Remote
     {
-        private readonly string _server;
-        private readonly string _username;
-        private readonly string _password;
-        private string _sessionId;
+        private Client _client;
 
-        public Remote(string server, string username, string password)
+        public Remote(string host, int port, string rpcPath, bool useSsl, string username, string password)
         {
-            _server = server;
-            _username = username;
-            _password = password;
+            _client = new Client(host, port, rpcPath, useSsl, username, password);
         }
 
-        private Client GetClient()
+        public Remote(string server, int port, string rpcPath, bool useSsl, string sessionId)
         {
-            if(_sessionId != null){
-                return new Transmission.Remote.Client(_server, _username, _password, _sessionId);
-            }
-            return new Transmission.Remote.Client(_server, _username, _password);
-        }
-
-        public void SetSession(string sessionId)
-        {
-            _sessionId = sessionId;
-        }
-
-        private async Task<String> StoreSessionIdAsync()
-        {
-            var client = GetClient();
-            await client.GetFreeSpace();
-            _sessionId = client._sessionId;
-            return client._sessionId;
-        }
-
-        public IAsyncOperation<String> StoreSessionId()
-        {
-            return StoreSessionIdAsync().AsAsyncOperation();
+            _client = new Client(server, port, rpcPath, useSsl: useSsl);
         }
 
         private async Task<String> GetSessionAsync()
         {
-            return await GetClient().GetSession();
+            return await _client.GetSession();
         }
 
         public IAsyncOperation<String> GetSession()
@@ -61,7 +35,7 @@ namespace Transmission.Runtime
 
         private async Task<String> SessionStatsAsync()
         {
-            return await GetClient().SessionStats();
+            return await _client.SessionStats();
         }
 
         public IAsyncOperation<String> SessionStats()
@@ -71,7 +45,7 @@ namespace Transmission.Runtime
 
         private async Task<String> GetTorrentsAsync(List<String> fields)
         {
-            return await GetClient().GetTorrents(fields);
+            return await _client.GetTorrents(fields);
         }
 
         public IAsyncOperation<String> GetTorrents()
@@ -119,7 +93,7 @@ namespace Transmission.Runtime
 
         private async Task<String> GetFreeSpaceAsync()
         {
-            return await GetClient().GetFreeSpace();
+            return await _client.GetFreeSpace();
         }
 
         public IAsyncOperation<String> GetFreeSpace()
@@ -130,7 +104,7 @@ namespace Transmission.Runtime
 
         private async Task<String> StartTorrentsAsync(IEnumerable<int> ids)
         {
-            return await GetClient().StartTorrents(ids.ToList());
+            return await _client.StartTorrents(ids.ToList());
         }
 
         public IAsyncOperation<String> StartTorrents(IEnumerable<int> ids)
@@ -140,7 +114,7 @@ namespace Transmission.Runtime
 
         private async Task<String> StopTorrentsAsync(IEnumerable<int> ids)
         {
-            return await GetClient().StopTorrents(ids.ToList());
+            return await _client.StopTorrents(ids.ToList());
         }
 
         public IAsyncOperation<String> StopTorrents(IEnumerable<int> ids)
@@ -150,7 +124,7 @@ namespace Transmission.Runtime
 
         private async Task<String> VerifyTorrentsAsync(IEnumerable<int> ids)
         {
-            return await GetClient().VerifyTorrents(ids.ToList());
+            return await _client.VerifyTorrents(ids.ToList());
         }
 
         public IAsyncOperation<String> VerifyTorrents(IEnumerable<int> ids)
@@ -160,7 +134,7 @@ namespace Transmission.Runtime
 
         private async Task<String> ReannounceTorrentsAsync(IEnumerable<int> ids)
         {
-            return await GetClient().ReannounceTorrents(ids.ToList());
+            return await _client.ReannounceTorrents(ids.ToList());
         }
 
         public IAsyncOperation<String> ReannounceTorrents(IEnumerable<int> ids)
@@ -170,7 +144,7 @@ namespace Transmission.Runtime
 
         private async Task<String> RemoveTorrentsAsync(IEnumerable<int> ids, bool deleteLocal)
         {
-            return await GetClient().RemoveTorrents(ids.ToList(), deleteLocal);
+            return await _client.RemoveTorrents(ids.ToList(), deleteLocal);
         }
 
         public IAsyncOperation<String> RemoveTorrents(IEnumerable<int> ids, bool deleteLocal)
@@ -180,7 +154,7 @@ namespace Transmission.Runtime
 
         private async Task<String> MoveTorrentsToTopAsync(IEnumerable<int> ids)
         {
-            return await GetClient().MoveTorrentsToTop(ids.ToList());
+            return await _client.MoveTorrentsToTop(ids.ToList());
         }
 
         public IAsyncOperation<String> MoveTorrentsToTop(IEnumerable<int> ids)
@@ -190,7 +164,7 @@ namespace Transmission.Runtime
 
         private async Task<String> MoveTorrentsToBottomAsync(IEnumerable<int> ids)
         {
-            return await GetClient().MoveTorrentsToBottom(ids.ToList());
+            return await _client.MoveTorrentsToBottom(ids.ToList());
         }
 
         public IAsyncOperation<String> MoveTorrentsToBottom(IEnumerable<int> ids)
@@ -200,7 +174,7 @@ namespace Transmission.Runtime
 
         private async Task<String> MoveTorrentsUpAsync(IEnumerable<int> ids)
         {
-            return await GetClient().MoveTorrentsUp(ids.ToList());
+            return await _client.MoveTorrentsUp(ids.ToList());
         }
 
         public IAsyncOperation<String> MoveTorrentsUp(IEnumerable<int> ids)
@@ -210,7 +184,7 @@ namespace Transmission.Runtime
 
         private async Task<String> MoveTorrentsDownAsync(IEnumerable<int> ids)
         {
-            return await GetClient().MoveTorrentsDown(ids.ToList());
+            return await _client.MoveTorrentsDown(ids.ToList());
         }
 
         public IAsyncOperation<String> MoveTorrentsDown(IEnumerable<int> ids)
@@ -220,7 +194,7 @@ namespace Transmission.Runtime
 
         private async Task<String> AddTorrentAsync(byte[] metainfo)
         {
-            return await GetClient().AddTorrent(metainfo);
+            return await _client.AddTorrent(metainfo);
         }
 
         public IAsyncOperation<String> AddTorrent([ReadOnlyArray()] byte[] metainfo)

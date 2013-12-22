@@ -4,11 +4,9 @@
 
         var login = $scope.login = function () {
             $scope.errorMessage = '';
-            localSettingsService.set('servername', $scope.servername);
-            localSettingsService.set('username', $scope.username);
-            localSettingsService.set('password', $scope.password);
+            localSettingsService.setServerSettings($scope.settings);
 
-            remoteService.init().then(function (ret) {
+            remoteService.init().getSettings().then(function (ret) {
                 WinJS.Navigation.navigate('/views/torrents.html');
             }, function (e) {
                 $scope.errorMessage = 'Unable to connect to server';
@@ -16,11 +14,16 @@
             });
         };
 
-        $scope.servername = localSettingsService.get('servername');
-        $scope.username = localSettingsService.get('username');
-        $scope.password = localSettingsService.get('password');
+        $scope.settings = localSettingsService.getServerSettings();
 
-        if ($scope.servername.length > 0 && $scope.username.length > 0) {
-            login();
-        }
+        //$scope.host = localSettingsService.get('host');
+        //$scope.port = localSettingsService.get('port');
+        //$scope.useSsl = localSettingsService.get('useSsl');
+        //$scope.rpcPath = localSettingsService.get('rpcPath');
+        //$scope.username = localSettingsService.get('username');
+        //$scope.password = localSettingsService.get('password');
+
+        //if ($scope.serverName.length > 0 && $scope.username.length > 0) {
+        //    login();
+        //}
     });

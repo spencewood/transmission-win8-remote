@@ -2,7 +2,7 @@
     .controller('MainController', function ($scope, remoteService, torrentService) {
         $scope.selectedTorrentIds = [];
 
-        remoteService.init().then(function (val) {
+        remoteService.init().getSettings().then(function (val) {
             $scope.$broadcast('service:initialized');
         });
 
