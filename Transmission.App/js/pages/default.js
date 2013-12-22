@@ -53,9 +53,10 @@
     };
 
     app.onsettings = function (e) {
-        e.detail.applicationcommands = {
-            'server-settings': { title: "Server Settings", href: "/views/settings/server-settings.html" },
+        /*e.detail.applicationcommands = {
+            'settings-server': { title: "Server Settings", href: "/views/settings-server.html" },
         };
+        */
         WinJS.UI.SettingsFlyout.populateSettings(e);
     };
 

@@ -5,7 +5,7 @@
     <title>Transmission Login</title>
 
     <!-- Page -->
-    <script src="/js/login-page.js"></script>
+    <script src="/js/pages/login-page.js"></script>
 </head>
 <body>
     <div class="fragment">
@@ -18,13 +18,13 @@
         <section aria-label="Main content" role="main" ng-controller="LoginController">
             <form ng-submit="login()">
                 <div>
-                    <input ng-model="servername" placeholder="1.23.45.678" required />
+                    <input ng-model="servername" placeholder="server" required />
                 </div>
                 <div>
-                    <input ng-model="username" placeholder="user" required />
+                    <input ng-model="username" placeholder="username" required />
                 </div>
                 <div>
-                    <input ng-model="password" type="password" required />
+                    <input ng-model="password" placeholder="password" type="password" required />
                 </div>
                 <input type="submit" id="submit" value="Submit" />
 

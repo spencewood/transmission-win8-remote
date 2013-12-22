@@ -1,17 +1,14 @@
 ﻿(function () {
     "use strict";
 
-    WinJS.UI.Pages.define("/views/torrents.html", {
+    WinJS.UI.Pages.define("/views/settings-server.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
-            // TODO: Initialize the page here.
+            var appName = 'settingsApp';
 
-
-
-            angular.module('mainApp', ['Torrent', 'AppBar', 'Directives']);
-
-            angular.bootstrap(element, ['mainApp']);
+            angular.module(appName, ['Settings']);
+            angular.bootstrap(element, [appName]);
         },
 
         unload: function () {

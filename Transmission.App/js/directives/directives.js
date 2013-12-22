@@ -30,7 +30,7 @@
         return {
             restrict: 'E',
             transclude: true,
-            templateUrl: '/views/torrent-listview.html',
+            templateUrl: '/views/partials/torrent-listview.html',
             link: function (scope, element) {
                 var list = element[0].children[0];
                 var tmpl = element[0].children[1];

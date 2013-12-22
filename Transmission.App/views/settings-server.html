@@ -3,33 +3,34 @@
 <head>
     <meta charset="utf-8" />
     <title>Server Settings</title>
-    <script src="/js/controllers/server-settings-controller.js"></script>
-    <script src="/js/app/options.js"></script>
+
+    <!-- Page -->
+    <script src="/js/pages/settings-server-page.js"></script>
 </head>
 <body>
-    <div id="server-settings" class="win-settingsflyout"
+    <div id="settings-server" class="win-settingsflyout"
          data-win-control="WinJS.UI.SettingsFlyout"
          data-win-options="{ width:'wide' }">
         <div class="win-header">
             <button id="backButton" class="win-backbutton" aria-label="Back" onclick="WinJS.UI.SettingsFlyout.show()"></button>
             <div class="win-label">Server Settings</div>
         </div>
-        <div class="win-content">
+        <div class="win-content" ng-controller="ServerSettings">
             <div class="win-settings-section">
                 <ul>
                     <li>
                         <label>
-                            <input ng-model="settings.server" name="servername" type="text" placeholder="Server" />
+                            <input ng-model="settings.servername" name="servername" type="text" placeholder="server" />
                         </label>
                     </li>
                     <li>
                         <label>
-                            <input ng-model="settings.username" name="username" type="text" placeholder="Username" />
+                            <input ng-model="settings.username" name="username" type="text" placeholder="username" />
                         </label>
                     </li>
                     <li>
                         <label>
-                            <input ng-model="settings.password" name="password" type="password" placeholder="Password" />
+                            <input ng-model="settings.password" name="password" type="password" placeholder="password" />
                         </label>
                     </li>
                 </ul>

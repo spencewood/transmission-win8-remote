@@ -110,3 +110,7 @@ header{
     background-color: #464646;
     color: #fff; 
 }
+
+.win-settingsflyout ul{
+    list-style: none;
+}
