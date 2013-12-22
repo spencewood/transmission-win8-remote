@@ -5,9 +5,15 @@
         }, seed);
     },
 
+    matchesCaseInsensitiveByKey: function (term, key) {
+        return function (compare) {
+            return compare[key].toLowerCase().match(term.toLowerCase());
+        };
+    },
+
     /*
     * Takes two collections and updates the first with the second
-    * based on the passed in key
+    * based on the passed in key. Performs mutation.
     */
     updateAddDelete: function(coll1, coll2, key, updateFun, addFun, deleteFun){
         //add/update
@@ -39,11 +45,22 @@
         });
     },
 
+    dropFirstArgument: function (fun) {
+        return function () {
+            //drop the first argument for event 
+            fun.apply(this, _.rest(arguments));
+        };
+    },
+
     removeElement: function (arr, idx) {
         arr.splice(idx, 1);
     },
 
     clearArray: function (arr) {
         arr.splice(0, arr.length);
+    },
+
+    asWinJsBinding: function (item) {
+        return WinJS.Binding.as(item);
     }
 });

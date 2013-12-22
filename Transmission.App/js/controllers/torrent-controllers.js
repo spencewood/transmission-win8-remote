@@ -28,11 +28,11 @@
 
         $location.path('/status/all');
 
-        $scope.downloading = statusService.downloading;
-        $scope.active = statusService.active;
-        $scope.inactive = statusService.inactive;
-        $scope.stopped = statusService.stopped;
-        $scope.error = statusService.error;
+        $scope.downloading = statusService.statuses.downloading;
+        $scope.active = statusService.statuses.active;
+        $scope.inactive = statusService.statuses.inactive;
+        $scope.stopped = statusService.statuses.stopped;
+        $scope.error = statusService.statuses.error;
     })
     .controller('StatsController', function ($scope) {
 
@@ -46,49 +46,52 @@
         });
 
         $scope.search = { filter: '' };
-        var filter = 'all';
 
-        var processTorrentData = $scope.processTorrentData = function () {
-            torrentService.getTorrents().then(function (newTorrents) {
-                var filtered = newTorrents
-                    .filter(function (torrent) {
-                        if (filter in statusService) {
-                            return statusService[filter](torrent);
-                        }
-                        else {
-                            return true;
-                        }
-                    });
-
-                if ($scope.search.filter !== '') {
-                    filtered = filtered.filter(function (torrent) {
-                        return torrent.name.toLowerCase().match($scope.search.filter.toLowerCase());
-                    });
+        var filterOnStatus = function (status, arr) {
+            return arr.filter(function (item) {
+                if (status in statusService.statuses) {
+                    return statusService.statuses[status](item);
                 }
-
-                var addTorrent = function (torrent) {
-                    return WinJS.Binding.as(torrent);
-                };
-
-                WinJS.Utilities.markSupportedForProcessing(addTorrent);
-
-                _.updateAddDelete($scope.torrents, filtered, 'id', _.extend, addTorrent, _.removeElement);
+                return true;
             });
         };
 
-        var eventDealer = function (fun) {
-            return function () {
-                //drop the first argument for event 
-                fun.apply(this, _.rest(arguments));
-            };
+        var filterOnSearch = function (search, arr) {
+            if (search !== '') {
+                var caseFilterByKey = _.matchesCaseInsensitiveByKey(search.filter, 'name');
+                return arr.filter(caseFilterByKey);
+            }
+            return arr;
+        };
+
+        var clearTorrents = function () {
+            _.clearArray($scope.torrents);
+        };
+
+        var addTorrents = function (torrents) {
+            torrentService.addTorrents(torrents);
+        };
+
+        var processTorrentData = $scope.processTorrentData = function () {
+            torrentService.getTorrents().then(function (torrents) {
+                var statusFilter = _.partial(filterOnStatus, statusService.getLocationStatus());
+                var searchFilter = _.partial(filterOnSearch, $scope.search);
+
+                var filteredTorrents = _.pipeline(torrents, statusFilter, searchFilter);
+
+                _.updateAddDelete(
+                    $scope.torrents,
+                    filteredTorrents,
+                    'id',
+                    _.extend,
+                    _.asWinJsBinding,
+                    _.removeElement);
+            });
         };
 
         $scope.$on('torrents:updated', processTorrentData);
-        $scope.$on('torrents:add', eventDealer(torrentService.addTorrents.bind(torrentService)));
+        $scope.$on('torrents:add', _.dropFirstArgument(addTorrents));
 
-        $rootScope.$on('$locationChangeSuccess', function (event) {
-            filter = $location.url().match(/\/(\w+)$/)[1];
-            _.clearArray($scope.torrents);
-            processTorrentData();
-        });
+        $rootScope.$on('$locationChangeSuccess', clearTorrents);
+        $rootScope.$on('$locationChangeSuccess', processTorrentData);
     });

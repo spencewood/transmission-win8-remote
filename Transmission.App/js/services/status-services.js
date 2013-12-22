@@ -8,47 +8,55 @@
         seedWait: 5,
         seed: 6
     })
-    .factory('statusService', function (status) {
+    .factory('statusService', function ($location, status) {
+        var statusRegex = /\/(\w+)$/;
+
         return {
-            downloading: function (item) {
-                return item.status === status.downloadWait ||
-                    item.status === status.download;
+            getLocationStatus: function (){
+                return $location.url().match(statusRegex)[1];
             },
 
-            seeding: function (item) {
-                return item.status === status.seedWait ||
-                    item.status === status.seed;
-            },
+            statuses: {
+                downloading: function (item) {
+                    return item.status === status.downloadWait ||
+                        item.status === status.download;
+                },
 
-            active: function (item) {
-                return (item.rateDownload
-                    + item.rateUpload > 0) ||
-                    item.status === status.check;
-            },
+                seeding: function (item) {
+                    return item.status === status.seedWait ||
+                        item.status === status.seed;
+                },
 
-            inactive: function (item) {
-                return item.rateDownload + item.rateUpload === 0;
-            },
+                active: function (item) {
+                    return (item.rateDownload
+                        + item.rateUpload > 0) ||
+                        item.status === status.check;
+                },
 
-            stopped: function (item) {
-                return item.status === status.stopped;
-            },
+                inactive: function (item) {
+                    return item.rateDownload + item.rateUpload === 0;
+                },
 
-            paused: function (item) {
-                return this.stopped(item);
-            },
+                stopped: function (item) {
+                    return item.status === status.stopped;
+                },
 
-            finished: function (item) {
-                return this.isFinished;
-            },
+                paused: function (item) {
+                    return this.stopped(item);
+                },
 
-            verifying: function (item) {
-                return item.status === status.checkWait ||
-                    item.status === status.check;
-            },
+                finished: function (item) {
+                    return this.isFinished;
+                },
 
-            error: function (item) {
-                return item.error != 0;
+                verifying: function (item) {
+                    return item.status === status.checkWait ||
+                        item.status === status.check;
+                },
+
+                error: function (item) {
+                    return item.error != 0;
+                }
             }
         }
     });
