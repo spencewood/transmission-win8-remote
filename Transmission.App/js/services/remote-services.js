@@ -7,6 +7,26 @@
                 var objStore = db.createObjectStore('torrents', { keyPath: 'id' });
                 //objStore.createIndex('name', 'name', { unique: true });
             });
+
+        $indexedDBProvider.onTransactionComplete = function (e) {
+            //trasaction completed
+        };
+
+        $indexedDBProvider.onTransactionAbort = function (e) {
+            console.warn('transaction aborted', JSON.stringify(e));
+        };
+
+        $indexedDBProvider.onTransactionError = function (e) {
+            console.error('transaction error', JSON.stringify(e));
+        };
+
+        $indexedDBProvider.onDatabaseError = function (e) {
+            console.error('database error', JSON.stringify(e));
+        };
+
+        $indexedDBProvider.onDatabaseBlocked = function (e) {
+            console.error('database blocked', JSON.stringify(e));
+        };
     })
     .factory('remoteService', function ($rootScope, localSettingsService) {
         var remote = null;
@@ -92,8 +112,8 @@
                 return remote.moveTorrentsDown(ids);
             },
 
-            addTorrent: function (metainfo) {
-                return remote.addTorrent(metainfo);
+            addTorrent: function (byteArray) {
+                return remote.addTorrent(byteArray);
             }
         };
     })
@@ -186,7 +206,7 @@
                         dataReader.close();
 
                         return remoteService.addTorrent(bytes);
-                    }.bind(this));
+                    });
                 },
 
                 addTorrents: function (torrents) {

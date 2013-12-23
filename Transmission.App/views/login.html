@@ -8,47 +8,39 @@
     <script src="/js/pages/login-page.js"></script>
 </head>
 <body>
-    <div class="fragment">
-        <!--<header aria-label="Header content" role="banner">
-            <button data-win-control="WinJS.UI.BackButton"></button>
-            <h1 class="titlearea win-type-ellipsis">
-                <span class="pagetitle">Welcome to login</span>
-            </h1>
-        </header>-->
-        <section aria-label="Main content" role="main" ng-controller="LoginController">
-            <div id="login-area">
-                <form ng-submit="login()">
-                    <div class="row">
-                        <div class="pull-right">
-                            <input ng-model="settings.port" placeholder="port" type="number" value="9091" required />
-                        </div>
-                        <input ng-model="settings.host" placeholder="host" type="text" required />
+    <div ng-controller="LoginController">
+        <div id="login-area">
+            <form ng-submit="login()">
+                <div class="row">
+                    <div class="pull-right">
+                        <input ng-model="settings.port" placeholder="port" type="number" value="9091" required />
                     </div>
-                    <div class="row">
-                        <label class="pull-right">
-                            <input ng-model="settings.useSsl" type="checkbox" />
-                            Use SSL
-                        </label>
-                        <input ng-model="settings.rpcPath" type="text" value="/transmission/rpc" />
-                    </div>
-                    <div class="row">
-                        <label>
-                            <input type="checkbox" />
-                            Ask for password
-                        </label>
-                    </div>
-                    <div class="row">
-                        <input ng-model="settings.username" placeholder="username" type="text" required />
-                    </div>
-                    <div class="row">
-                        <input ng-model="settings.password" placeholder="password" type="password" required />
-                    </div>
-                    <input type="submit" id="submit" value="Submit" />
+                    <input ng-model="settings.host" placeholder="host" type="text" required />
+                </div>
+                <div class="row">
+                    <label class="pull-right">
+                        <input ng-model="settings.useSsl" type="checkbox" />
+                        Use SSL
+                    </label>
+                    <input ng-model="settings.rpcPath" type="text" value="/transmission/rpc" />
+                </div>
+                <div class="row">
+                    <label>
+                        <input type="checkbox" />
+                        Ask for password
+                    </label>
+                </div>
+                <div class="row">
+                    <input ng-model="settings.username" placeholder="username" type="text" required />
+                </div>
+                <div class="row">
+                    <input ng-model="settings.password" placeholder="password" type="password" required />
+                </div>
+                <input type="submit" id="submit" value="Submit" />
 
-                    <div ng-show="errorMessage.length > 0">{{errorMessage}}</div>
-                </form>
-            </div>
-        </section>
+                <div ng-show="errorMessage.length > 0">{{errorMessage}}</div>
+            </form>
+        </div>
     </div>
 </body>
 </html>

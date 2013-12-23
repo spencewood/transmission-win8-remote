@@ -11,11 +11,16 @@
         //clear data
         //Windows.Storage.ApplicationData.current.clearAsync();
 
+        //assumed main app space
+        var $ngApp = $('[ng-controller]:first', document);
 
-        //var rootScope = angular.element(document).scope();
-        //if (args.detail.kind === Windows.ApplicationModel.Activation.ActivationKind.file) {
-        //    rootScope.$broadcast('torrents:add', args.detail.files);
-        //}
+        if (args.detail.kind === Windows.ApplicationModel.Activation.ActivationKind.file) {
+            var ngApp = $ngApp.get(0);
+            if (ngApp != null) {
+                var rootScope = angular.element(ngApp).scope();
+                rootScope.$broadcast('torrents:add', args.detail.files);
+            }
+        }
 
         if (args.detail.kind === activation.ActivationKind.launch) {
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
