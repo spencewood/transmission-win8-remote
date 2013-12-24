@@ -47,6 +47,13 @@
                 set('rpcPath', settings.rpcPath);
                 set('username', settings.username);
                 set('password', settings.password);
+            },
+            setTransmissionSettings: function (settings) {
+                for (var setting in settings) {
+                    if (settings.hasOwnProperty(setting)) {
+                        
+                    }
+                }
             }
         };
     })

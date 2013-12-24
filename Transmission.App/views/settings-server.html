@@ -10,12 +10,12 @@
 <body>
     <div id="settings-server" class="win-settingsflyout"
          data-win-control="WinJS.UI.SettingsFlyout"
-         data-win-options="{ width:'wide' }">
+         data-win-options="{ width:'wide' }" ng-controller="ServerSettings">
         <div class="win-header">
             <button id="backButton" class="win-backbutton" aria-label="Back" onclick="WinJS.UI.SettingsFlyout.show()"></button>
             <div class="win-label">Server Settings</div>
         </div>
-        <div class="win-content" ng-controller="ServerSettings">
+        <div class="win-content">
             <div class="win-settings-section">
                 <ul>
                     <li>

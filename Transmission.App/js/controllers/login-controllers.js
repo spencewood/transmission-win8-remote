@@ -15,15 +15,4 @@
         };
 
         $scope.settings = localSettingsService.getServerSettings();
-
-        //$scope.host = localSettingsService.get('host');
-        //$scope.port = localSettingsService.get('port');
-        //$scope.useSsl = localSettingsService.get('useSsl');
-        //$scope.rpcPath = localSettingsService.get('rpcPath');
-        //$scope.username = localSettingsService.get('username');
-        //$scope.password = localSettingsService.get('password');
-
-        //if ($scope.serverName.length > 0 && $scope.username.length > 0) {
-        //    login();
-        //}
     });

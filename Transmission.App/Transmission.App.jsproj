@@ -76,6 +76,7 @@
     <Content Include="js\pages\default.js" />
     <Content Include="js\pages\login-page.js" />
     <Content Include="js\pages\settings-server-page.js" />
+    <Content Include="js\pages\settings-transmission-page.js" />
     <Content Include="js\pages\torrents-page.js" />
     <Content Include="js\services\remote-services.js" />
     <Content Include="js\services\status-services.js" />
@@ -84,6 +85,7 @@
     <Content Include="views\login.html" />
     <Content Include="views\partials\torrent-listview.html" />
     <Content Include="views\settings-server.html" />
+    <Content Include="views\settings-transmission.html" />
     <Content Include="views\torrents.html" />
     <None Include="Transmission_TemporaryKey.pfx" />
   </ItemGroup>

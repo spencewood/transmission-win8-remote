@@ -58,7 +58,10 @@
             },
 
             getSettings: function () {
-                return remote.getSession();
+                return remote.getSession().then(function (val) {
+                    //TODO: handle bad status
+                    return JSON.parse(val).arguments;
+                });
             },
 
             getFreeSpace: function () {
