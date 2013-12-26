@@ -74,6 +74,8 @@
 
         var processTorrentData = $scope.processTorrentData = function () {
             torrentService.getTorrents().then(function (torrents) {
+                var active = torrents.filter(statusService.statuses.active);
+
                 var statusFilter = _.partial(filterOnStatus, statusService.getLocationStatus());
                 var searchFilter = _.partial(filterOnSearch, $scope.search);
 

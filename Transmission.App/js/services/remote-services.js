@@ -1,11 +1,16 @@
 ﻿angular.module('RemoteServices', ['WinServices', 'xc.indexedDB'])
-    .constant('objectStore', 'torrents')
-    .config(function ($indexedDBProvider) {
+    .constant('dbName', 'transmissionDB3')
+    .constant('torrentStore', 'torrents')
+    .constant('historyStore', 'history')
+    .config(function ($indexedDBProvider, dbName, torrentStore, historyStore) {
         $indexedDBProvider
-            .connection('transmissionDB1')
-            .upgradeDatabase(2, function (event, db, tx) {
-                var objStore = db.createObjectStore('torrents', { keyPath: 'id' });
-                //objStore.createIndex('name', 'name', { unique: true });
+            .connection(dbName)
+            .upgradeDatabase(1, function (event, db, tx) {
+                if (event.oldVersion === 0) {
+                    db.createObjectStore(torrentStore, { keyPath: 'id' })
+                    //    .createIndex('name', 'name', { unique: true });
+                    db.createObjectStore(historyStore, { keyPath: 'id' });
+                }
             });
 
         $indexedDBProvider.onTransactionComplete = function (e) {
@@ -121,14 +126,15 @@
         };
     })
     .provider('torrentService', function () {
-        this.$get = function ($rootScope, $indexedDB, objectStore, remoteService) {
-            var store = $indexedDB.objectStore(objectStore);
+        this.$get = function ($rootScope, $indexedDB, torrentStore, historyStore, remoteService, statusService) {
+            var dbTorrents = $indexedDB.objectStore(torrentStore);
+            var dbHistory = $indexedDB.objectStore(historyStore);
 
             return {
                 timeoutToken: null,
 
                 getTorrents: function () {
-                    return store.getAll();
+                    return dbTorrents.getAll();
                 },
 
                 pollForTorrents: function () {
@@ -141,17 +147,59 @@
                     }.bind(this));
                 },
 
+                insertTorrents: function (torrents) {
+                    return dbTorrents.insert(torrents).then(function(){
+                        $rootScope.$broadcast('torrents:inserted');
+                        return torrents;
+                    });
+                },
+
+                insertHistory: function (items) {
+                    return dbHistory.getAll().then(function (histories) {
+                        //histories.forEach(function (history) {
+                        //    if (history.upSpeed + history.downSpeed === 0) {
+                        //        //this will happen async... handle this
+                        //        history.delete();
+                        //    }
+                        //});
+
+                        //items.forEach(function (item) {
+                        //    var hist = _.findWhere(histories, { id: item.id });
+                        //    if (hist != null) {
+                        //        hist.upSpeed.push(algo(item.upSpeed, hist.upSpeed));
+                        //    }
+                        //});
+                    });
+                },
+
+                updateTorrentSpeeds: function (torrents) {
+                    this.insertHistory(
+                        torrents
+                        .filter(statusService.statuses.active)
+                        .map(function (torrent) {
+                            var ret = { id: torrent.id };
+                            if (torrent.downSpeed > 0) {
+                                ret.downSpeed = torrent.downSpeed;
+                            }
+                            else {
+                                ret.upSpeed = ret.upSpeed;
+                            }
+                        })
+                    ).then(function(){
+                        $rootScope.$broadcast('torrents:updated');
+                    });
+                },
+
                 updateTorrents: function () {
                     return remoteService.getTorrents().then(function (val) {
-                        store
+                        dbTorrents
                             .clear()
                             .then(function () {
-                                return store.insert(JSON.parse(val).arguments.torrents);
+                                return JSON.parse(val).arguments.torrents;
                             })
-                            .then(function () {
-                                $rootScope.$broadcast('torrents:updated');
-                            });
-                    });
+                            .then(this.insertTorrents)
+                            .then(this.updateTorrentSpeeds.bind(this));
+                    }.bind(this));
                 },
 
                 findById: function (id) {
