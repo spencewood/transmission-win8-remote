@@ -141,6 +141,10 @@
                     return dbHistory.getAll();
                 },
 
+                clearHistory: function () {
+                    return dbHistory.clear();
+                },
+
                 getUpdatedTorrents: function () {
                     return $q.all([this.getTorrents(), this.getHistory()])
                         .then(function (data) {

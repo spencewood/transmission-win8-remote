@@ -2,12 +2,15 @@
     .controller('MainController', function ($scope, remoteService, torrentService) {
         $scope.selectedTorrentIds = [];
 
+        //TODO: move settings call to login and store locally
         remoteService.init().getSettings().then(function (val) {
             $scope.$broadcast('service:initialized');
         });
 
         $scope.$on('service:initialized', function () {
-            torrentService.pollForTorrents();
+            torrentService.clearHistory().then(function () {
+                torrentService.pollForTorrents();
+            });
         });
     })
     .controller('TreeController', function ($scope, $location, torrentService, statusService) {
@@ -19,11 +22,9 @@
 
         $scope.$on('spinner:stop', function () {
             $scope.showSpinner = false;
-            $scope.$apply();
         });
         $scope.$on('spinner:start', function () {
             $scope.showSpinner = true;
-            $scope.$apply();
         });
 
         $location.path('/status/all');
