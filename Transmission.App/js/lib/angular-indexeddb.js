@@ -235,7 +235,10 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                 return this.internalObjectStore(this.storeName, READWRITE).then(function(store){
                     var req;
                     if (angular.isArray(data)) {
-                        data.forEach(function(item){
+                        if (data.length === 0) {
+                            d.resolve([]);
+                        }
+                        data.forEach(function (item) {
                             req = store.put(item);
                             req.onsuccess = req.onerror = function(e) {
                                 $rootScope.$apply(function(){
@@ -405,7 +408,7 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                 var d = $q.defer();
                 return this.internalObjectStore(this.storeName, READWRITE).then(function(store){
                    var req;
-                   options = options || defaultQueryOptions;
+                   options = $.extend({}, defaultQueryOptions, options);
                    if(options.useIndex) {
                         req = store.index(options.useIndex).openCursor(options.keyRange, options.direction);
                     } else {

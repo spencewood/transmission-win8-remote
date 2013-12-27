@@ -12,7 +12,7 @@
     })
     .controller('TreeController', function ($scope, $location, torrentService, statusService) {
         $scope.$on('torrents:updated', function () {
-            torrentService.getTorrents().then(function (torrents) {
+            torrentService.getUpdatedTorrents.call(torrentService).then(function (torrents) {
                 $scope.torrents = torrents;
             });
         });
@@ -73,7 +73,7 @@
         };
 
         var processTorrentData = $scope.processTorrentData = function () {
-            torrentService.getTorrents().then(function (torrents) {
+            torrentService.getUpdatedTorrents.call(torrentService).then(function (torrents) {
                 var active = torrents.filter(statusService.statuses.active);
 
                 var statusFilter = _.partial(filterOnStatus, statusService.getLocationStatus());

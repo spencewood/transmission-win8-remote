@@ -11,6 +11,12 @@
         };
     },
 
+    average: function (arr) {
+	    return _.reduce(arr, function (memo, num) {
+	        return memo + num;
+	    }, 0) / arr.length;
+    },
+
     /*
     * Takes two collections and updates the first with the second
     * based on the passed in key. Performs mutation.

@@ -126,7 +126,7 @@
         };
     })
     .provider('torrentService', function () {
-        this.$get = function ($rootScope, $indexedDB, torrentStore, historyStore, remoteService, statusService) {
+        this.$get = function ($rootScope, $indexedDB, $q, torrentStore, historyStore, remoteService, statusService) {
             var dbTorrents = $indexedDB.objectStore(torrentStore);
             var dbHistory = $indexedDB.objectStore(historyStore);
 
@@ -135,6 +135,26 @@
 
                 getTorrents: function () {
                     return dbTorrents.getAll();
+                },
+
+                getHistory: function () {
+                    return dbHistory.getAll();
+                },
+
+                getUpdatedTorrents: function () {
+                    return $q.all([this.getTorrents(), this.getHistory()])
+                        .then(function (data) {
+                            var torrents = data[0];
+                            var history = data[1];
+                            torrents.forEach(function (torrent) {
+                                var hist = _.findWhere(history, { id: torrent.id });
+                                if (typeof hist !== 'undefined') {
+                                    torrent.rateUpload = hist.rateUpload;
+                                    torrent.rateDownload = hist.rateDownload;
+                                }
+                            });
+                            return torrents;
+                        });
                 },
 
                 pollForTorrents: function () {
@@ -155,37 +175,52 @@
                 },
 
                 insertHistory: function (items) {
-                    return dbHistory.getAll().then(function (histories) {
-                        //histories.forEach(function (history) {
-                        //    if (history.upSpeed + history.downSpeed === 0) {
-                        //        //this will happen async... handle this
-                        //        history.delete();
-                        //    }
-                        //});
+                    var active = function (history) {
+                        return history.rateUpload + history.rateDownload > 0;
+                    };
+                    var activeItems = items.filter(active);
 
-                        //items.forEach(function (item) {
-                        //    var hist = _.findWhere(histories, { id: item.id });
-                        //    if (hist != null) {
-                        //        hist.upSpeed.push(algo(item.upSpeed, hist.upSpeed));
-                        //    }
-                        //});
+                    //update
+                    var deferreds = [];
+                    activeItems.forEach(function (item) {
+                        deferreds.push(dbHistory.find(item.id).then(function (history) {
+                            var h = { id: item.id };
+                            history = history || {};
+                            
+                            h.up = history.up || [];
+                            h.down = history.down || [];
+                            h.rateUpload = history.rateUpload || 0;
+                            h.rateDownload = history.rateDownload || 0;
+
+                            if (item.rateUpload > 0) {
+                                h.up.push(item.rateUpload);
+                                h.rateUpload = _.average(h.up);
+                            }
+                            if (item.rateDownload > 0) {
+                                h.down.push(item.rateDownload);
+                                h.rateDownload = _.average(h.down);
+                            }
+                            return dbHistory.upsert(h);
+                        }));
+                    });
+
+                    return $q.all(deferreds).then(function(){
+                        //delete
+                        return dbHistory.getAll().then(function (histories) {
+                            var defs = [];
+                            histories.filter(function (history) {
+                                return history.rateDownload + history.rateUpload === 0;
+                            }).forEach(function (history) {
+                                defs.push(dbHistory.delete(history.id));
+                            });
+
+                            return $q.all(defs);
+                        });
                     });
                 },
 
                 updateTorrentSpeeds: function (torrents) {
-                    this.insertHistory(
-                        torrents
-                        .filter(statusService.statuses.active)
-                        .map(function (torrent) {
-                            var ret = { id: torrent.id };
-                            if (torrent.downSpeed > 0) {
-                                ret.downSpeed = torrent.downSpeed;
-                            }
-                            else {
-                                ret.upSpeed = ret.upSpeed;
-                            }
-                        })
-                    ).then(function(){
+                    this.insertHistory(torrents).then(function(){
                         $rootScope.$broadcast('torrents:updated');
                     });
                 },
