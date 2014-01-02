@@ -66,6 +66,12 @@
         arr.splice(0, arr.length);
     },
 
+    shiftArrayToSize: function (arr, size) {
+        while (arr.length < size) {
+            arr.shift();
+        }
+    },
+
     asWinJsBinding: function (item) {
         return WinJS.Binding.as(item);
     }

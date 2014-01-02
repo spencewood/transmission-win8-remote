@@ -2,6 +2,11 @@
     .constant('dbName', 'transmissionDB3')
     .constant('torrentStore', 'torrents')
     .constant('historyStore', 'history')
+    .constant('encryptionOptions', [
+        { name: 'Disabled', value: 'tolerated' },
+        { name: 'Enabled', value: 'preferred' },
+        { name: 'Required', value: 'required' }
+    ])
     .config(function ($indexedDBProvider, dbName, torrentStore, historyStore) {
         $indexedDBProvider
             .connection(dbName)
@@ -179,6 +184,7 @@
                 },
 
                 insertHistory: function (items) {
+                    //TODO: refactor
                     var active = function (history) {
                         return history.rateUpload + history.rateDownload > 0;
                     };
@@ -196,13 +202,18 @@
                             h.rateUpload = history.rateUpload || 0;
                             h.rateDownload = history.rateDownload || 0;
 
-                            if (item.rateUpload > 0) {
+                            //TODO: make this dynamic
+                            var arrayLimit = 5;
+
+                            if (item.rateUpload > 0 || h.up.length > 0) {
                                 h.up.push(item.rateUpload);
                                 h.rateUpload = _.average(h.up);
+                                //_.shiftArrayToSize(h.up, arrayLimit);
                             }
-                            if (item.rateDownload > 0) {
+                            if (item.rateDownload > 0 || h.down.length > 0) {
                                 h.down.push(item.rateDownload);
                                 h.rateDownload = _.average(h.down);
+                                //_.shiftArrayToSize(h.up, arrayLimit);
                             }
                             return dbHistory.upsert(h);
                         }));

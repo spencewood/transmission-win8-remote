@@ -113,6 +113,10 @@ header{
 }
 
 /* Settings */
+.win-settingsflyout.wide {
+    width: 500px;
+}
+
 .win-settingsflyout .win-header { 
     background-color: #464646;
     color: #fff; 
