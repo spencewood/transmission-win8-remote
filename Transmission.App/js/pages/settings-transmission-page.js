@@ -7,7 +7,7 @@
         ready: function (element, options) {
             var appName = 'settingsApp';
 
-            angular.module(appName, ['Settings']);
+            angular.module(appName, ['Settings', 'Directives']);
             angular.bootstrap(element, [appName]);
         },
 

@@ -15,194 +15,292 @@
             <div class="win-label">Server Settings</div>
         </div>
         <div class="win-content">
-            <div class="win-settings-section">
-                <div>
-                    Downloads
+            <form ng-submit="save()">
+                <div class="win-settings-section">
+                    <div>
+                        Downloads
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="row">
+                                Default download directory
+                            </div>
+                            <div class="row">
+                                <input ng-model="settings['download-dir']" type="text" />
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-show="settings['incomplete-dir-enabled']" ng-model="settings['incomplete-dir']" type="text" />
+                                </div>
+                                <input ng-model="settings['incomplete-dir-enabled']" type="checkbox" />
+                                Directory for incomplete files
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <input ng-model="settings['rename-partial-files']" type="checkbox">
+                                Add .part extension for incomplete files
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div ng-show="settings['seedRatioLimited']" class="pull-right">
+                                    <input ng-model="settings['seedRatioLimit']" type="number" />
+                                </div>
+                                <input ng-model="settings['seedRatioLimited']" type="checkbox" />
+                                Seed ratio
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div ng-show="settings['idle-seeding-limit-enabled']" class="pull-right">
+                                    <input ng-model="settings['idle-seeding-limit']" type="number" />
+                                    minutes
+                                </div>
+                                <input ng-model="settings['idle-seeding-limit-enabled']" type="checkbox" />
+                                Stop seeding when inactive for
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-model="settings['cache-size-mb']" type="number" />
+                                    MB
+                                </div>
+                                Disk cache size
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        Network
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-model="settings['peer-port-random-on-start']" type="checkbox" />
+                                    Random port
+                                </div>
+                                <input ng-disabled="settings['peer-port-random-on-start']" ng-model="settings['peer-port']" type="number" />
+                                Port
+                            </div>
+                            <div class="row">
+                                <input ng-model="settings['port-forwarding-enabled']" type="checkbox" />
+                                Enable port forwarding
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                Encryption
+                                <select ng-model="settings['encryption']" ng-options="o.value as o.name for o in encryptionOptions"></select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                Global peer limit
+                                <input ng-model="settings['peer-limit-global']" type="number" />
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <input ng-model="settings['pex-enabled']" type="checkbox" />
+                                Enable Peer Exchange
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <input ng-model="settings['dht-enabled']" type="checkbox" />
+                                Enable DHT
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <input ng-model="settings['lpd-enabled']" type="checkbox" />
+                                Enable Local Peer Discovery
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <input ng-model="settings['utp-enabled']" type="checkbox" />
+                                Enable &mu;tp
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-disabled="!settings['blocklist-enabled']" ng-model="settings['blocklist-url']" type="text" />
+                                </div>
+                                <input ng-model="settings['blocklist-enabled']" type="checkbox" />
+                                Enable blocklist
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        Bandwidth
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="row">
+                                Global settings
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-disabled="!settings['speed-limit-down-enabled']" ng-model="settings['speed-limit-down']" type="number" />
+                                    KB/s
+                                </div>
+                                <input ng-model="settings['speed-limit-down-enabled']" type="checkbox" />
+                                Max download speed
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-disabled="!settings['speed-limit-up-enabled']" ng-model="settings['speed-limit-up']" type="number" />
+                                    KB/s
+                                </div>
+                                <input ng-model="settings['speed-limit-up-enabled']" type="checkbox" />
+                                Max upload speed
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                Alternate bandwidth settings
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-model="settings['alt-speed-down']" type="number" />
+                                    KB/s
+                                </div>
+                                Max download speed
+                            </div>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-model="settings['alt-speed-up']" type="number" />
+                                    KB/s
+                                </div>
+                                Max upload speed
+                            </div>
+                            <div class="row">
+                                <label>
+                                    <input ng-model="settings['alt-speed-enabled']" type="checkbox" />
+                                    Alternate speed enabled
+                                </label>
+                            </div>
+                            <div class="row">
+                                <label>
+                                    <input ng-model="settings['alt-speed-time-enabled']" type="checkbox" />
+                                    Apply alternate speed settings automatically
+                                </label>
+                            </div>
+                            <div ng-show="settings['alt-speed-time-enabled']">
+                                <div class="row">
+                                    From
+                                    <div data-win-control="WinJS.UI.TimePicker" winjs-time-change="alt-speed-time-begin"></div>
+                                </div>
+                                <div class="row">
+                                    To
+                                    <div data-win-control="WinJS.UI.TimePicker" winjs-time-change="alt-speed-time-end"></div>
+                                </div>
+                                <div class="row">
+                                    Days
+                                    <ul days-of-week-picker="alt-speed-time-day">
+                                        <li>
+                                            <label>
+                                                <input name="sunday" type="checkbox" />
+                                                Sun
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input name="monday" type="checkbox" />
+                                                Mon
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input name="tuesday" type="checkbox" />
+                                                Tue
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input name="wednesday" type="checkbox" />
+                                                Wed
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input name="thursday" type="checkbox" />
+                                                Thu
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input name="friday" type="checkbox" />
+                                                Fri
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input name="saturday" type="checkbox" />
+                                                Sat
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        Queue
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-disabled="!settings['download-queue-enabled']" ng-model="settings['download-queue-size']" type="number" />
+                                </div>
+                                <label>
+                                    <input ng-model="settings['download-queue-enabled']" type="checkbox" />
+                                    Download queue size
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-disabled="!settings['seed-queue-enabled']" ng-model="settings['seed-queue-size']" type="number" />
+                                </div>
+                                <label>
+                                    <input ng-model="settings['seed-queue-enabled']" type="checkbox" />
+                                    Upload queue size
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="pull-right">
+                                    <input ng-disabled="!settings['queue-stalled-enabled']" ng-model="settings['queue-stalled-minutes']" type="number" />
+                                    minutes
+                                </div>
+                                <label>
+                                    <input ng-model="settings['queue-stalled-enabled']" type="checkbox" />
+                                    Active torrents are stalled after
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        <input type="submit" value="Save" />
+                    </div>
                 </div>
-                <ul>
-                    <li>
-                        <div class="row">
-                            Default download directory
-                        </div>
-                        <div class="row">
-                            <input ng-model="settings['download-dir']" type="text" />
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div class="pull-right">
-                                <input ng-show="settings['incomplete-dir-enabled']" ng-model="settings['incomplete-dir']" type="text" />    
-                            </div>
-                            <input ng-model="settings['incomplete-dir-enabled']" type="checkbox" />
-                            Directory for incomplete files
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <input ng-model="settings['rename-partial-files']" type="checkbox">
-                            Add .part extension for incomplete files
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div ng-show="settings['seedRatioLimited']" class="pull-right">
-                                <input ng-model="settings['seedRatioLimit']" type="number" />
-                            </div>
-                            <input ng-model="settings['seedRatioLimited']" type="checkbox" />
-                            Seed ratio
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div ng-show="settings['idle-seeding-limit-enabled']" class="pull-right">
-                                <input ng-model="settings['idle-seeding-limit']" type="number" />
-                                minutes
-                            </div>
-                            <input ng-model="settings['idle-seeding-limit-enabled']" type="checkbox" />
-                            Stop seeding when inactive for
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div class="pull-right">
-                                <input ng-model="settings['cache-size-mb']" type="number" />
-                                MB
-                            </div>
-                            Disk cache size
-                        </div>
-                    </li>
-                </ul>
-                <div>
-                    Network
-                </div>
-                <ul>
-                    <li>
-                        <div class="row">
-                            <div class="pull-right">
-                                <input ng-model="settings['peer-port-random-on-start']" type="checkbox" />
-                                Random port
-                            </div>
-                            <input ng-disabled="settings['peer-port-random-on-start']" ng-model="settings['peer-port']" type="number" />
-                            Port
-                        </div>
-                        <div class="row">
-                            <input ng-model="settings['port-forwarding-enabled']" type="checkbox" />
-                            Enable port forwarding
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            Encryption
-                            <select ng-model="settings['encryption']" ng-options="o.value as o.name for o in encryptionOptions"></select>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            Global peer limit
-                            <input ng-model="settings['peer-limit-global']" type="number" />
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <input ng-model="settings['pex-enabled']" type="checkbox" />
-                            Enable Peer Exchange
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <input ng-model="settings['dht-enabled']" type="checkbox" />
-                            Enable DHT
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <input ng-model="settings['lpd-enabled']" type="checkbox" />
-                            Enable Local Peer Discovery
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <input ng-model="settings['utp-enabled']" type="checkbox" />
-                            Enable &mu;tp
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div class="pull-right">
-                                <input ng-disabled="!settings['blocklist-enabled']" ng-model="settings['blocklist-url']" type="text" />
-                            </div>
-                            <input ng-model="settings['blocklist-enabled']" type="checkbox" />
-                            Enable blocklist
-                        </div>
-                    </li>
-                </ul>
-                <div>
-                    Bandwidth
-                </div>
-                <ul>
-                    <li>
-                        <div class="row">
-                            Global settings
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div class="pull-right">
-                                <input ng-disabled="!settings['speed-limit-down-enabled']" ng-model="settings['speed-limit-down']" type="number" />
-                                KB/s
-                            </div>
-                            <input ng-model="settings['speed-limit-down-enabled']" type="checkbox" />
-                            Max download speed
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div class="pull-right">
-                                <input ng-disabled="!settings['speed-limit-up-enabled']" ng-model="settings['speed-limit-up']" type="number" />
-                                KB/s
-                            </div>
-                            <input ng-model="settings['speed-limit-up-enabled']" type="checkbox" />
-                            Max upload speed
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            Alternate bandwidth settings
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div class="pull-right">
-                                <input ng-model="settings['alt-speed-down']" type="number" />
-                                KB/s
-                            </div>
-                            Max download speed
-                        </div>
-                        <div class="row">
-                            <div class="pull-right">
-                                <input ng-model="settings['alt-speed-up']" type="number" />
-                                KB/s
-                            </div>
-                            Max upload speed
-                        </div>
-                        <div class="row">
-                            <label>
-                                <input ng-model="settings['alt-speed-enabled']" type="checkbox" />
-                                Alternate speed enabled
-                            </label>
-                        </div>
-                        <div class="row">
-                            <label>
-                                <input ng-model="settings['alt-speed-time-enabled']" type="checkbox" />
-                                Apply alternate speed settings automatically
-                            </label>
-                        </div>
-                        <div ng-show="settings['alt-speed-time-enabled']">
-                            alt speed settings
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            </form>
         </div>
     </div>
 </body>

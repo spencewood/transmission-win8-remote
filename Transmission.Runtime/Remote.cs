@@ -33,6 +33,16 @@ namespace Transmission.Runtime
             return GetSessionAsync().AsAsyncOperation();
         }
 
+        private async Task<String> SetSessionAsync(string properties)
+        {
+            return await _client.SetSession(properties);
+        }
+
+        public IAsyncOperation<String> SetSession(string properties)
+        {
+            return SetSessionAsync(properties).AsAsyncOperation();
+        }
+
         private async Task<String> SessionStatsAsync()
         {
             return await _client.SessionStats();

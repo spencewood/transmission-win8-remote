@@ -38,6 +38,11 @@ namespace Transmission.Remote
             return await SendRequest("session-get", null);
         }
 
+        public async Task<String> SetSession(string properties)
+        {
+            return await SendRequest("session-set", JsonConvert.DeserializeObject(properties));
+        }
+
         public async Task<String> SessionStats()
         {
             return await SendRequest("session-stats", null);

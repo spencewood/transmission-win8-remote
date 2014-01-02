@@ -74,6 +74,10 @@
                 });
             },
 
+            setSettings: function (settings) {
+                return remote.setSession(JSON.stringify(settings));
+            },
+
             getFreeSpace: function () {
                 return remote.getFreeSpace();
             },

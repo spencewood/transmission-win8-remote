@@ -41,10 +41,54 @@
                 listControl.itemDataSource = scope.torrents.dataSource;
                 listControl.itemTemplate = tmpl;
 
-                list.addEventListener("selectionchanged", function (e) {
+                list.addEventListener('selectionchanged', function (e) {
                     scope.selection = listControl.selection.getItems();
                     scope.$apply();
                 }, false);
             }
         };
+    })
+    .directive('winjsTimeChange', function () {
+        return {
+            restrict: 'A',
+            scope: {
+                timeChange: '@winjsTimeChange',
+                settings: '=settings'
+            },
+            link: function (scope, element) {
+                var control = element[0].winControl;
+                control.clock = '24HourClock';
+                control.minuteIncrement = '15';
+                var time = _.minutesAfterMidnightToDate(scope.$parent.settings[scope.timeChange]);
+                control.current = time.getHours() + ':' + time.getMinutes();
+                control.onchange = function (e) {
+                    scope.$parent.settings[scope.timeChange] = _.dateToMinutesAfterMidnight(e.timeStamp);
+                };
+            }
+        };
+    })
+    .directive('daysOfWeekPicker', function () {
+        return {
+            restrict: 'A',
+            scope: {
+                daysOfWeekPicker: '@',
+                settings: '='
+            },
+            link: function (scope, element) {
+                var $inputs = element.find(':checkbox');
+
+                var selected = Number(scope.$parent.settings[scope.daysOfWeekPicker]).toString(2).split('');
+                $inputs.each(function (idx, $el) {
+                    $el.checked = selected[idx];
+                });
+
+                $inputs.on('change', function (e) {
+                    var bitMap = $inputs.map(function (idx, $el) {
+                        return $el.checked ? 1 : 0;
+                    });
+
+                    scope.$parent.settings[scope.daysOfWeekPicker] = parseInt(bitMap.toArray().join(''), 2);
+                });
+            }
+        }
     });
