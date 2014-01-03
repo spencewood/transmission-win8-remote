@@ -4,9 +4,8 @@
 
         var login = $scope.login = function () {
             $scope.errorMessage = '';
-
+            localSettingsService.setServerSettings($scope.settings);
             remoteService.init().getSettings().then(function (settings) {
-                localSettingsService.setServerSettings($scope.settings);
                 localSettingsService.setTransmissionSettings(settings);
                 navigationService.goHome();
             }, function (e) {

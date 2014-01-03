@@ -51,13 +51,14 @@
 
         return {
             init: function () {
+                var settings = localSettingsService.getServerSettings();
                 remote = new Transmission.Runtime.Remote(
-                    localSettingsService.get('host'),
-                    localSettingsService.get('port'),
-                    localSettingsService.get('rpcPath'),
-                    localSettingsService.get('useSsl'),
-                    localSettingsService.get('username'),
-                    localSettingsService.get('password')                    
+                    settings.host,
+                    settings.port,
+                    settings.rpcPath,
+                    settings.useSsl,
+                    settings.username,
+                    settings.password
                 );
 
                 return this;
@@ -69,8 +70,11 @@
 
             getSettings: function () {
                 return remote.getSession().then(function (val) {
-                    //TODO: handle bad status
-                    return JSON.parse(val).arguments;
+                    var ret = JSON.parse(val);
+                    if (ret.result === 'success') {
+                        return ret.arguments;
+                    }
+                    throw new Error(ret.result, ret);
                 });
             },
 
