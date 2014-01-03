@@ -70,17 +70,16 @@
             get: get,
             set: set,
             getServerSettings: function () {
-                return getAllByPrefix('server', true);
+                return _.merge(
+                    {//defaults
+                        rpcPath: '/transmission/rpc'
+                    },
+                    getAllByPrefix('server', true)
+                );
+                
             },
             setServerSettings: function (settings) {
-                setAllByPrefix('server', {
-                    host: settings.host,
-                    port: settings.port,
-                    useSsl: settings.useSsl,
-                    rpcPath: settings.rpcPath,
-                    username: settings.username,
-                    password: settings.password
-                });
+                setAllByPrefix('server', settings);
             },
             getTransmissionSettings: function (settings) {
                 return getAllByPrefix('transmission', true);
@@ -92,7 +91,19 @@
                 }
                 setAllByPrefix('transmission', settings);
             },
-            getUnits: getUnits
+            getUnits: getUnits,
+            getInterfaceSettings: function () {
+                return _.merge(
+                    {//defaults
+                        refreshActive: 10,
+                        refreshInactive: 30
+                    },
+                    getAllByPrefix('interface', true)
+                );
+            },
+            setInterfaceSettings: function (settings) {
+                setAllByPrefix('interface', settings);
+            }
         };
     })
     .factory('navigationService', function () {

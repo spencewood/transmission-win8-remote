@@ -6,7 +6,6 @@
         $scope.save = function () {
             localSettingsService.setServerSettings($scope.settings);
             back();
-            navigationService.goHome();
         };
     })
     .controller('TransmissionSettings', function ($scope, localSettingsService, remoteService, navigationService, encryptionOptions) {
@@ -29,5 +28,14 @@
                     localSettingsService.setTransmissionSettings($scope.settings);
                     back();
                 });
+        };
+    })
+    .controller('InterfaceSettings', function ($scope, localSettingsService, navigationService) {
+        $scope.settings = localSettingsService.getInterfaceSettings();
+        var back = $scope.back = navigationService.showSettingsFlyout;
+
+        $scope.save = function () {
+            localSettingsService.setInterfaceSettings($scope.settings);
+            back();
         };
     });

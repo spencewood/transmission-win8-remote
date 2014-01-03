@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Interface Settings</title>
+
+    <!-- Page -->
+    <script src="/js/pages/settings-interface-page.js"></script>
+</head>
+<body>
+    <div id="settings-interface" class="win-settingsflyout wide"
+         data-win-control="WinJS.UI.SettingsFlyout" ng-controller="InterfaceSettings">
+        <div class="win-header">
+            <button id="backButton" class="win-backbutton" aria-label="Back" ng-click="back()"></button>
+            <div class="win-label">Interface Settings</div>
+        </div>
+        <div class="win-content">
+            <form ng-submit="save()">
+                <div class="win-settings-section">
+                    <ul>
+                        <li>
+                            Data refresh interval
+                            <div>
+                                <input ng-model="settings.refreshActive" type="range" min="1" max="60" />
+                                seconds
+                            </div>
+                        </li>
+                        <li>
+                            Data refresh interval when not active
+                            <div>
+                                <input ng-model="settings.refreshInactive" type="range" min="1" max="60" />
+                                seconds
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        <input type="submit" value="Save" />
+                        <input type="button" ng-click="back()" value="Cancel" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

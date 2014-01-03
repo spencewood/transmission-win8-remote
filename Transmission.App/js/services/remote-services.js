@@ -199,7 +199,7 @@
         };
     })
     .provider('torrentService', function () {
-        this.$get = function ($rootScope, $indexedDB, $q, torrentStore, historyStore, remoteService, statusService) {
+        this.$get = function ($rootScope, $indexedDB, $q, torrentStore, historyStore, remoteService, statusService, localSettingsService) {
             var dbTorrents = $indexedDB.objectStore(torrentStore);
             var dbHistory = $indexedDB.objectStore(historyStore);
 
@@ -235,12 +235,18 @@
                 },
 
                 pollForTorrents: function () {
+                    //TODO: make polling different when not focused
+
                     if (this.timeoutToken != null) {
                         clearTimeout(this.timeoutToken);
                         this.timeoutToken = null;
                     }
                     return this.updateTorrents().then(function (val) {
-                        this.timeoutToken = setTimeout(this.pollForTorrents.bind(this), 10 * 1000);
+                        localSettingsService.getInterfaceSettings();
+                        this.timeoutToken = setTimeout(
+                            this.pollForTorrents.bind(this),
+                            localSettingsService.getInterfaceSettings().refreshActive * 1000
+                        );
                     }.bind(this));
                 },
 

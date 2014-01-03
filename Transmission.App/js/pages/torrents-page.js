@@ -14,7 +14,8 @@
             WinJS.Application.onsettings = function (e) {
                 e.detail.applicationcommands = {
                     'settings-server': { title: 'Server Settings', href: '/views/settings-server.html' },
-                    'settings-transmission': { title: 'Transmission Settings', href: 'views/settings-transmission.html' }
+                    'settings-transmission': { title: 'Transmission Settings', href: '/views/settings-transmission.html' },
+                    'settings-interface': { title: 'Interface Settings', href: '/views/settings-interface.html' }
                 };
                 WinJS.UI.SettingsFlyout.populateSettings(e);
             };
