@@ -7,14 +7,14 @@
         { name: 'Enabled', value: 'preferred' },
         { name: 'Required', value: 'required' }
     ])
-    .config(function ($indexedDBProvider, dbName, torrentStore, historyStore) {
+    .config(function ($indexedDBProvider, dbName, torrentStore) {
         $indexedDBProvider
             .connection(dbName)
             .upgradeDatabase(1, function (event, db, tx) {
                 if (event.oldVersion === 0) {
                     db.createObjectStore(torrentStore, { keyPath: 'id' })
                     //    .createIndex('name', 'name', { unique: true });
-                    db.createObjectStore(historyStore, { keyPath: 'id' });
+                    //db.createObjectStore(historyStore, { keyPath: 'id' });
                 }
             });
 
@@ -199,9 +199,9 @@
         };
     })
     .provider('torrentService', function () {
-        this.$get = function ($rootScope, $indexedDB, $q, torrentStore, historyStore, remoteService, statusService, localSettingsService) {
+        this.$get = function ($rootScope, $indexedDB, $q, torrentStore, remoteService, statusService, localSettingsService) {
             var dbTorrents = $indexedDB.objectStore(torrentStore);
-            var dbHistory = $indexedDB.objectStore(historyStore);
+            //var dbHistory = $indexedDB.objectStore(historyStore);
 
             return {
                 timeoutToken: null,
@@ -210,28 +210,29 @@
                     return dbTorrents.getAll();
                 },
 
-                getHistory: function () {
-                    return dbHistory.getAll();
-                },
+                //getHistory: function () {
+                //    return dbHistory.getAll();
+                //},
 
-                clearHistory: function () {
-                    return dbHistory.clear();
-                },
+                //clearHistory: function () {
+                //    return dbHistory.clear();
+                //},
 
                 getUpdatedTorrents: function () {
-                    return $q.all([this.getTorrents(), this.getHistory()])
-                        .then(function (data) {
-                            var torrents = data[0];
-                            var history = data[1];
-                            torrents.forEach(function (torrent) {
-                                var hist = _.findWhere(history, { id: torrent.id });
-                                if (typeof hist !== 'undefined') {
-                                    torrent.rateUpload = hist.rateUpload;
-                                    torrent.rateDownload = hist.rateDownload;
-                                }
-                            });
-                            return torrents;
-                        });
+                    return this.getTorrents();
+                    //return $q.all([this.getTorrents(), this.getHistory()])
+                    //    .then(function (data) {
+                    //        var torrents = data[0];
+                    //        var history = data[1];
+                    //        torrents.forEach(function (torrent) {
+                    //            var hist = _.findWhere(history, { id: torrent.id });
+                    //            if (typeof hist !== 'undefined') {
+                    //                torrent.rateUpload = hist.rateUpload;
+                    //                torrent.rateDownload = hist.rateDownload;
+                    //            }
+                    //        });
+                    //        return torrents;
+                    //    });
                 },
 
                 pollForTorrents: function () {
@@ -241,13 +242,14 @@
                         clearTimeout(this.timeoutToken);
                         this.timeoutToken = null;
                     }
-                    return this.updateTorrents().then(function (val) {
-                        localSettingsService.getInterfaceSettings();
-                        this.timeoutToken = setTimeout(
-                            this.pollForTorrents.bind(this),
-                            localSettingsService.getInterfaceSettings().refreshActive * 1000
-                        );
-                    }.bind(this));
+                    return this.updateTorrents()
+                        .then(localSettingsService.getInterfaceSettings)
+                        .then(function () {
+                            this.timeoutToken = setTimeout(
+                                this.pollForTorrents.bind(this),
+                                localSettingsService.getInterfaceSettings().refreshActive * 1000
+                            );
+                        }.bind(this));
                 },
 
                 insertTorrents: function (torrents) {
@@ -257,73 +259,74 @@
                     });
                 },
 
-                insertHistory: function (items) {
-                    //TODO: refactor
-                    var active = function (history) {
-                        return history.rateUpload + history.rateDownload > 0;
-                    };
-                    var activeItems = items.filter(active);
+                //insertHistory: function (items) {
+                //    //TODO: refactor
+                //    var active = function (history) {
+                //        return history.rateUpload + history.rateDownload > 0;
+                //    };
+                //    var activeItems = items.filter(active);
 
-                    //update
-                    var deferreds = [];
-                    activeItems.forEach(function (item) {
-                        deferreds.push(dbHistory.find(item.id).then(function (history) {
-                            var h = { id: item.id };
-                            history = history || {};
+                //    //update
+                //    var deferreds = [];
+                //    activeItems.forEach(function (item) {
+                //        deferreds.push(dbHistory.find(item.id).then(function (history) {
+                //            var h = { id: item.id };
+                //            history = history || {};
                             
-                            h.up = history.up || [];
-                            h.down = history.down || [];
-                            h.rateUpload = history.rateUpload || 0;
-                            h.rateDownload = history.rateDownload || 0;
+                //            h.up = history.up || [];
+                //            h.down = history.down || [];
+                //            h.rateUpload = history.rateUpload || 0;
+                //            h.rateDownload = history.rateDownload || 0;
 
-                            //TODO: make this dynamic
-                            var arrayLimit = 5;
+                //            //TODO: make this dynamic
+                //            var arrayLimit = 5;
 
-                            if (item.rateUpload > 0 || h.up.length > 0) {
-                                h.up.push(item.rateUpload);
-                                h.rateUpload = _.average(h.up);
-                                //_.shiftArrayToSize(h.up, arrayLimit);
-                            }
-                            if (item.rateDownload > 0 || h.down.length > 0) {
-                                h.down.push(item.rateDownload);
-                                h.rateDownload = _.average(h.down);
-                                //_.shiftArrayToSize(h.up, arrayLimit);
-                            }
-                            return dbHistory.upsert(h);
-                        }));
-                    });
+                //            if (item.rateUpload > 0 || h.up.length > 0) {
+                //                h.up.push(item.rateUpload);
+                //                h.rateUpload = _.average(h.up);
+                //                //_.shiftArrayToSize(h.up, arrayLimit);
+                //            }
+                //            if (item.rateDownload > 0 || h.down.length > 0) {
+                //                h.down.push(item.rateDownload);
+                //                h.rateDownload = _.average(h.down);
+                //                //_.shiftArrayToSize(h.up, arrayLimit);
+                //            }
+                //            return dbHistory.upsert(h);
+                //        }));
+                //    });
 
-                    return $q.all(deferreds).then(function(){
-                        //delete
-                        return dbHistory.getAll().then(function (histories) {
-                            var defs = [];
-                            histories.filter(function (history) {
-                                return history.rateDownload + history.rateUpload === 0;
-                            }).forEach(function (history) {
-                                defs.push(dbHistory.delete(history.id));
-                            });
+                //    return $q.all(deferreds).then(function(){
+                //        //delete
+                //        return dbHistory.getAll().then(function (histories) {
+                //            var defs = [];
+                //            histories.filter(function (history) {
+                //                return history.rateDownload + history.rateUpload === 0;
+                //            }).forEach(function (history) {
+                //                defs.push(dbHistory.delete(history.id));
+                //            });
 
-                            return $q.all(defs);
-                        });
-                    });
-                },
+                //            return $q.all(defs);
+                //        });
+                //    });
+                //},
 
-                updateTorrentSpeeds: function (torrents) {
-                    this.insertHistory(torrents).then(function(){
-                        $rootScope.$broadcast('torrents:updated');
-                    });
-                },
+                //updateTorrentSpeeds: function (torrents) {
+                //    this.insertHistory(torrents).then(function(){
+                //        $rootScope.$broadcast('torrents:updated');
+                //    });
+                //},
 
                 updateTorrents: function () {
-                    return remoteService.getTorrents().then(function (val) {
-                        dbTorrents
-                            .clear()
-                            .then(function () {
-                                return JSON.parse(val).arguments.torrents;
-                            })
-                            .then(this.insertTorrents)
-                            .then(this.updateTorrentSpeeds.bind(this));
-                    }.bind(this));
+                    return remoteService.getTorrents()
+                        .then(function (val) {
+                            dbTorrents.clear();
+                            return val;
+                        })
+                        .then(function (val) {
+                            return JSON.parse(val).arguments.torrents;
+                        })
+                        .then(this.insertTorrents);
+                        //.then(this.updateTorrentSpeeds.bind(this));
                 },
 
                 findById: function (id) {

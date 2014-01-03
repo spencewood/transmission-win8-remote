@@ -1,20 +1,11 @@
 ﻿angular.module('Torrent', ['RemoteServices', 'WinServices', 'StatusServices'])
     .controller('MainController', function ($scope, remoteService, torrentService) {
         $scope.selectedTorrentIds = [];
-
-        //TODO: move settings call to login and store locally
-        remoteService.init().getSettings().then(function (val) {
-            $scope.$broadcast('service:initialized');
-        });
-
-        $scope.$on('service:initialized', function () {
-            torrentService.clearHistory().then(function () {
-                torrentService.pollForTorrents();
-            });
-        });
+        remoteService.init();
+        torrentService.pollForTorrents();
     })
     .controller('TreeController', function ($scope, $location, torrentService, statusService) {
-        $scope.$on('torrents:updated', function () {
+        $scope.$on('torrents:inserted', function () {
             torrentService.getUpdatedTorrents.call(torrentService).then(function (torrents) {
                 $scope.torrents = torrents;
             });
@@ -92,7 +83,7 @@
             });
         };
 
-        $scope.$on('torrents:updated', processTorrentData);
+        $scope.$on('torrents:inserted', processTorrentData);
         $scope.$on('torrents:add', _.dropFirstArgument(addTorrents));
 
         $rootScope.$on('$locationChangeSuccess', clearTorrents);

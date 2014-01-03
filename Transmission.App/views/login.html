@@ -13,7 +13,7 @@
             <form ng-submit="login()">
                 <div class="row">
                     <div class="pull-right">
-                        <input ng-model="settings.port" placeholder="port" type="number" value="9091" required />
+                        <input ng-model="settings.port" placeholder="port" type="number" required />
                     </div>
                     <input ng-model="settings.host" placeholder="host" type="text" required />
                 </div>
@@ -22,19 +22,21 @@
                         <input ng-model="settings.useSsl" type="checkbox" />
                         Use SSL
                     </label>
-                    <input ng-model="settings.rpcPath" type="text" value="/transmission/rpc" />
+                    <input ng-model="settings.rpcPath" type="text" />
                 </div>
                 <div class="row">
                     <label>
-                        <input type="checkbox" />
-                        Ask for password
+                        <input ng-model="authRequired" type="checkbox" ng-checked="{{settings.username.length > 0}}" />
+                        Authentication required
                     </label>
                 </div>
-                <div class="row">
-                    <input ng-model="settings.username" placeholder="username" type="text" required />
-                </div>
-                <div class="row">
-                    <input ng-model="settings.password" placeholder="password" type="password" required />
+                <div ng-show="authRequired">
+                    <div class="row">
+                        <input ng-model="settings.username" placeholder="username" type="text" required />
+                    </div>
+                    <div class="row">
+                        <input ng-model="settings.password" placeholder="password" type="password" required />
+                    </div>
                 </div>
                 <input type="submit" id="submit" value="Submit" />
 

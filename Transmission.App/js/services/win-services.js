@@ -72,6 +72,7 @@
             getServerSettings: function () {
                 return _.merge(
                     {//defaults
+                        port: 9091,
                         rpcPath: '/transmission/rpc'
                     },
                     getAllByPrefix('server', true)
