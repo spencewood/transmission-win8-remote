@@ -211,5 +211,15 @@ namespace Transmission.Runtime
         {
             return AddTorrentAsync(metainfo).AsAsyncOperation();
         }
+
+        private async Task<String> TestPortAsync()
+        {
+            return await _client.TestPort();
+        }
+
+        public IAsyncOperation<String> TestPort()
+        {
+            return TestPortAsync().AsAsyncOperation();
+        }
     }
 }

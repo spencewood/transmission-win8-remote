@@ -41,6 +41,14 @@
     .factory('remoteService', function ($rootScope, localSettingsService) {
         var remote = null;
 
+        var handleResult = function (res) {
+            var r = JSON.parse(res);
+            if (r.result !== 'success') {
+                throw new Error(r.result, res);
+            }
+            return r.arguments;
+        };
+
         var spinnerStop = function () {
             $rootScope.$broadcast('spinner:stop');
         };
@@ -69,13 +77,7 @@
             },
 
             getSettings: function () {
-                return remote.getSession().then(function (val) {
-                    var ret = JSON.parse(val);
-                    if (ret.result === 'success') {
-                        return ret.arguments;
-                    }
-                    throw new Error(ret.result, ret);
-                });
+                return remote.getSession().then(handleResult);
             },
 
             setSettings: function (settings) {
@@ -129,11 +131,11 @@
                     'utp-enabled': settings['utp-enabled'],
                 };
 
-                return remote.setSession(JSON.stringify(settings));
+                return remote.setSession(JSON.stringify(settings)).then(handleResult);
             },
 
             getFreeSpace: function () {
-                return remote.getFreeSpace();
+                return remote.getFreeSpace().then(handleResult);
             },
 
             getTorrents: function () {
@@ -144,47 +146,55 @@
             },
 
             getTorrentStats: function () {
-                return remote.getTorrentStats();
+                return remote.getTorrentStats().then(handleResult);
             },
 
             startTorrents: function (ids) {
-                return remote.startTorrents(ids);
+                return remote.startTorrents(ids).then(handleResult);
             },
 
             stopTorrents: function (ids) {
-                return remote.stopTorrents(ids);
+                return remote.stopTorrents(ids).then(handleResult);
             },
 
             verifyTorrents: function (ids) {
-                return remote.verifyTorrents(ids);
+                return remote.verifyTorrents(ids).then(handleResult);
             },
 
             reannounceTorrents: function (ids) {
-                return remote.reannounceTorrents(ids);
+                return remote.reannounceTorrents(ids).then(handleResult);
             },
 
             removeTorrents: function (ids, removeData) {
-                return remote.removeTorrents(ids, removeData);
+                return remote.removeTorrents(ids, removeData).then(handleResult);
             },
 
             moveTorrentsToTop: function (ids) {
-                return remote.moveTorrentsToTop(ids);
+                return remote.moveTorrentsToTop(ids).then(handleResult);
             },
 
             moveTorrentsToBottom: function (ids) {
-                return remote.moveTorrentsToBottom(ids);
+                return remote.moveTorrentsToBottom(ids).then(handleResult);
             },
 
             moveTorrentsUp: function (ids) {
-                return remote.moveTorrentsUp(ids);
+                return remote.moveTorrentsUp(ids).then(handleResult);
             },
 
             moveTorrentsDown: function (ids) {
-                return remote.moveTorrentsDown(ids);
+                return remote.moveTorrentsDown(ids).then(handleResult);
             },
 
             addTorrent: function (byteArray) {
-                return remote.addTorrent(byteArray);
+                return remote.addTorrent(byteArray).then(handleResult);
+            },
+
+            testPort: function () {
+                return remote.testPort()
+                    .then(handleResult)
+                    .then(function (ret) {
+                        return ret['port-is-open'];
+                    });
             }
         };
     })

@@ -167,5 +167,9 @@ namespace Transmission.Remote
                "priority-normal"    | array       indices of normal-priority file(s)
              */
         }
+
+        public async Task<String> TestPort(){
+            return await SendRequest("port-test", null);
+        }
     }
 }
