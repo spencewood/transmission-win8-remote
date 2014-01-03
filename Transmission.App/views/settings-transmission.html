@@ -11,7 +11,7 @@
     <div id="settings-transmission" class="win-settingsflyout wide"
          data-win-control="WinJS.UI.SettingsFlyout" ng-controller="TransmissionSettings">
         <div class="win-header">
-            <button id="backButton" class="win-backbutton" aria-label="Back" onclick="WinJS.UI.SettingsFlyout.show()"></button>
+            <button id="backButton" class="win-backbutton" aria-label="Back" ng-click="back()"></button>
             <div class="win-label">Server Settings</div>
         </div>
         <div class="win-content">
@@ -298,6 +298,7 @@
                     </ul>
                     <div>
                         <input type="submit" value="Save" />
+                        <input type="button" ng-click="back()" value="Cancel" />
                     </div>
                 </div>
             </form>

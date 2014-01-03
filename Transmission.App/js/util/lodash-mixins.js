@@ -100,6 +100,16 @@
             var d = new Date();
             d.setHours(0, mam, 0, 0);
             return d;
+        },
+
+        numberToBinaryArray: function (num) {
+            return Number(num).toString(2).split('').map(function(str){
+                return parseInt(str, 10);
+            });
+        },
+
+        binaryArrayToNumber: function (arr) {
+            return parseInt(arr.join(''), 2);
         }
     });
 }));

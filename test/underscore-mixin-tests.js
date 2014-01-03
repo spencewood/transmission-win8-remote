@@ -26,4 +26,24 @@ describe('Lodash mixins', function(){
 			_.minutesAfterMidnightToDate(420).getHours().should.equal(7);
 		});
 	});
+
+	describe('Number to binary array', function(){
+		it('should return [1,0,0,0,0,0,0,1] for 65', function(){
+			_.numberToBinaryArray(65).join('').should.equal([1,0,0,0,0,0,1].join(''));
+		});
+
+		it('should return [1,1,1,1,1,1,1,1] for 127', function(){
+			_.numberToBinaryArray(127).join('').should.equal([1,1,1,1,1,1,1].join(''));
+		});
+	});
+
+	describe('Binary array to number', function(){
+		it('should return 65 for [1,0,0,0,0,0,1]', function(){
+			_.binaryArrayToNumber([1,0,0,0,0,0,1]).should.equal(65);
+		});
+
+		it('should return 127 for [1,1,1,1,1,1,1]', function(){
+			_.binaryArrayToNumber([1,1,1,1,1,1,1]).should.equal(127);
+		});
+	});
 });

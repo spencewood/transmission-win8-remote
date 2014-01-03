@@ -1,4 +1,4 @@
-﻿angular.module('Login', ['RemoteServices'])
+﻿angular.module('Login', ['RemoteServices', 'WinServices'])
     .controller('LoginController', function ($scope, localSettingsService, remoteService, navigationService) {
         $scope.errorMessage = '';
 
@@ -8,8 +8,7 @@
             remoteService.init().getSettings().then(function (settings) {
                 localSettingsService.setServerSettings($scope.settings);
                 localSettingsService.setTransmissionSettings(settings);
-
-                WinJS.Navigation.navigate('/views/torrents.html');
+                navigationService.goHome();
             }, function (e) {
                 $scope.errorMessage = 'Unable to connect to server';
                 $scope.$apply();

@@ -11,35 +11,41 @@
     <div id="settings-server" class="win-settingsflyout wide"
          data-win-control="WinJS.UI.SettingsFlyout" ng-controller="ServerSettings">
         <div class="win-header">
-            <button id="backButton" class="win-backbutton" aria-label="Back" onclick="WinJS.UI.SettingsFlyout.show()"></button>
+            <button id="backButton" class="win-backbutton" aria-label="Back" ng-click="back()"></button>
             <div class="win-label">Server Settings</div>
         </div>
         <div class="win-content">
-            <div class="win-settings-section">
-                <ul>
-                    <li>
-                        <div class="pull-right">
-                            <input ng-model="settings.port" placeholder="port" type="number" value="9091" required />
-                        </div>
-                        <input ng-model="settings.host" type="text" placeholder="server" />
-                    </li>
-                    <li>
-                        <label class="pull-right">
-                            <input ng-model="settings.useSsl" type="checkbox" />
-                            Use SSL
-                        </label>
-                        <input ng-model="settings.rpcPath" type="text" value="/transmission/rpc" />
-                    </li>
-                    <li>
-                        <input ng-model="settings.username" type="text" placeholder="username" />
-                    </li>
-                    <li>
-                        <label>
-                            <input ng-model="settings.password" type="password" placeholder="password" />
-                        </label>
-                    </li>
-                </ul>
-            </div>
+            <form ng-submit="save()">
+                <div class="win-settings-section">
+                    <ul>
+                        <li>
+                            <div class="pull-right">
+                                <input ng-model="settings.port" placeholder="port" type="number" value="9091" required />
+                            </div>
+                            <input ng-model="settings.host" type="text" placeholder="server" />
+                        </li>
+                        <li>
+                            <label class="pull-right">
+                                <input ng-model="settings.useSsl" type="checkbox" />
+                                Use SSL
+                            </label>
+                            <input ng-model="settings.rpcPath" type="text" value="/transmission/rpc" />
+                        </li>
+                        <li>
+                            <input ng-model="settings.username" type="text" placeholder="username" />
+                        </li>
+                        <li>
+                            <label>
+                                <input ng-model="settings.password" type="password" placeholder="password" />
+                            </label>
+                        </li>
+                    </ul>
+                    <div>
+                        <input type="submit" value="Save" />
+                        <input type="button" ng-click="back()" value="Cancel" />
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </body>

@@ -77,7 +77,7 @@
             link: function (scope, element) {
                 var $inputs = element.find(':checkbox');
 
-                var selected = Number(scope.$parent.settings[scope.daysOfWeekPicker]).toString(2).split('');
+                var selected = _.numberToBinaryArray(scope.$parent.settings[scope.daysOfWeekPicker]);
                 $inputs.each(function (idx, $el) {
                     $el.checked = selected[idx];
                 });
@@ -87,7 +87,7 @@
                         return $el.checked ? 1 : 0;
                     });
 
-                    scope.$parent.settings[scope.daysOfWeekPicker] = parseInt(bitMap.toArray().join(''), 2);
+                    scope.$parent.settings[scope.daysOfWeekPicker] = _.binaryArrayToNumber(bitMap.toArray());
                 });
             }
         }

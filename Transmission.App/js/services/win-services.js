@@ -58,6 +58,14 @@
             return set(newObj);
         };
 
+        var storeUnits = function (units) {
+            setAllByPrefix('units', JSON.stringify(units));
+        };
+
+        var getUnits = function () {
+            return JSON.parse(getAllByPrefix('units'));
+        }
+
         return {
             get: get,
             set: set,
@@ -78,90 +86,21 @@
                 return getAllByPrefix('transmission', true);
             },
             setTransmissionSettings: function (settings) {
-                setAllByPrefix('transmission', {
-                    'alt-speed-down': settings['alt-speed-down'],
-                    'alt-speed-enabled': settings['alt-speed-enabled'],
-                    'alt-speed-time-begin': settings['alt-speed-time-begin'],
-                    'alt-speed-time-day': settings['alt-speed-time-day'],
-                    'alt-speed-time-enabled': settings['alt-speed-time-enabled'],
-                    'alt-speed-time-end': settings['alt-speed-time-end'],
-                    'alt-speed-up': settings['alt-speed-up'],
-                    'blocklist-enabled': settings['blocklist-enabled'],
-                    'blocklist-size': settings['blocklist-size'],
-                    'blocklist-url': settings['blocklist-url'],
-                    'cache-size-mb': settings['cache-size-mb'],
-                    'config-dir': settings['config-dir'],
-                    'dht-enabled': settings['dht-enabled'],
-                    'download-dir': settings['download-dir'],
-                    'download-dir-free-space': settings['download-dir-free-space'],
-                    'download-queue-enabled': settings['download-queue-enabled'],
-                    'download-queue-size': settings['download-queue-size'],
-                    'encryption': settings.encryption,
-                    'idle-seeding-limit': settings['idle-seeding-limit'],
-                    'idle-seeding-limit-enabled': settings['idle-seeding-limit-enabled'],
-                    'incomplete-dir': settings['incomplete-dir'],
-                    'incomplete-dir-enabled': settings['incomplete-dir-enabled'],
-                    'lpd-enabled': settings['lpd-enabled'],
-                    'peer-limit-global': settings['peer-limit-global'],
-                    'peer-limit-per-torrent': settings['peer-limit-per-torrent'],
-                    'peer-port': settings['peer-port'],
-                    'peer-port-random-on-start': settings['peer-port-random-on-start'],
-                    'pex-enabled': settings['pex-enabled'],
-                    'port-forwarding-enabled': settings['port-forwarding-enabled'],
-                    'queue-stalled-enabled': settings['queue-stalled-enabled'],
-                    'queue-stalled-minutes': settings['queue-stalled-minutes'],
-                    'rename-partial-files': settings['rename-partial-files'],
-                    'rpc-version': settings['rpc-version'],
-                    'rpc-version-minimum': settings['rpc-version-minimum'],
-                    'script-torrent-done-enabled': settings['script-torrent-done-enabled'],
-                    'script-torrent-done-filename': settings['script-torrent-done-filename'],
-                    'seed-queue-enabled': settings['seed-queue-enabled'],
-                    'seed-queue-size': settings['seed-queue-size'],
-                    'seedRatioLimit': settings.seedRatioLimit,
-                    'seedRatioLimited': settings.seedRatioLimited,
-                    'speed-limit-down': settings['speed-limit-down'],
-                    'speed-limit-down-enabled': settings['speed-limit-down-enabled'],
-                    'speed-limit-up': settings['speed-limit-up'],
-                    'speed-limit-up-enabled': settings['speed-limit-up-enabled'],
-                    'start-added-torrents': settings['start-added-torrents'],
-                    'trash-original-torrent-files': settings['trash-original-torrent-files'],
-                    'utp-enabled': settings['utp-enabled'],
-
-                    //info
-                    //'units': settings.units,
-                    'version': settings.version
-                });
-            }
+                if ('units' in settings) {
+                    storeUnits(settings.units);
+                    delete settings.units;
+                }
+                setAllByPrefix('transmission', settings);
+            },
+            getUnits: getUnits
         };
     })
     .factory('navigationService', function () {
         return {
-            navigate: WinJS.Navigation.navigate
+            navigate: WinJS.Navigation.navigate,
+            showSettingsFlyout: WinJS.UI.SettingsFlyout.show,
+            goHome: function () {
+                WinJS.Navigation.navigate('/views/torrents.html');
+            }
         };
     });
-
-
-//'version': '2.82 (14160)'
-    //'units': {
-    //    'memory-bytes': 1024,
-    //    'memory-units': [
-    //        'KiB',
-    //        'MiB',
-    //        'GiB',
-    //        'TiB'
-    //    ],
-    //    'size-bytes': 1000,
-    //    'size-units': [
-    //        'kB',
-    //        'MB',
-    //        'GB',
-    //        'TB'
-    //    ],
-    //    'speed-bytes': 1000,
-    //    'speed-units': [
-    //        'kB/s',
-    //        'MB/s',
-    //        'GB/s',
-    //        'TB/s'
-    //    ]
-    //},
