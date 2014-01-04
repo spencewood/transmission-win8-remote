@@ -32,14 +32,11 @@
             transclude: true,
             templateUrl: '/views/partials/torrent-listview.html',
             link: function (scope, element) {
-                var list = element[0].children[0];
-                var tmpl = element[0].children[1];
+                var list = element.find('#list-view')[0];
                 WinJS.UI.processAll(list);
-                WinJS.UI.processAll(tmpl);
 
                 var listControl = list.winControl;
                 listControl.itemDataSource = scope.torrents.dataSource;
-                listControl.itemTemplate = tmpl;
 
                 list.addEventListener('selectionchanged', function (e) {
                     scope.selection = listControl.selection.getItems();

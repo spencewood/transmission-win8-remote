@@ -13,7 +13,7 @@
 
         return {
             getLocationStatus: function (){
-                return $location.url().match(statusRegex)[1];
+                return 'all';//$location.url().match(statusRegex)[1];
             },
 
             statuses: {
