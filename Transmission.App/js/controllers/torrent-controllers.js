@@ -13,9 +13,11 @@
 
         $scope.$on('spinner:stop', function () {
             $scope.showSpinner = false;
+            $scope.$apply();
         });
         $scope.$on('spinner:start', function () {
             $scope.showSpinner = true;
+            $scope.$apply();
         });
 
         $location.path('/status/all');
@@ -60,10 +62,6 @@
             _.clearArray($scope.torrents);
         };
 
-        var addTorrents = function (torrents) {
-            torrentService.addTorrents(torrents);
-        };
-
         var processTorrentData = $scope.processTorrentData = function () {
             torrentService.getUpdatedTorrents.call(torrentService).then(function (torrents) {
                 var active = torrents.filter(statusService.statuses.active);
@@ -84,7 +82,7 @@
         };
 
         $scope.$on('torrents:inserted', processTorrentData);
-        $scope.$on('torrents:add', _.dropFirstArgument(addTorrents));
+        $scope.$on('torrents:add', _.dropFirstArgument(torrentService.addTorrents));
 
         $rootScope.$on('$locationChangeSuccess', clearTorrents);
         $rootScope.$on('$locationChangeSuccess', processTorrentData);
