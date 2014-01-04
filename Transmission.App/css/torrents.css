@@ -25,17 +25,17 @@
         margin-right: 45px;
     }
 
-    .groupeditemspage .groupeditemslist .win-groupheader {
+    /*.groupeditemspage .groupeditemslist .win-groupheader {
         padding: 0;
-    }
+    }*/
 
     /* Use grid and top level layout for truncation */
-    .groupeditemspage .groupeditemslist .group-header {
+    /*.groupeditemspage .groupeditemslist .group-header {
         -ms-grid-columns: minmax(0, max-content) 7px max-content;
         -ms-grid-rows: max-content;
         display: -ms-inline-grid;
         line-height: 1.5;
-    }
+    }*/
 
     /* Override default button styles */
     .groupeditemspage .groupeditemslist .group-header, .group-header:hover, .group-header:hover:active {
@@ -49,23 +49,23 @@
         padding: 0;
     }
 
-        .groupeditemspage .groupeditemslist .group-header .group-title {
+        /*.groupeditemspage .groupeditemslist .group-header .group-title {
             display: inline-block;
-        }
+        }*/
 
-        .groupeditemspage .groupeditemslist .group-header .group-chevron {
+        /*.groupeditemspage .groupeditemslist .group-header .group-chevron {
             -ms-grid-column: 3;
             display: inline-block;
-        }
+        }*/
 
-            .groupeditemspage .groupeditemslist .group-header .group-chevron::before {
+            /*.groupeditemspage .groupeditemslist .group-header .group-chevron::before {
                 content: "\E26B";
                 font-family: 'Segoe UI Symbol';
             }
 
             .groupeditemspage .groupeditemslist .group-header .group-chevron:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm)::before {
                 content: "\E26C";
-            }
+            }*/
 
     .groupeditemspage .groupeditemslist .item {
         -ms-grid-columns: 20px 1fr;
@@ -88,11 +88,12 @@
 
             .groupeditemspage .groupeditemslist .item .item-overlay .item-title {
                 -ms-grid-row: 1;
-                
+                -ms-grid-column: 2;
             }
 
             .groupeditemspage .groupeditemslist .item .item-overlay progress {
                 -ms-grid-row: 2;
+                -ms-grid-column: 2;
             }
 
 @media screen and (-ms-high-contrast) {

@@ -58,47 +58,113 @@ namespace Transmission.Runtime
             return await _client.GetTorrents(fields);
         }
 
+        private async Task<String> GetTorrentsAsync(List<String> fields, int id)
+        {
+            return await _client.GetTorrents(fields, id);
+        }
+
         public IAsyncOperation<String> GetTorrents()
         {
             var fields = new List<String>{
                 "id",
                 "name",
-                "queuePosition",
-                "totalSize",
-                "percentDone",
-                "rateDownload",
-	            "rateUpload",
                 "status",
-                "error",
-                "uploadRatio",
+                "errorString",
+                "announceResponse",
+                "recheckProgress",
                 "sizeWhenDone",
-                "webseedsSendingToUs",
-                "peersConnected",
-                "peersGettingFromUs",
-                "peersSendingToUs",
-                "isFinished",
+                "leftUntilDone",
+                "rateDownload",
+                "rateUpload",
+                "trackerStats",
+                "metadataPercentComplete"
             };
 
             return GetTorrentsAsync(fields).AsAsyncOperation();
         }
 
-        public IAsyncOperation<String> GetTorrentStats()
+        public IAsyncOperation<String> GetTorrent(int id)
         {
             var fields = new List<String>{
-                "addedDate",
-                "errorstring",
-                "eta",
-                "isStalled",
+                "id",
+                "totalSize",
+                "sizeWhenDone",
                 "leftUntilDone",
-                "metadataPercentComplete",
-                "recheckProgress",
-                "seedRatioMode",
-                "seedRatioLimit",
-                "trackers",
+                "pieceCount",
+                "pieceSize",
+                "haveValid",
+                "hashString",
+                "comment",
+                "downloadedEver",
+                "uploadedEver",
+                "corruptEver",
+                "errorString",
+                "announceResponse",
+                "downloadLimit",
+                "downloadLimitMode",
+                "uploadLimit",
+                "uploadLimitMode",
+                "maxConnectedPeers",
+                "nextAnnounceTime",
+                "dateCreated",
+                "creator",
+                "eta",
+                "peersSendingToUs",
+                "seeders",
+                "peersGettingFromUs",
+                "leechers",
+                "uploadRatio",
+                "addedDate",
+                "doneDate",
+                "activityDate",
+                "downloadedLimited",
+                "uploadLimited",
                 "downloadDir",
-                "uploadedEver"
+                "pieces",
+                "trackerStats",
+                "secondsDownloading",
+                "secondsSeeding"
             };
-            return GetTorrentsAsync(fields).AsAsyncOperation();
+
+            return GetTorrentsAsync(fields, id).AsAsyncOperation();
+        }
+
+        public IAsyncOperation<String> GetPeers(int id)
+        {
+            var fields = new List<String>
+            {
+                "id",
+                "peers"
+            };
+
+            return GetTorrentsAsync(fields, id).AsAsyncOperation();
+        }
+
+        public IAsyncOperation<String> GetFiles(int id)
+        {
+            var fields = new List<String>
+            {
+                "id",
+                "files",
+                "priorities",
+                "wanted",
+                "downloadDir"
+            };
+
+            return GetTorrentsAsync(fields, id).AsAsyncOperation();
+        }
+
+        public IAsyncOperation<String> GetTrackers(int id)
+        {
+            var fields = new List<String>
+            {
+                "id",
+                "trackers",
+                "trackerStats",
+                "nextAnnounceTime"
+            };
+
+            return GetTorrentsAsync(fields, id).AsAsyncOperation();
         }
 
         private async Task<String> GetFreeSpaceAsync()

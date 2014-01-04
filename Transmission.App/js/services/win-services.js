@@ -110,6 +110,9 @@
     .factory('navigationService', function () {
         return {
             navigate: WinJS.Navigation.navigate,
+            showTorrentDetails: function (id) {
+                WinJS.Navigation.navigate('/views/torrent-details.html', { id: id });
+            },
             showSettingsFlyout: WinJS.UI.SettingsFlyout.show,
             goHome: function () {
                 WinJS.Navigation.navigate('/views/torrents.html');

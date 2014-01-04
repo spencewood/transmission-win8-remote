@@ -28,15 +28,14 @@
     })
     .directive('winjsListView', function () {
         return {
-            restrict: 'E',
-            transclude: true,
-            templateUrl: '/views/partials/torrent-listview.html',
+            restrict: 'A',
             link: function (scope, element) {
                 var list = element.find('#list-view')[0];
                 WinJS.UI.processAll(list);
 
                 var listControl = list.winControl;
                 listControl.itemDataSource = scope.torrents.dataSource;
+                listControl.oniteminvoked = scope.selectItem;
 
                 list.addEventListener('selectionchanged', function (e) {
                     scope.selection = listControl.selection.getItems();

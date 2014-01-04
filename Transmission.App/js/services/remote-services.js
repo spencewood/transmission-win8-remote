@@ -143,14 +143,31 @@
             },
 
             getTorrents: function () {
-                spinnerStart();
-                var sess = remote.getTorrents();
-                sess.then(spinnerStop);
-                return sess;
+                return remote.getTorrents()
+                    .then(handleResult)
+                    .then(function (ret) {
+                        return ret.torrents;
+                    });
             },
 
-            getTorrentStats: function () {
-                return remote.getTorrentStats().then(handleResult);
+            getTorrent: function (id) {
+                return remote.getTorrent(id)
+                    .then(handleResult)
+                    .then(function (ret) {
+                        return _.first(ret.torrents);
+                    });
+            },
+
+            getPeers: function (id) {
+                return remote.getPeers(id).then(handleResult);
+            },
+
+            getFiles: function (id) {
+                return remote.getFiles(id).then(handleResult);
+            },
+
+            getTrackers: function (id) {
+                return remote.getTrackers(id).then(handleResult);
             },
 
             startTorrents: function (ids) {
@@ -214,6 +231,10 @@
                     return dbTorrents.getAll();
                 },
 
+                getTorrent: function (id) {
+                    return dbTorrents.find(id);
+                },
+
                 getUpdatedTorrents: function () {
                     return this.getTorrents()
                         .then(function (torrents) {
@@ -250,7 +271,7 @@
                 },
 
                 insertTorrents: function (torrents) {
-                    return dbTorrents.insert(torrents).then(function(){
+                    return dbTorrents.upsert(torrents).then(function(){
                         $rootScope.$broadcast('torrents:inserted');
                         return torrents;
                     });
@@ -262,9 +283,11 @@
                             dbTorrents.clear();
                             return val;
                         })
-                        .then(function (val) {
-                            return JSON.parse(val).arguments.torrents;
-                        })
+                        .then(this.insertTorrents);
+                },
+
+                updateTorrent: function (id) {
+                    return remoteService.getTorrent(id)
                         .then(this.insertTorrents);
                 },
 

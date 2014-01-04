@@ -1,37 +1,23 @@
 ﻿angular.module('Torrent', ['RemoteServices', 'WinServices', 'StatusServices'])
-    .controller('MainController', function ($scope, remoteService, torrentService) {
-        $scope.selectedTorrentIds = [];
-        remoteService.init();
-        torrentService.pollForTorrents();
-    })
-    .controller('TreeController', function ($scope, $location, torrentService, statusService) {
-        $scope.$on('torrents:inserted', function () {
-            torrentService.getUpdatedTorrents.call(torrentService).then(function (torrents) {
-                $scope.torrents = torrents;
-            });
-        });
-
-        $scope.$on('spinner:stop', function () {
-            $scope.showSpinner = false;
-            $scope.$apply();
-        });
-        $scope.$on('spinner:start', function () {
-            $scope.showSpinner = true;
-            $scope.$apply();
-        });
-
-        $location.path('/status/all');
-
-        $scope.downloading = statusService.statuses.downloading;
-        $scope.active = statusService.statuses.active;
-        $scope.inactive = statusService.statuses.inactive;
-        $scope.stopped = statusService.statuses.stopped;
-        $scope.error = statusService.statuses.error;
-    })
     .controller('StatsController', function ($scope) {
 
     })
-    .controller('TorrentController', function ($scope, $rootScope, $location, torrentService, statusService) {
+    .controller('TorrentDetailsController', function ($scope, remoteService, torrentService, id) {
+        remoteService.init();
+
+        var updateTorrent = function (torrent) {
+            $scope.torrent = torrent;
+        };
+
+        torrentService.getTorrent(id).then(updateTorrent);
+
+        $scope.$on('torrents:inserted', updateTorrent);
+    })
+    .controller('TorrentController', function ($scope, $rootScope, torrentService, remoteService, statusService, navigationService) {
+        $scope.selectedTorrentIds = [];
+        remoteService.init();
+        torrentService.pollForTorrents();
+
         $scope.torrents = new WinJS.Binding.List();
 
         $scope.selection = [];
@@ -40,6 +26,11 @@
         });
 
         $scope.search = { filter: '' };
+
+        $scope.selectItem = function (args) {
+            var item = $scope.torrents.getAt(args.detail.itemIndex);
+            navigationService.showTorrentDetails(item.id);
+        };
 
         var filterOnStatus = function (status, arr) {
             return arr.filter(function (item) {
@@ -83,7 +74,4 @@
 
         $scope.$on('torrents:inserted', processTorrentData);
         $scope.$on('torrents:add', _.dropFirstArgument(torrentService.addTorrents));
-
-        $rootScope.$on('$locationChangeSuccess', clearTorrents);
-        $rootScope.$on('$locationChangeSuccess', processTorrentData);
     });

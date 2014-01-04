@@ -50,10 +50,20 @@ namespace Transmission.Remote
 
         public async Task<String> GetTorrents(List<String> fields)
         {
-            return await SendRequest("torrent-get", new
+            return await GetTorrents(fields, null);
+        }
+
+        public async Task<String> GetTorrents(List<String> fields, int? id)
+        {
+            var args = new JObject();
+
+            if (id != null)
             {
-                fields = fields
-            });
+                args["id"] = id;
+            }
+            args["fields"] = new JArray(fields);
+
+            return await SendRequest("torrent-get", args);
         }
 
         public async Task<String> GetFreeSpace()

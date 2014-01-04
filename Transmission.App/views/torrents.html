@@ -8,21 +8,14 @@
     <!-- Page -->
     <script src="/js/pages/torrents-page.js"></script>
 </head>
-<body ng-controller="MainController">
+<body>
     <!-- Templates -->
-    <div class="headertemplate" data-win-control="WinJS.Binding.Template">
-        <button class="group-header win-type-x-large win-type-interactive" role="link" tabindex="-1" type="button">
-            <span class="group-title win-type-ellipsis" data-win-bind="textContent: title"></span>
-            <span class="group-chevron"></span>
-        </button>
-    </div>
-
     <div class="itemtemplate" id="torrent-template" data-win-control="WinJS.Binding.Template">
         <div class="item">
             <div class="item-image"></div>
             <div class="item-overlay">
                 <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:name"></h4>
-                <progress data-win-bind="value:percentDone"></progress>
+                <progress data-win-bind="value:metadataPercentComplete"></progress>
             </div>
         </div>
     </div>
@@ -35,8 +28,13 @@
                 <span class="pagetitle">Torrents</span>
             </h1>
         </header>
-        <section aria-label="Main content" role="main" ng-controller="TorrentController">
-            <winjs-list-view></winjs-list-view>
+        <section aria-label="Main content" role="main" ng-controller="TorrentController" winjs-list-view>
+            <h4>Total ({{torrents.length}})</h4>
+            <div id="list-view" class="groupeditemslist win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+                    layout: {type: WinJS.UI.GridLayout},
+                    itemTemplate: select('.itemtemplate')
+                }">
+            </div>
         </section>
     </div>
 </body>
