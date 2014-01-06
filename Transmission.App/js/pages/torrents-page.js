@@ -22,7 +22,8 @@
         },
 
         unload: function () {
-            // TODO: Respond to navigations away from this page.
+            //destroy controller
+            angular.element('[ng-controller=TorrentController]').remove();
         },
 
         updateLayout: function (element) {

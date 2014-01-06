@@ -11,8 +11,9 @@
             angular.bootstrap(element, [appName]);
         },
 
-        unload: function () {
-            // TODO: Respond to navigations away from this page.
+        unload: function (e) {
+            //destroy controller
+            angular.element('[ng-controller=LoginController]').remove();
         },
 
         updateLayout: function (element) {

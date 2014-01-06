@@ -81,7 +81,7 @@
         $scope.$on('torrents:inserted', processTorrentData);
         $scope.$on('torrents:add', _.dropFirstArgument(torrentService.addTorrents));
         $scope.$on('$destroy', function () {
-            var a = 'asdf';
+            console.log('destroying torrent controller');
         });
         $scope.$on('$destroy', poller.stop.bind(poller));
     });

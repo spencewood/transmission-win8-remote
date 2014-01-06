@@ -41,6 +41,10 @@
                     scope.selection = listControl.selection.getItems();
                     scope.$apply();
                 }, false);
+
+                scope.$on('$destroy', function () {
+                    list.removeEventListener('selectionchanged');
+                });
             }
         };
     })
@@ -84,6 +88,10 @@
                     });
 
                     scope.$parent.settings[scope.daysOfWeekPicker] = _.binaryArrayToNumber(bitMap.toArray());
+                });
+
+                scope.$on('$destroy', function () {
+                    $inputs.off('change');
                 });
             }
         }

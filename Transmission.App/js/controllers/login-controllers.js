@@ -1,9 +1,6 @@
 ﻿angular.module('Login', ['RemoteServices', 'WinServices'])
     .controller('LoginController', function ($scope, localSettingsService, remoteService, navigationService) {
         var settings = $scope.settings = localSettingsService.getServerSettings();
-        $scope.errorMessage = '';
-        $scope.authRequired = settings.username.length > 0;
-
         var login = $scope.login = function () {
             $scope.errorMessage = '';
             if (!$scope.authRequired) {
@@ -20,4 +17,11 @@
                     $scope.$apply();
                 });
         };
+
+        $scope.errorMessage = '';
+        $scope.authRequired = settings.username.length > 0;
+
+        $scope.$on('$destroy', function () {
+            console.log('destroying login controller');
+        });
     });
