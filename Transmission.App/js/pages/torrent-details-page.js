@@ -7,7 +7,7 @@
         ready: function (element, options) {
             var appName = 'torrentDetailsApp';
 
-            angular.module(appName, ['Torrent'])
+            angular.module(appName, ['Torrent', 'Filters'])
                 .constant('id', options.id);
             angular.bootstrap(element, [appName]);
         },

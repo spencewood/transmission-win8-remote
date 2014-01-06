@@ -68,6 +68,7 @@
     <Content Include="js\controllers\torrent-controllers.js" />
     <Content Include="css\default.css" />
     <Content Include="js\directives\directives.js" />
+    <Content Include="js\filters\filters.js" />
     <Content Include="js\filters\winjs-bytes-filter.js" />
     <Content Include="js\lib\angular.js" />
     <Content Include="js\lib\angular-indexeddb.js" />

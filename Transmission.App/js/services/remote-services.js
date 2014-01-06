@@ -233,29 +233,38 @@
                     return dbTorrents.find(id);
                 },
 
-                getUpdatedTorrents: function () {
-                    return this.getTorrents()
-                        .then(function (torrents) {
-                            speeds.up = 0;
-                            speeds.down = 0;
-                            torrents.forEach(function (torrent) {
-                                speeds.up += torrent.rateDownload;
-                                speeds.down += torrent.rateUpload;
-                            });
-                            $rootScope.$broadcast('torrents:updated');
-                            return torrents;
-                        });
-                },
+                //getUpdatedTorrents: function () {
+                //    return this.getTorrents()
+                //        .then(function (torrents) {
+                //            speeds.up = 0;
+                //            speeds.down = 0;
+                //            torrents.forEach(function (torrent) {
+                //                speeds.up += torrent.rateDownload;
+                //                speeds.down += torrent.rateUpload;
+                //            });
+                //            $rootScope.$broadcast('torrents:updated');
+                //            return torrents;
+                //        });
+                //},
+
+                //getUpdatedTorrent: function (id) {
+                //    return this.getTorrent(id)
+                //        .then(function (torrent) {
+                //            //extra processing
+                //            return torrent;
+                //        });
+                //},
 
                 getSpeeds: function () {
                     return speeds;
                 },
 
                 insertTorrents: function (torrents) {
-                    return dbTorrents.upsert(torrents).then(function(){
-                        $rootScope.$broadcast('torrents:inserted');
-                        return torrents;
-                    });
+                    return dbTorrents.upsert(torrents);
+                        //.then(function () {
+                        //$rootScope.$broadcast('torrents:inserted');
+                        //return torrents;
+                    //});
                 },
 
                 updateTorrents: function () {
@@ -264,12 +273,18 @@
                             dbTorrents.clear();
                             return val;
                         })
-                        .then(this.insertTorrents);
+                        .then(function (val) {
+                            this.insertTorrents(val);
+                            return val;
+                        }.bind(this));
                 },
 
                 updateTorrent: function (id) {
                     return remoteService.getTorrent(id)
-                        .then(this.insertTorrents);
+                        .then(function (val) {
+                            this.insertTorrents(val);
+                            return val;
+                        }.bind(this));
                 },
 
                 findById: function (id) {

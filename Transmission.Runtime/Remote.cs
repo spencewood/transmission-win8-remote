@@ -87,6 +87,7 @@ namespace Transmission.Runtime
         {
             var fields = new List<String>{
                 "id",
+                "name",
                 "totalSize",
                 "sizeWhenDone",
                 "leftUntilDone",
@@ -117,7 +118,7 @@ namespace Transmission.Runtime
                 "addedDate",
                 "doneDate",
                 "activityDate",
-                "downloadedLimited",
+                "downloadLimited",
                 "uploadLimited",
                 "downloadDir",
                 "pieces",

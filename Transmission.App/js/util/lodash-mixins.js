@@ -21,6 +21,9 @@
 
         matchesCaseInsensitiveByKey: function (term, key) {
             return function (compare) {
+                if (compare[key] == null) {
+                    return false;
+                }
                 return compare[key].toLowerCase().match(term.toLowerCase());
             };
         },
