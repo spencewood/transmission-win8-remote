@@ -225,8 +225,6 @@
             var speeds = { up: 0, down: 0 };
 
             return {
-                timeoutToken: null,
-
                 getTorrents: function () {
                     return dbTorrents.getAll();
                 },
@@ -251,23 +249,6 @@
 
                 getSpeeds: function () {
                     return speeds;
-                },
-
-                pollForTorrents: function () {
-                    //TODO: make polling different when not focused
-
-                    if (this.timeoutToken != null) {
-                        clearTimeout(this.timeoutToken);
-                        this.timeoutToken = null;
-                    }
-                    return this.updateTorrents()
-                        .then(localSettingsService.getInterfaceSettings)
-                        .then(function () {
-                            this.timeoutToken = setTimeout(
-                                this.pollForTorrents.bind(this),
-                                localSettingsService.getInterfaceSettings().refreshActive * 1000
-                            );
-                        }.bind(this));
                 },
 
                 insertTorrents: function (torrents) {
@@ -303,39 +284,39 @@
                 },
 
                 start: function (ids) {
-                    return remoteService.startTorrents(ids).then(this.pollForTorrents.bind(this));
+                    return remoteService.startTorrents(ids);
                 },
 
                 stop: function (ids) {
-                    return remoteService.stopTorrents(ids).then(this.pollForTorrents.bind(this));
+                    return remoteService.stopTorrents(ids);
                 },
 
                 verify: function (ids) {
-                    return remoteService.verifyTorrents(ids).then(this.pollForTorrents.bind(this));
+                    return remoteService.verifyTorrents(ids);
                 },
 
                 reannounce: function (ids) {
-                    return remoteService.reannounceTorrents(ids).then(this.pollForTorrents.bind(this));
+                    return remoteService.reannounceTorrents(ids);
                 },
 
                 remove: function (ids, removeData) {
-                    return remoteService.removeTorrents(ids, removeData).then(this.pollForTorrents.bind(this));
+                    return remoteService.removeTorrents(ids, removeData);
                 },
 
                 moveToTop: function (ids) {
-                    return remoteService.moveTorrentsToTop(ids).then(this.pollForTorrents.bind(this));
+                    return remoteService.moveTorrentsToTop(ids);
                 },
 
                 moveToBottom: function (ids) {
-                    return remoteService.moveTorrentsToBottom(ids).then(this.pollForTorrents.bind(this));
+                    return remoteService.moveTorrentsToBottom(ids);
                 },
 
                 moveUp: function (ids) {
-                    return remoteService.moveTorrentsUp(ids).then(this.pollForTorrents.bind(this));
+                    return remoteService.moveTorrentsUp(ids);
                 },
 
                 moveDown: function (ids) {
-                    return remoteService.moveTorrentsDown(ids).then(this.pollForTorrents.bind(this));
+                    return remoteService.moveTorrentsDown(ids);
                 },
 
                 addTorrent: function (torrent) {

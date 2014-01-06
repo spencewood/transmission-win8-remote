@@ -378,9 +378,9 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                                 results.push(cursor.value);
                                 cursor.continue();
                             } else {
-                                $rootScope.$apply(function(){
-                                    d.resolve(results);
-                                });
+                               // $rootScope.$apply(function(){
+                               d.resolve(results);
+                                //});
                             }
                         };
                         req.onerror = function(e) {

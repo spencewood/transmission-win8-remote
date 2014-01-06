@@ -81,6 +81,7 @@
     <Content Include="js\pages\settings-transmission-page.js" />
     <Content Include="js\pages\torrent-details-page.js" />
     <Content Include="js\pages\torrents-page.js" />
+    <Content Include="js\services\polling-service.js" />
     <Content Include="js\services\remote-services.js" />
     <Content Include="js\services\status-services.js" />
     <Content Include="js\services\win-services.js" />

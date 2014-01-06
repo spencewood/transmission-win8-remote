@@ -1,4 +1,4 @@
-﻿angular.module('Torrent', ['RemoteServices', 'WinServices', 'StatusServices'])
+﻿angular.module('Torrent', ['RemoteServices', 'WinServices', 'StatusServices', 'PollingService'])
     .controller('StatsController', function ($scope) {
 
     })
@@ -13,25 +13,7 @@
 
         $scope.$on('torrents:inserted', updateTorrent);
     })
-    .controller('TorrentController', function ($scope, $rootScope, torrentService, remoteService, statusService, navigationService) {
-        $scope.selectedTorrentIds = [];
-        remoteService.init();
-        torrentService.pollForTorrents();
-
-        $scope.torrents = new WinJS.Binding.List();
-
-        $scope.selection = [];
-        $scope.$watch('selection', function (selection) {
-            $rootScope.selectedTorrentIds = _.pluck(_.pluck(selection._value, 'data'), 'id');
-        });
-
-        $scope.search = { filter: '' };
-
-        $scope.selectItem = function (args) {
-            var item = $scope.torrents.getAt(args.detail.itemIndex);
-            navigationService.showTorrentDetails(item.id);
-        };
-
+    .controller('TorrentController', function ($scope, torrentService, remoteService, localSettingsService, statusService, navigationService, poll) {
         var filterOnStatus = function (status, arr) {
             return arr.filter(function (item) {
                 if (status in statusService.statuses) {
@@ -72,6 +54,34 @@
             });
         };
 
+        remoteService.init();
+
+        torrentService.getTorrents().then(processTorrentData);
+
+        var poller = new poll.Poller(
+            torrentService.updateTorrents.bind(torrentService),
+            localSettingsService.getInterfaceSettings().refreshActive * 1000
+        ).start();
+
+        $scope.torrents = new WinJS.Binding.List();
+
+        $scope.selection = [];
+        $scope.selectedTorrentIds = [];
+        $scope.$watch('selection', function (selection) {
+            $scope.selectedTorrentIds = _.pluck(_.pluck(selection._value, 'data'), 'id');
+        });
+
+        $scope.search = { filter: '' };
+
+        $scope.selectItem = function (args) {
+            var item = $scope.torrents.getAt(args.detail.itemIndex);
+            navigationService.showTorrentDetails(item.id);
+        };
+
         $scope.$on('torrents:inserted', processTorrentData);
         $scope.$on('torrents:add', _.dropFirstArgument(torrentService.addTorrents));
+        $scope.$on('$destroy', function () {
+            var a = 'asdf';
+        });
+        $scope.$on('$destroy', poller.stop.bind(poller));
     });
