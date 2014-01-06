@@ -5,15 +5,35 @@
     .controller('TorrentDetailsController', function ($scope, remoteService, torrentService, id) {
         //TODO: handle torrent.pieces byte array
         //TODO: handle the possibility of multiple trackers in torrent.trackerStats
+        remoteService.init();
+
         var updateTorrentData = function (torrent) {
             $scope.torrent = torrent;
         };
 
-        remoteService.init();
+        var updateFileData = function (data) {
+            data.files.forEach(function (file) {
+                $scope.files.push(_.asWinJsBinding(file));
+            });
+        };
+
+        $scope.files = new WinJS.Binding.List();
+
+        $scope.selectionChange = function (items) {
+
+        };
+
+        $scope.selectItem = function (args) {
+
+        };
+
         torrentService.getTorrent(id).then(updateTorrentData)
         torrentService.updateTorrent(id).then(updateTorrentData);
+        torrentService.getFiles(id).then(updateFileData);
     })
     .controller('TorrentController', function ($scope, torrentService, remoteService, localSettingsService, statusService, navigationService, poll) {
+        remoteService.init();
+
         var filterOnStatus = function (status, arr) {
             return arr.filter(function (item) {
                 if (status in statusService.statuses) {
@@ -35,7 +55,7 @@
             _.clearArray($scope.torrents);
         };
 
-        var updateTorrentData = $scope.processTorrentData = function (torrents) {
+        var updateTorrentData = function (torrents) {
             var active = torrents.filter(statusService.statuses.active);
 
             var statusFilter = _.partial(filterOnStatus, statusService.getLocationStatus());
@@ -43,6 +63,7 @@
 
             var filteredTorrents = _.pipeline(torrents, statusFilter, searchFilter);
 
+            //genericize this more for torrent details
             _.updateAddDelete(
                 $scope.torrents,
                 filteredTorrents,
@@ -52,31 +73,28 @@
                 _.removeElement);
         };
 
-        remoteService.init();
-        torrentService.getTorrents().then(updateTorrentData);
-        torrentService.updateTorrents().then(updateTorrentData);
-
         var poller = new poll.Poller(
             torrentService.updateTorrents.bind(torrentService),
             localSettingsService.getInterfaceSettings().refreshActive * 1000
         ).start();
 
-        $scope.torrents = new WinJS.Binding.List();
-
-        $scope.selection = [];
-        $scope.selectedTorrentIds = [];
-        $scope.$watch('selection', function (selection) {
-            $scope.selectedTorrentIds = _.pluck(_.pluck(selection._value, 'data'), 'id');
-        });
+        torrentService.getTorrents().then(updateTorrentData);
+        torrentService.updateTorrents().then(updateTorrentData);
 
         $scope.search = { filter: '' };
+        $scope.torrents = new WinJS.Binding.List();
+
+        $scope.selectedTorrentIds = [];
+        $scope.selectionChanged = function (items) {
+            $scope.selectedTorrentIds = _.pluck(_.pluck(selection._value, 'data'), 'id');
+            $scope.$apply();
+        };
 
         $scope.selectItem = function (args) {
             var item = $scope.torrents.getAt(args.detail.itemIndex);
             navigationService.showTorrentDetails(item.id);
         };
 
-        //$scope.$on('torrents:inserted', processTorrentData);
         $scope.$on('torrents:add', _.dropFirstArgument(torrentService.addTorrents));
         $scope.$on('$destroy', function () {
             console.log('destroying torrent controller');

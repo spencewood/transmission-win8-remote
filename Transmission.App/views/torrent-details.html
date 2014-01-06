@@ -8,6 +8,16 @@
     <script src="/js/pages/torrent-details-page.js"></script>
 </head>
 <body>
+    <!-- Templates -->
+    <div id="file-item-template" data-win-control="WinJS.Binding.Template">
+        <div class="item">
+            <div class="item-image"></div>
+            <div class="item-overlay">
+                <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:name"></h4>
+            </div>
+        </div>
+    </div>
+
     <!-- Content -->
     <div class="fragment groupeditemspage" ng-controller="TorrentDetailsController">
         <header aria-label="Header content" role="banner">
@@ -95,6 +105,21 @@
                     </div>
                     <div>
                         Last active: {{torrent.trackerStats[0].lastScrapeTime * 1000 | date:'medium'}}
+                    </div>
+                </div>
+                <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Trackers', isHeaderStatic: true}">
+                    
+                </div>
+                <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Peers', isHeaderStatic: true}">
+
+                </div>
+                <div class="section5" winjs-list-view="files" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Files', isHeaderStatic: true}">
+                    <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+                            itemTemplate: select('#file-item-template'),
+                            selectionMode: 'none',
+                            tapBehavior: 'none',
+                            swipeBehavior: 'none'
+                        }">
                     </div>
                 </div>
             </div>

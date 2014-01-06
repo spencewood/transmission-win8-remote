@@ -10,7 +10,7 @@
 </head>
 <body>
     <!-- Templates -->
-    <div class="itemtemplate" id="torrent-template" data-win-control="WinJS.Binding.Template">
+    <div id="torrent-item-template" data-win-control="WinJS.Binding.Template">
         <div class="item">
             <div class="item-image"></div>
             <div class="item-overlay">
@@ -28,11 +28,11 @@
                 <span class="pagetitle">Torrents</span>
             </h1>
         </header>
-        <section aria-label="Main content" role="main" ng-controller="TorrentController" winjs-list-view>
+        <section aria-label="Main content" role="main" ng-controller="TorrentController" winjs-list-view="torrents">
             <h4>Total ({{torrents.length}})</h4>
-            <div id="list-view" class="groupeditemslist win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+            <div class="list-view groupeditemslist win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
                     layout: {type: WinJS.UI.GridLayout},
-                    itemTemplate: select('.itemtemplate')
+                    itemTemplate: select('#torrent-item-template')
                 }">
             </div>
         </section>

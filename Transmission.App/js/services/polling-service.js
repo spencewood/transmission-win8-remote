@@ -1,30 +1,35 @@
 ﻿angular.module('PollingService', [])
-    .factory('poll', function () {
+    .factory('poll', function ($timeout) {
         var Poller = function (fun, timeout) {
             this.fun = fun;
             this.timeout = timeout;
             this.timeoutToken = null;
+            this.blockTimeout = false;
         };
 
         Poller.prototype.clear = function () {
-            if (this.timeoutToken != null) {
-                clearTimeout(this.timeoutToken);
-                this.timeoutToken = null;
-            }
+            $timeout.cancel(this.timeoutToken);
         };
 
         Poller.prototype.start = function () {
             this.clear();
             this.fun()
                 .then(function () {
-                    this.timeoutToken = setTimeout(this.start.bind(this), this.timeout);
+                    if (!this.blockTimeout) {
+                        this.timeoutToken = $timeout(this.start.bind(this), this.timeout);
+                    }
                 }.bind(this));
             return this;
         };
 
         Poller.prototype.stop = function () {
+            this.blockTimeout = true;
             this.clear();
         };
+
+        Poller.prototype.reset = function () {
+            this.blockTimeout = false;
+        }
 
         return {
             Poller: Poller

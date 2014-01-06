@@ -29,22 +29,21 @@
     .directive('winjsListView', function () {
         return {
             restrict: 'A',
+            scope: {
+                winjsListView: '@',
+                selectItem: '=',
+                selectionChanged: '='
+            },
             link: function (scope, element) {
-                var list = element.find('#list-view')[0];
+                var list = element.find('.list-view')[0];
                 WinJS.UI.processAll(list);
 
                 var listControl = list.winControl;
-                listControl.itemDataSource = scope.torrents.dataSource;
-                listControl.oniteminvoked = scope.selectItem;
-
-                list.addEventListener('selectionchanged', function (e) {
-                    scope.selection = listControl.selection.getItems();
-                    scope.$apply();
-                }, false);
-
-                scope.$on('$destroy', function () {
-                    list.removeEventListener('selectionchanged');
-                });
+                listControl.itemDataSource = scope.$parent[scope.winjsListView].dataSource;
+                listControl.oniteminvoked = scope.$parent.selectItem;
+                listControl.onselectionchanged = function () {
+                    scope.$parent.selectionChanged(listControl.selection.getItems());
+                };
             }
         };
     })

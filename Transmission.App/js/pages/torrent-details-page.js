@@ -7,13 +7,14 @@
         ready: function (element, options) {
             var appName = 'torrentDetailsApp';
 
-            angular.module(appName, ['Torrent', 'Filters'])
+            angular.module(appName, ['Torrent', 'Filters', 'Directives'])
                 .constant('id', options.id);
             angular.bootstrap(element, [appName]);
         },
 
         unload: function () {
-            // TODO: Respond to navigations away from this page.
+            //destroy controller
+            angular.element('[ng-controller=TorrentDetailsController]').scope().$destroy();
         },
 
         updateLayout: function (element) {

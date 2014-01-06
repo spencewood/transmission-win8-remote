@@ -13,7 +13,7 @@
 
         unload: function (e) {
             //destroy controller
-            angular.element('[ng-controller=LoginController]').remove();
+            angular.element('[ng-controller=LoginController]').scope().$destroy();
         },
 
         updateLayout: function (element) {

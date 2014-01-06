@@ -163,7 +163,11 @@
             },
 
             getFiles: function (id) {
-                return remote.getFiles(id).then(handleResult);
+                return remote.getFiles(id)
+                    .then(handleResult)
+                    .then(function (ret) {
+                        return _.first(ret.torrents);
+                    });
             },
 
             getTrackers: function (id) {
@@ -222,7 +226,6 @@
     .provider('torrentService', function () {
         this.$get = function ($rootScope, $indexedDB, $q, torrentStore, remoteService, statusService, localSettingsService) {
             var dbTorrents = $indexedDB.objectStore(torrentStore);
-            var speeds = { up: 0, down: 0 };
 
             return {
                 getTorrents: function () {
@@ -233,38 +236,8 @@
                     return dbTorrents.find(id);
                 },
 
-                //getUpdatedTorrents: function () {
-                //    return this.getTorrents()
-                //        .then(function (torrents) {
-                //            speeds.up = 0;
-                //            speeds.down = 0;
-                //            torrents.forEach(function (torrent) {
-                //                speeds.up += torrent.rateDownload;
-                //                speeds.down += torrent.rateUpload;
-                //            });
-                //            $rootScope.$broadcast('torrents:updated');
-                //            return torrents;
-                //        });
-                //},
-
-                //getUpdatedTorrent: function (id) {
-                //    return this.getTorrent(id)
-                //        .then(function (torrent) {
-                //            //extra processing
-                //            return torrent;
-                //        });
-                //},
-
-                getSpeeds: function () {
-                    return speeds;
-                },
-
                 insertTorrents: function (torrents) {
                     return dbTorrents.upsert(torrents);
-                        //.then(function () {
-                        //$rootScope.$broadcast('torrents:inserted');
-                        //return torrents;
-                    //});
                 },
 
                 updateTorrents: function () {
@@ -287,15 +260,8 @@
                         }.bind(this));
                 },
 
-                findById: function (id) {
-                    return _.findWhere(this.torrents, { id: id });
-                },
-
-                getNameById: function (id) {
-                    var torrent = this.findById(id);
-                    if (torrent !== null) {
-                        return torrent.name;
-                    }
+                getFiles: function (id) {
+                    return remoteService.getFiles(id);
                 },
 
                 start: function (ids) {
