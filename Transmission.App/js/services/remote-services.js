@@ -230,7 +230,7 @@
         };
     })
     .provider('torrentService', function () {
-        this.$get = function ($rootScope, $indexedDB, $q, torrentStore, remoteService, statusService, localSettingsService) {
+        this.$get = function ($rootScope, $indexedDB, torrentStore, remoteService, statusService, localSettingsService) {
             var dbTorrents = $indexedDB.objectStore(torrentStore);
 
             return {

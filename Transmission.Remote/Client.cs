@@ -9,6 +9,7 @@ using Windows.Web.Http.Filters;
 using Windows.Storage.Streams;
 using Windows.Security.Cryptography.Certificates;
 using Newtonsoft.Json.Linq;
+using Transmission.Remote.Transmission;
 
 namespace Transmission.Remote
 {

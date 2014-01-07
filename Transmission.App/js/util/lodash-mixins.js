@@ -38,13 +38,13 @@
         * Takes two collections and updates the first with the second
         * based on the passed in key. Performs mutation.
         */
-        updateAddDelete: function(coll1, coll2, key, updateFun, addFun, deleteFun){
+        updateAddDelete: function(coll1, coll2, key, addFun, updateFun, deleteFun){
             //add/update
             coll2.forEach(function (item2) {
                 var same = coll1.filter(function (item1) {
                     return item1[key] === item2[key];
                 });
-                if (same.length > 0) {
+                if (same.length > 0 && typeof updateFun !== 'undefined') {
                     updateFun(same[0], item2);
                 }
                 else {
@@ -52,26 +52,34 @@
                 }
             });
 
-            //delete
-            var toDelete = coll1.filter(function (obj) {
-                var o = {};
-                o[key] = obj[key];
-                return !_.findWhere(coll2, o);
-            });
-
-            toDelete.forEach(function (rm) {
-                coll1.forEach(function (item, idx) {
-                    if (item.id === rm.id) {
-                        deleteFun(coll1, idx);
-                    }
+            if (typeof deletefun !== 'undefined') {
+                //delete
+                var toDelete = coll1.filter(function (obj) {
+                    var o = {};
+                    o[key] = obj[key];
+                    return !_.findWhere(coll2, o);
                 });
-            });
+
+                toDelete.forEach(function (rm) {
+                    coll1.forEach(function (item, idx) {
+                        if (item.id === rm.id) {
+                            deleteFun(coll1, idx);
+                        }
+                    });
+                });
+            }
         },
 
         dropFirstArgument: function (fun) {
             return function () {
                 //drop the first argument for event 
-                fun.apply(this, _.rest(arguments));
+                return fun.apply(this, _.rest(arguments));
+            };
+        },
+
+        idCaller: function (id) {
+            return function (fun) {
+                return fun(id);
             };
         },
 

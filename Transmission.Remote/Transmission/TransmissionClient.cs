@@ -11,7 +11,7 @@ using Windows.Security.Cryptography.Certificates;
 using Newtonsoft.Json.Linq;
 using Windows.Foundation;
 
-namespace Transmission.Remote
+namespace Transmission.Remote.Transmission
 {
     internal class TransmissionClient
     {

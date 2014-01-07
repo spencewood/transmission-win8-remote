@@ -94,7 +94,7 @@
             },
             getUnits: getUnits,
             getInterfaceSettings: function () {
-                return _.merge(
+                return _.extend(
                     {//defaults
                         refreshActive: 10,
                         refreshInactive: 30

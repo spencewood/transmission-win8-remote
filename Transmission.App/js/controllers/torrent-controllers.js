@@ -2,7 +2,7 @@
     .controller('StatsController', function ($scope) {
 
     })
-    .controller('TorrentDetailsController', function ($scope, remoteService, torrentService, id) {
+    .controller('TorrentDetailsController', function ($scope, remoteService, torrentService, id, pollFactory) {
         //TODO: handle torrent.pieces byte array
         //TODO: handle the possibility of multiple trackers in torrent.trackerStats
         remoteService.init();
@@ -27,14 +27,20 @@
         var updateListData = function (arr) {
             var keys = _.rest(arguments);
             return function (data) {
-                var a = keys.map(function (key) {
+                var list = mergeCollections.apply(null, keys.map(function (key) {
                     return data[key];
+                })).map(function (item) {
+                    return _.asWinJsBinding(item);
                 });
-                mergeCollections.apply(null, a).forEach(function (item) {
-                    arr.push(_.asWinJsBinding(item));
+
+                _.clearArray(arr);
+                list.forEach(function (item) {
+                    arr.push(item);
                 });
             };
         };
+
+        var torrentCaller = _.idCaller(id);
 
         $scope.torrent = {};
         $scope.trackers = [];
@@ -49,13 +55,32 @@
 
         };
 
-        torrentService.getTorrent(id).then(mergeData($scope.torrent))
-        torrentService.updateTorrent(id).then(mergeData($scope.torrent));
-        torrentService.getTrackers(id).then(updateListData($scope.trackers, 'trackers', 'trackerStats'));
-        torrentService.getPeers(id).then(updateListData($scope.peers, 'peers'));
-        torrentService.getFiles(id).then(updateListData($scope.files, 'files', 'priorities', 'wanted'));
+        //for local db, if exists
+        torrentCaller(torrentService.getTorrent).then(mergeData($scope.torrent));
+
+        //updates
+        var poller = new pollFactory.Factory([
+            function () {
+                return torrentCaller(torrentService.updateTorrent.bind(torrentService))
+                    .then(mergeData($scope.torrent));
+            },
+            function () {
+                return torrentCaller(torrentService.getTrackers.bind(torrentService))
+                    .then(updateListData($scope.trackers, 'trackers', 'trackerStats'));
+            },
+            function () {
+                return torrentCaller(torrentService.getPeers.bind(torrentService))
+                    .then(updateListData($scope.peers, 'peers'));
+            },
+            function () {
+                return torrentCaller(torrentService.getFiles.bind(torrentService))
+                    .then(updateListData($scope.files, 'files', 'priorities', 'wanted'));
+            }
+        ]).start();
+
+        $scope.$on('$destroy', poller.stop.bind(poller));
     })
-    .controller('TorrentController', function ($scope, torrentService, remoteService, localSettingsService, statusService, navigationService, poll) {
+    .controller('TorrentController', function ($scope, torrentService, remoteService, statusService, navigationService, pollFactory) {
         remoteService.init();
 
         var filterOnStatus = function (status, arr) {
@@ -92,15 +117,14 @@
                 $scope.torrents,
                 filteredTorrents,
                 'id',
-                _.extend,
                 _.asWinJsBinding,
+                _.extend,
                 _.removeElement);
         };
 
-        var poller = new poll.Poller(
-            torrentService.updateTorrents.bind(torrentService),
-            localSettingsService.getInterfaceSettings().refreshActive * 1000
-        ).start();
+        var poller = new pollFactory.Factory([
+            torrentService.updateTorrents.bind(torrentService)
+        ]).start();
 
         torrentService.getTorrents().then(updateTorrentData);
         torrentService.updateTorrents().then(updateTorrentData);
