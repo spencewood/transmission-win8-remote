@@ -35,7 +35,8 @@
                 selectionChanged: '='
             },
             link: function (scope, element) {
-                var list = element.find('.list-view')[0];
+                var $list = element.find('.list-view');
+                var list = $list[0];
                 WinJS.UI.processAll(list);
 
                 var listControl = list.winControl;
@@ -44,6 +45,12 @@
                 listControl.onselectionchanged = function () {
                     scope.$parent.selectionChanged(listControl.selection.getItems());
                 };
+
+                scope.$on('$destroy', function () {
+                    listControl.dispose();
+                    delete listControl;
+                    $list.remove();
+                });
             }
         };
     })

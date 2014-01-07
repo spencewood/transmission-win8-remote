@@ -24,6 +24,7 @@
         unload: function () {
             //destroy controller
             angular.element('[ng-controller=TorrentController]').scope().$destroy();
+            $(document).remove();
         },
 
         updateLayout: function (element) {

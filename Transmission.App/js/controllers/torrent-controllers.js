@@ -7,16 +7,38 @@
         //TODO: handle the possibility of multiple trackers in torrent.trackerStats
         remoteService.init();
 
-        var updateTorrentData = function (torrent) {
-            $scope.torrent = torrent;
+        var mergeData = function (target) {
+            return function (data) {
+                return _.merge(target, data);
+            };
         };
 
-        var updateFileData = function (data) {
-            data.files.forEach(function (file) {
-                $scope.files.push(_.asWinJsBinding(file));
-            });
+        var mergeCollections = function () {
+            var collections = _.toArray(arguments);
+            var coll = collections.shift();
+            while (collections.length > 0) {
+                collections.shift().forEach(function (item, idx) {
+                    _.merge(coll[idx], item);
+                });
+            }
+            return coll;
         };
 
+        var updateListData = function (arr) {
+            var keys = _.rest(arguments);
+            return function (data) {
+                var a = keys.map(function (key) {
+                    return data[key];
+                });
+                mergeCollections.apply(null, a).forEach(function (item) {
+                    arr.push(_.asWinJsBinding(item));
+                });
+            };
+        };
+
+        $scope.torrent = {};
+        $scope.trackers = [];
+        $scope.peers = [];
         $scope.files = new WinJS.Binding.List();
 
         $scope.selectionChange = function (items) {
@@ -27,9 +49,11 @@
 
         };
 
-        torrentService.getTorrent(id).then(updateTorrentData)
-        torrentService.updateTorrent(id).then(updateTorrentData);
-        torrentService.getFiles(id).then(updateFileData);
+        torrentService.getTorrent(id).then(mergeData($scope.torrent))
+        torrentService.updateTorrent(id).then(mergeData($scope.torrent));
+        torrentService.getTrackers(id).then(updateListData($scope.trackers, 'trackers', 'trackerStats'));
+        torrentService.getPeers(id).then(updateListData($scope.peers, 'peers'));
+        torrentService.getFiles(id).then(updateListData($scope.files, 'files', 'priorities', 'wanted'));
     })
     .controller('TorrentController', function ($scope, torrentService, remoteService, localSettingsService, statusService, navigationService, poll) {
         remoteService.init();

@@ -47,6 +47,12 @@
             return r.arguments;
         };
 
+        var getSingle = function (key) {
+            return function (data)  {
+                return _.first(data[key]);
+            }
+        };
+
         var spinnerStop = function () {
             $rootScope.$broadcast('spinner:stop');
         };
@@ -153,25 +159,25 @@
             getTorrent: function (id) {
                 return remote.getTorrent(id)
                     .then(handleResult)
-                    .then(function (ret) {
-                        return _.first(ret.torrents);
-                    });
+                    .then(getSingle('torrents'));
             },
 
             getPeers: function (id) {
-                return remote.getPeers(id).then(handleResult);
+                return remote.getPeers(id)
+                    .then(handleResult)
+                    .then(getSingle('torrents'));
             },
 
             getFiles: function (id) {
                 return remote.getFiles(id)
                     .then(handleResult)
-                    .then(function (ret) {
-                        return _.first(ret.torrents);
-                    });
+                    .then(getSingle('torrents'));
             },
 
             getTrackers: function (id) {
-                return remote.getTrackers(id).then(handleResult);
+                return remote.getTrackers(id)
+                    .then(handleResult)
+                    .then(getSingle('torrents'));
             },
 
             startTorrents: function (ids) {
@@ -262,6 +268,14 @@
 
                 getFiles: function (id) {
                     return remoteService.getFiles(id);
+                },
+
+                getTrackers: function (id) {
+                    return remoteService.getTrackers(id);
+                },
+
+                getPeers: function (id) {
+                    return remoteService.getPeers(id);
                 },
 
                 start: function (ids) {

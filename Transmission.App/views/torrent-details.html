@@ -18,6 +18,24 @@
         </div>
     </div>
 
+    <div id="tracker-item-template" data-win-control="WinJS.Binding.Template">
+        <div class="item">
+            <div class="item-image"></div>
+            <div class="item-overlay">
+                <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:host"></h4>
+            </div>
+        </div>
+    </div>
+
+    <div id="peer-item-template" data-win-control="WinJS.Binding.Template">
+        <div class="item">
+            <div class="item-image"></div>
+            <div class="item-overlay">
+                <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:address"></h4>
+            </div>
+        </div>
+    </div>
+
     <!-- Content -->
     <div class="fragment groupeditemspage" ng-controller="TorrentDetailsController">
         <header aria-label="Header content" role="banner">
@@ -28,7 +46,7 @@
         </header>
         <section aria-label="Main content" role="main">
             <div data-win-control="WinJS.UI.Hub">
-                <div class="section1" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Torrent', isHeaderStatic: true}">
+                <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Torrent', isHeaderStatic: true}">
                     <div>
                         Name: {{torrent.downloadDir}}
                     </div>
@@ -54,7 +72,7 @@
                         Completed on {{torrent.doneDate * 1000 | date:'medium'}}
                     </div>
                 </div>
-                <div class="section2" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Transfer', isHeaderStatic: true}">
+                <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Transfer', isHeaderStatic: true}">
                     <div>
                         Status: {{torrent.status}} <!-- Get status string -->
                     </div>
@@ -108,12 +126,98 @@
                     </div>
                 </div>
                 <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Trackers', isHeaderStatic: true}">
-                    
+                    <table class="table">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Next update</th>
+                                <th>Peers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="tracker in trackers">
+                                <td>{{tracker.host}}</td>
+                                <td>{{tracker.scrapeState}}</td>
+                                <td>{{tracker.nextScrapeTime * 1000 | timeuntilstring}}</td>
+                                <td>{{tracker.seederCount}}</td>
+                            </tr>
+                        </tbody>
+                        <!-- fields available:
+                            announce
+                            announceState
+                            downloadCount
+                            hasAnnounced
+                            hasScraped
+                            host
+                            id
+                            isBackup
+                            lastAnnouncePeerCount
+                            lastAnnounceResult
+                            lastAnnounceStartTime
+                            lastAnnounceSucceeded
+                            lastAnnounceTime
+                            lastAnnounceTimedOut
+                            lastScrapeResult
+                            lastScrapeStartTime
+                            lastScrapeSucceeded
+                            lastScrapeTime
+                            lastScrapeTimedOut
+                            leecherCount
+                            nextAnnounceTime
+                            nextScrapeTime
+                            scrape
+                            scrapeState
+                            seederCount
+                            tier
+                        -->
+                    </table>
                 </div>
                 <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Peers', isHeaderStatic: true}">
-
+                    <table class="table">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Host</th>
+                                <th>Country</th>
+                                <th>Client</th>
+                                <th>Flags</th>
+                                <th>Have</th>
+                                <th>Up speed</th>
+                                <th>Down speed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="peer in peers">
+                                <td>{{peer.address}}</td>
+                                <td>{{peer.flagStr}}</td>
+                                <td>{{peer.clientName}}</td>
+                                <td>{{peer.flagStr}}</td>
+                                <td>{{peer.progress | percentage}}</td>
+                                <td>{{peer.rateToPeer | bytes}}</td>
+                                <td>{{peer.rateToClient | bytes}}</td>
+                            </tr>
+                        </tbody>
+                        <!-- fields available:
+                            address,
+                            clientName,
+                            clientIsChoked,
+                            clientIsInterested
+                            flagStr
+                            isDownloadingFrom
+                            isEncrypted
+                            isIncoming
+                            isUploadingTo
+                            isUTP
+                            peerIsChoked
+                            peerIsInterested
+                            port
+                            progress
+                            rateToClient (B/s)
+                            rateToPeer (B/s)
+                        -->
+                    </table>
                 </div>
-                <div class="section5" winjs-list-view="files" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Files', isHeaderStatic: true}">
+                <div winjs-list-view="files" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Files', isHeaderStatic: true}">
                     <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
                             itemTemplate: select('#file-item-template'),
                             selectionMode: 'none',
