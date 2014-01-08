@@ -25,6 +25,44 @@
                 <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:host"></h4>
             </div>
         </div>
+        <!--
+        <th>Name</th>
+        <th>Status</th>
+        <th>Next update</th>
+        <th>Peers</th>
+        <td>{{tracker.host}}</td>
+        <td>{{tracker.scrapeState}}</td>
+        <td>{{tracker.nextScrapeTime * 1000 | timeuntilstring}}</td>
+        <td>{{tracker.seederCount}}</td>
+        -->
+        <!-- fields available:
+            announce
+            announceState
+            downloadCount
+            hasAnnounced
+            hasScraped
+            host
+            id
+            isBackup
+            lastAnnouncePeerCount
+            lastAnnounceResult
+            lastAnnounceStartTime
+            lastAnnounceSucceeded
+            lastAnnounceTime
+            lastAnnounceTimedOut
+            lastScrapeResult
+            lastScrapeStartTime
+            lastScrapeSucceeded
+            lastScrapeTime
+            lastScrapeTimedOut
+            leecherCount
+            nextAnnounceTime
+            nextScrapeTime
+            scrape
+            scrapeState
+            seederCount
+            tier
+        -->
     </div>
 
     <div id="peer-item-template" data-win-control="WinJS.Binding.Template">
@@ -34,6 +72,41 @@
                 <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:address"></h4>
             </div>
         </div>
+        <!--
+        <th>Host</th>
+        <th>Country</th>
+        <th>Client</th>
+        <th>Flags</th>
+        <th>Have</th>
+        <th>Up speed</th>
+        <th>Down speed</th>
+        <td>{{peer.address}}</td>
+        <td>{{peer.flagStr}}</td>
+        <td>{{peer.clientName}}</td>
+        <td>{{peer.flagStr}}</td>
+        <td>{{peer.progress | percentage}}</td>
+        <td>{{peer.rateToPeer | bytes}}</td>
+        <td>{{peer.rateToClient | bytes}}</td>
+        -->
+        <!-- fields available:
+            address,
+            clientName,
+            clientIsChoked,
+            clientIsInterested
+            flagStr
+            isDownloadingFrom
+            isEncrypted
+            isIncoming
+            isUploadingTo
+            isUTP
+            peerIsChoked
+            peerIsInterested
+            port
+            progress
+            rateToClient (B/s)
+            rateToPeer (B/s)
+        -->
+
     </div>
 
     <!-- Content -->
@@ -125,97 +198,23 @@
                         Last active: {{torrent.trackerStats[0].lastScrapeTime * 1000 | date:'medium'}}
                     </div>
                 </div>
-                <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Trackers', isHeaderStatic: true}">
-                    <table class="table">
-                        <thead class="table-header">
-                            <tr>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Next update</th>
-                                <th>Peers</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="tracker in trackers">
-                                <td>{{tracker.host}}</td>
-                                <td>{{tracker.scrapeState}}</td>
-                                <td>{{tracker.nextScrapeTime * 1000 | timeuntilstring}}</td>
-                                <td>{{tracker.seederCount}}</td>
-                            </tr>
-                        </tbody>
-                        <!-- fields available:
-                            announce
-                            announceState
-                            downloadCount
-                            hasAnnounced
-                            hasScraped
-                            host
-                            id
-                            isBackup
-                            lastAnnouncePeerCount
-                            lastAnnounceResult
-                            lastAnnounceStartTime
-                            lastAnnounceSucceeded
-                            lastAnnounceTime
-                            lastAnnounceTimedOut
-                            lastScrapeResult
-                            lastScrapeStartTime
-                            lastScrapeSucceeded
-                            lastScrapeTime
-                            lastScrapeTimedOut
-                            leecherCount
-                            nextAnnounceTime
-                            nextScrapeTime
-                            scrape
-                            scrapeState
-                            seederCount
-                            tier
-                        -->
-                    </table>
+                <div winjs-list-view="trackers" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Trackers', isHeaderStatic: true}">
+                    <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+                            itemTemplate: select('#tracker-item-template'),
+                            selectionMode: 'none',
+                            tapBehavior: 'none',
+                            swipeBehavior: 'none'
+                        }">
+                    </div>
                 </div>
-                <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Peers', isHeaderStatic: true}">
-                    <table class="table">
-                        <thead class="table-header">
-                            <tr>
-                                <th>Host</th>
-                                <th>Country</th>
-                                <th>Client</th>
-                                <th>Flags</th>
-                                <th>Have</th>
-                                <th>Up speed</th>
-                                <th>Down speed</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="peer in peers">
-                                <td>{{peer.address}}</td>
-                                <td>{{peer.flagStr}}</td>
-                                <td>{{peer.clientName}}</td>
-                                <td>{{peer.flagStr}}</td>
-                                <td>{{peer.progress | percentage}}</td>
-                                <td>{{peer.rateToPeer | bytes}}</td>
-                                <td>{{peer.rateToClient | bytes}}</td>
-                            </tr>
-                        </tbody>
-                        <!-- fields available:
-                            address,
-                            clientName,
-                            clientIsChoked,
-                            clientIsInterested
-                            flagStr
-                            isDownloadingFrom
-                            isEncrypted
-                            isIncoming
-                            isUploadingTo
-                            isUTP
-                            peerIsChoked
-                            peerIsInterested
-                            port
-                            progress
-                            rateToClient (B/s)
-                            rateToPeer (B/s)
-                        -->
-                    </table>
+                <div winjs-list-view="peers" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Peers', isHeaderStatic: true}">
+                    <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+                            itemTemplate: select('#peer-item-template'),
+                            selectionMode: 'none',
+                            tapBehavior: 'none',
+                            swipeBehavior: 'none'
+                        }">
+                    </div>
                 </div>
                 <div winjs-list-view="files" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Files', isHeaderStatic: true}">
                     <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{

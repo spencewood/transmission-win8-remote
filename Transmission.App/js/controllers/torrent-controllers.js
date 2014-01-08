@@ -7,44 +7,76 @@
         //TODO: handle the possibility of multiple trackers in torrent.trackerStats
         remoteService.init();
 
-        var mergeData = function (target) {
-            return function (data) {
-                return _.merge(target, data);
-            };
-        };
-
-        var mergeCollections = function () {
-            var collections = _.toArray(arguments);
-            var coll = collections.shift();
-            while (collections.length > 0) {
-                collections.shift().forEach(function (item, idx) {
-                    _.merge(coll[idx], item);
-                });
-            }
-            return coll;
-        };
-
-        var updateListData = function (arr) {
-            var keys = _.rest(arguments);
-            return function (data) {
-                var list = mergeCollections.apply(null, keys.map(function (key) {
-                    return data[key];
-                })).map(function (item) {
-                    return _.asWinJsBinding(item);
-                });
-
-                _.clearArray(arr);
-                list.forEach(function (item) {
-                    arr.push(item);
-                });
-            };
-        };
-
         var torrentCaller = _.idCaller(id);
 
+        var extractTrackers = function (data) {
+            var trackers = _.clone(data.trackerStats);
+            delete data.trackerStatus;
+            return trackers;
+        };
+
+        var updateTrackerData = function (trackers) {
+            return _.addUpdateDelete(
+                $scope.trackers,
+                trackers,
+                'host',
+                _.asWinJsBinding,
+                _.extend,
+                _.removeElement
+           );
+        };
+
+        var extractPeers = function (data) {
+            var peers = _.clone(data.peers);
+            delete data.peers;
+            return peers;
+        };
+
+        var updatePeerData = function (peers) {
+            return _.addUpdateDelete(
+                $scope.peers,
+                peers,
+                'address',
+                _.asWinJsBinding,
+                _.extend,
+                _.removeElement
+            );
+        };
+
+        var extractFiles = function (data) {
+            var files = _.mergeCollections(data.files, data.priorities, data.wanted);
+            delete data.files;
+            delete data.priorities;
+            delete data.wanted;
+            return files;
+        };
+
+        var updateFileData = function (files) {
+            return _.addUpdateDelete(
+                $scope.files,
+                files,
+                'name',
+                _.asWinJsBinding,
+                _.extend,
+                _.removeElement
+            )
+        }
+
+        var updateTorrentData = function (data) {
+            return _.merge($scope.torrent, data);
+        };
+
+        var updateTorrentDetails = function () {
+            return torrentCaller(torrentService.updateTorrent.bind(torrentService))
+                .then(_.pipeBranch(extractTrackers, updateTrackerData))
+                .then(_.pipeBranch(extractPeers, updatePeerData))
+                .then(_.pipeBranch(extractFiles, updateFileData))
+                .then(updateTorrentData);
+        };
+
         $scope.torrent = {};
-        $scope.trackers = [];
-        $scope.peers = [];
+        $scope.trackers = new WinJS.Binding.List();
+        $scope.peers = new WinJS.Binding.List();
         $scope.files = new WinJS.Binding.List();
 
         $scope.selectionChange = function (items) {
@@ -56,26 +88,12 @@
         };
 
         //for local db, if exists
-        torrentCaller(torrentService.getTorrent).then(mergeData($scope.torrent));
+        torrentCaller(torrentService.getTorrent)
+            .then(updateTorrentData);
 
         //updates
         var poller = new pollFactory.Factory([
-            function () {
-                return torrentCaller(torrentService.updateTorrent.bind(torrentService))
-                    .then(mergeData($scope.torrent));
-            },
-            function () {
-                return torrentCaller(torrentService.getTrackers.bind(torrentService))
-                    .then(updateListData($scope.trackers, 'trackers', 'trackerStats'));
-            },
-            function () {
-                return torrentCaller(torrentService.getPeers.bind(torrentService))
-                    .then(updateListData($scope.peers, 'peers'));
-            },
-            function () {
-                return torrentCaller(torrentService.getFiles.bind(torrentService))
-                    .then(updateListData($scope.files, 'files', 'priorities', 'wanted'));
-            }
+            updateTorrentDetails
         ]).start();
 
         $scope.$on('$destroy', poller.stop.bind(poller));
@@ -100,11 +118,7 @@
             return arr;
         };
 
-        var clearTorrents = function () {
-            _.clearArray($scope.torrents);
-        };
-
-        var updateTorrentData = function (torrents) {
+        var mergeData = function (torrents) {
             var active = torrents.filter(statusService.statuses.active);
 
             var statusFilter = _.partial(filterOnStatus, statusService.getLocationStatus());
@@ -113,7 +127,7 @@
             var filteredTorrents = _.pipeline(torrents, statusFilter, searchFilter);
 
             //genericize this more for torrent details
-            _.updateAddDelete(
+            _.addUpdateDelete(
                 $scope.torrents,
                 filteredTorrents,
                 'id',
@@ -122,12 +136,16 @@
                 _.removeElement);
         };
 
+        var updateTorrents = function () {
+            return torrentService.updateTorrents()
+                .then(mergeData);
+        };
+
         var poller = new pollFactory.Factory([
-            torrentService.updateTorrents.bind(torrentService)
+            updateTorrents
         ]).start();
 
-        torrentService.getTorrents().then(updateTorrentData);
-        torrentService.updateTorrents().then(updateTorrentData);
+        torrentService.getTorrents().then(mergeData);
 
         $scope.search = { filter: '' };
         $scope.torrents = new WinJS.Binding.List();

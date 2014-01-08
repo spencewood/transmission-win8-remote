@@ -83,7 +83,7 @@ namespace Transmission.Runtime
             return GetTorrentsAsync(fields).AsAsyncOperation();
         }
 
-        public IAsyncOperation<String> GetTorrent(int id)
+        public IAsyncOperation<String> GetTorrentDetails(int id)
         {
             var fields = new List<String>{
                 "id",
@@ -110,6 +110,7 @@ namespace Transmission.Runtime
                 "dateCreated",
                 "creator",
                 "eta",
+                "peers",
                 "peersSendingToUs",
                 "seeders",
                 "peersGettingFromUs",
@@ -124,45 +125,10 @@ namespace Transmission.Runtime
                 "pieces",
                 "trackerStats",
                 "secondsDownloading",
-                "secondsSeeding"
-            };
-
-            return GetTorrentsAsync(fields, id).AsAsyncOperation();
-        }
-
-        public IAsyncOperation<String> GetPeers(int id)
-        {
-            var fields = new List<String>
-            {
-                "id",
-                "peers"
-            };
-
-            return GetTorrentsAsync(fields, id).AsAsyncOperation();
-        }
-
-        public IAsyncOperation<String> GetFiles(int id)
-        {
-            var fields = new List<String>
-            {
-                "id",
+                "secondsSeeding",
                 "files",
                 "priorities",
-                "wanted",
-                "downloadDir"
-            };
-
-            return GetTorrentsAsync(fields, id).AsAsyncOperation();
-        }
-
-        public IAsyncOperation<String> GetTrackers(int id)
-        {
-            var fields = new List<String>
-            {
-                "id",
-                "trackers",
-                "trackerStats",
-                "nextAnnounceTime"
+                "wanted"
             };
 
             return GetTorrentsAsync(fields, id).AsAsyncOperation();

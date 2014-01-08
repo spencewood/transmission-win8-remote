@@ -14,9 +14,30 @@
 }(this, function (_) {
     _.mixin({
         pipeline: function (seed) {
-            return _.rest(_.toArray(arguments)).reduce(function (l, r) {
+            var arr = _.rest(_.toArray(arguments));
+            return arr.reduce(function (l, r) {
                 return r(l);
             }, seed);
+        },
+
+        pipeBranch: function () {
+            var args = _.toArray(arguments);
+            return function (data) {
+                args.unshift(data);
+                _.pipeline.apply(null, args);
+                return data;
+            };
+        },
+
+        mergeCollections: function () {
+            var collections = _.toArray(arguments);
+            var coll = collections.shift();
+            while (collections.length > 0) {
+                collections.shift().forEach(function (item, idx) {
+                    _.merge(coll[idx], item);
+                });
+            }
+            return coll;
         },
 
         matchesCaseInsensitiveByKey: function (term, key) {
@@ -38,7 +59,7 @@
         * Takes two collections and updates the first with the second
         * based on the passed in key. Performs mutation.
         */
-        updateAddDelete: function(coll1, coll2, key, addFun, updateFun, deleteFun){
+        addUpdateDelete: function(coll1, coll2, key, addFun, updateFun, deleteFun){
             //add/update
             coll2.forEach(function (item2) {
                 var same = coll1.filter(function (item1) {

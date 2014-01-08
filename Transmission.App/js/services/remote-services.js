@@ -156,12 +156,12 @@
                     });
             },
 
-            getTorrent: function (id) {
-                return remote.getTorrent(id)
+            getTorrentDetails: function (id) {
+                return remote.getTorrentDetails(id)
                     .then(handleResult)
                     .then(getSingle('torrents'));
             },
-
+            /*
             getPeers: function (id) {
                 return remote.getPeers(id)
                     .then(handleResult)
@@ -179,7 +179,7 @@
                     .then(handleResult)
                     .then(getSingle('torrents'));
             },
-
+            */
             startTorrents: function (ids) {
                 return remote.startTorrents(ids).then(handleResult);
             },
@@ -259,7 +259,7 @@
                 },
 
                 updateTorrent: function (id) {
-                    return remoteService.getTorrent(id)
+                    return remoteService.getTorrentDetails(id)
                         .then(function (val) {
                             this.insertTorrents(val);
                             return val;
