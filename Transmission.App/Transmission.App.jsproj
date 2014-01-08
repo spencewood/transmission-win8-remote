@@ -62,6 +62,7 @@
     <Content Include="images\splashscreen.png" />
     <Content Include="images\storelogo.scale-100.png" />
     <Content Include="images\transmission.png" />
+    <Content Include="js\controllers\app-controller.js" />
     <Content Include="js\controllers\appbar-controllers.js" />
     <Content Include="js\controllers\login-controllers.js" />
     <Content Include="js\controllers\settings-controllers.js" />
@@ -83,6 +84,7 @@
     <Content Include="js\pages\torrent-details-page.js" />
     <Content Include="js\pages\torrents-page.js" />
     <Content Include="js\services\polling-service.js" />
+    <Content Include="js\services\progress-service.js" />
     <Content Include="js\services\remote-services.js" />
     <Content Include="js\services\status-services.js" />
     <Content Include="js\services\win-services.js" />

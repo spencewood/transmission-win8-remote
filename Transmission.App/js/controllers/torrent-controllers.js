@@ -127,7 +127,7 @@
             var filteredTorrents = _.pipeline(torrents, statusFilter, searchFilter);
 
             //genericize this more for torrent details
-            _.addUpdateDelete(
+            return _.addUpdateDelete(
                 $scope.torrents,
                 filteredTorrents,
                 'id',
@@ -162,6 +162,14 @@
         };
 
         $scope.$on('torrents:add', _.dropFirstArgument(torrentService.addTorrents));
+        $scope.$on('spinner:stop', function () {
+            $scope.showSpinner = false;
+            $scope.$apply();
+        });
+        $scope.$on('spinner:start', function () {
+            $scope.showSpinner = true;
+            $scope.$apply();
+        });
         $scope.$on('$destroy', function () {
             console.log('destroying torrent controller');
         });

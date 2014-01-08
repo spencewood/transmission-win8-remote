@@ -1,4 +1,4 @@
-﻿angular.module('RemoteServices', ['WinServices', 'xc.indexedDB'])
+﻿angular.module('RemoteServices', ['WinServices', 'xc.indexedDB', 'ProgressService'])
     .constant('dbName', 'transmissionDB3')
     .constant('torrentStore', 'torrents')
     .constant('historyStore', 'history')
@@ -36,15 +36,18 @@
             console.error('database blocked', JSON.stringify(e));
         };
     })
-    .factory('remoteService', function ($rootScope, localSettingsService) {
+    .factory('remoteService', function ($rootScope, localSettingsService, progress) {
         var remote = null;
 
         var handleResult = function (res) {
-            var r = JSON.parse(res);
-            if (r.result !== 'success') {
-                throw new Error(r.result, res);
+            if (res != null) {
+                var r = JSON.parse(res);
+                if (r.result !== 'success') {
+                    throw new Error(r.result, res);
+                }
+                return r.arguments;
             }
-            return r.arguments;
+            throw new Error('No data');
         };
 
         var getSingle = function (key) {
@@ -149,7 +152,7 @@
             },
 
             getTorrents: function () {
-                return remote.getTorrents()
+                return progress.update(remote.getTorrents.bind(remote))
                     .then(handleResult)
                     .then(function (ret) {
                         return ret.torrents;
@@ -161,25 +164,7 @@
                     .then(handleResult)
                     .then(getSingle('torrents'));
             },
-            /*
-            getPeers: function (id) {
-                return remote.getPeers(id)
-                    .then(handleResult)
-                    .then(getSingle('torrents'));
-            },
 
-            getFiles: function (id) {
-                return remote.getFiles(id)
-                    .then(handleResult)
-                    .then(getSingle('torrents'));
-            },
-
-            getTrackers: function (id) {
-                return remote.getTrackers(id)
-                    .then(handleResult)
-                    .then(getSingle('torrents'));
-            },
-            */
             startTorrents: function (ids) {
                 return remote.startTorrents(ids).then(handleResult);
             },
@@ -264,18 +249,6 @@
                             this.insertTorrents(val);
                             return val;
                         }.bind(this));
-                },
-
-                getFiles: function (id) {
-                    return remoteService.getFiles(id);
-                },
-
-                getTrackers: function (id) {
-                    return remoteService.getTrackers(id);
-                },
-
-                getPeers: function (id) {
-                    return remoteService.getPeers(id);
                 },
 
                 start: function (ids) {

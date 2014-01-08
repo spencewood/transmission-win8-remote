@@ -21,14 +21,15 @@
     </div>
 
     <!-- Content -->
-    <div class="fragment groupeditemspage">
+    <div class="fragment groupeditemspage" ng-controller="TorrentController">
+        <progress ng-show="showSpinner"></progress>
         <header aria-label="Header content" role="banner">
             <button data-win-control="WinJS.UI.BackButton"></button>
             <h1 class="titlearea win-type-ellipsis">
                 <span class="pagetitle">Torrents</span>
             </h1>
         </header>
-        <section aria-label="Main content" role="main" ng-controller="TorrentController" winjs-list-view="torrents">
+        <section aria-label="Main content" role="main" winjs-list-view="torrents">
             <h4>Total ({{torrents.length}})</h4>
             <div class="list-view groupeditemslist win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
                     layout: {type: WinJS.UI.GridLayout},

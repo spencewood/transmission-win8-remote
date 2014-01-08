@@ -31,13 +31,15 @@
     <script src="/js/services/status-services.js"></script>
     <script src="/js/services/win-services.js"></script>
     <script src="/js/services/polling-service.js"></script>
+    <script src="/js/services/progress-service.js"></script>
+    <script src="/js/controllers/app-controller.js"></script>
     <script src="/js/controllers/settings-controllers.js"></script>
     <script src="/js/controllers/appbar-controllers.js"></script>
     <script src="/js/controllers/login-controllers.js"></script>
     <script src="/js/controllers/torrent-controllers.js"></script>
     <script src="/js/directives/directives.js"></script>
 </head>
-<body>
+<body ng-controller="AppController">
     <div id="contenthost"
          data-win-control="Application.PageControlNavigator"
          data-win-options="{home: '/views/login.html'}">
