@@ -80,7 +80,7 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
         return this;
     };
 
-    module.$get = ['$q', '$rootScope', function($q, $rootScope) {
+    module.$get = ['$q', function($q) {
         /**
          * @ngdoc object
          * @name defaultQueryOptions
@@ -116,9 +116,9 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                 dbReq = indexedDB.open(module.dbName, module.dbVersion || 1);
                 dbReq.onsuccess = function(e) {
                     module.db = dbReq.result;
-                    $rootScope.$apply(function(){
+                    //$rootScope.$apply(function(){
                         deferred.resolve(module.db);
-                    });
+                    //});
                 };
                 dbReq.onblocked = module.onDatabaseBlocked;
                 dbReq.onerror = module.onDatabaseError;
@@ -201,17 +201,17 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                         data.forEach(function(item){
                             req = store.add(item);
                             req.onsuccess = req.onerror = function(e) {
-                                $rootScope.$apply(function(){
+                                //$rootScope.$apply(function(){
                                     d.resolve(e.target.result);
-                                });
+                                //});
                             };
                         });
                     } else {
                         req = store.add(data);
                         req.onsuccess = req.onerror = function(e) {
-                            $rootScope.$apply(function(){
+                            //$rootScope.$apply(function(){
                                 d.resolve(e.target.result);
-                            });
+                            //});
                         };
                     }
                     return d.promise;
@@ -238,9 +238,9 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                     var storeIt = function (item) {
                         req = store.put(item);
                         req.onsuccess = req.onerror = function (e) {
-                            $rootScope.$apply(function () {
+                            //$rootScope.$apply(function () {
                                 d.resolve(e.target.result);
-                            });
+                            //});
                         };
                     };
 
@@ -271,9 +271,9 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                 return this.internalObjectStore(this.storeName, READWRITE).then(function(store){
                     var req = store.delete(key);
                     req.onsuccess = req.onerror = function(e) {
-                        $rootScope.$apply(function(){
+                        //$rootScope.$apply(function(){
                             d.resolve(e.target.result);
-                        });
+                        //});
                     };
                     return d.promise;
                 });
@@ -293,9 +293,9 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                 return this.internalObjectStore(this.storeName, READWRITE).then(function(store){
                     var req = store.clear();
                     req.onsuccess = req.onerror = function(e) {
-                        $rootScope.$apply(function(){
+                        //$rootScope.$apply(function(){
                             d.resolve(e.target.result);
-                        });
+                        //});
                     };
                     return d.promise;
                 });
@@ -339,9 +339,9 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                         req = store.get(keyOrIndex);
                     }
                     req.onsuccess = req.onerror = function(e) {
-                        $rootScope.$apply(function(){
+                        //$rootScope.$apply(function(){
                             d.resolve(e.target.result);
-                        });
+                        //});
                     };
                     return promise;
                 });
@@ -364,9 +364,9 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                     if (store.getAll) {
                         req = store.getAll();
                         req.onsuccess = req.onerror = function(e) {
-                            $rootScope.$apply(function(){
+                            //$rootScope.$apply(function(){
                                 d.resolve(e.target.result);
-                            });
+                            //});
                         };
                     } else {
                         req = store.openCursor();
@@ -413,9 +413,9 @@ angular.module('xc.indexedDB', []).provider('$indexedDB', function() {
                         req = store.openCursor(options.keyRange, options.direction);
                     }
                     req.onsuccess = req.onerror = function(e) {
-                        $rootScope.$apply(function(){
+                        //$rootScope.$apply(function(){
                             d.resolve(e.target.result);
-                        });
+                        //});
                     };
                     return d.promise;
                 });

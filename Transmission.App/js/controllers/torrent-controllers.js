@@ -1,4 +1,4 @@
-﻿angular.module('Torrent', ['RemoteServices', 'WinServices', 'StatusServices', 'PollingService'])
+﻿angular.module('Torrent', ['RemoteServices', 'WinServices', 'StatusServices', 'PollingService', 'EventService'])
     .controller('StatsController', function ($scope) {
 
     })
@@ -98,7 +98,7 @@
 
         $scope.$on('$destroy', poller.stop.bind(poller));
     })
-    .controller('TorrentController', function ($scope, $rootScope, torrentService, remoteService, statusService, navigationService, pollFactory) {
+    .controller('TorrentController', function ($scope, $rootScope, torrentService, remoteService, statusService, navigationService, pollFactory, event) {
         remoteService.init();
 
         var filterOnStatus = function (status, arr) {
@@ -152,8 +152,8 @@
 
         $scope.selectedTorrentIds = [];
         $scope.selectionChanged = function (items) {
-            $rootScope.selectedTorrentIds = _.pluck(_.pluck(items._value, 'data'), 'id');
-            $rootScope.$apply();
+            var ids = _.pluck(_.pluck(items._value, 'data'), 'id')
+            event.emit('torrent:selected', ids);
         };
 
         $scope.selectItem = function (args) {

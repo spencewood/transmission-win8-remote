@@ -26,7 +26,7 @@
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 // TODO: This application has been newly launched. Initialize
                 // your application here.
-                angular.module('appBar', ['AppBar']);
+                angular.module('appBar', ['AppBar', 'Directives']);
                 angular.module('statusBar', ['Status']);
                 angular.bootstrap($('#app-bars').get(0), ['appBar']);
                 angular.bootstrap($('#status').get(0), ['statusBar']);

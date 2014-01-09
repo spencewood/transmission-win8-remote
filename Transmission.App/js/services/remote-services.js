@@ -36,7 +36,7 @@
             console.error('database blocked', JSON.stringify(e));
         };
     })
-    .factory('remoteService', function ($rootScope, localSettingsService, progress) {
+    .factory('remoteService', function (localSettingsService, progress) {
         var remote = null;
 
         var handleResult = function (res) {
@@ -216,7 +216,7 @@
         };
     })
     .provider('torrentService', function () {
-        this.$get = function ($rootScope, $indexedDB, torrentStore, remoteService, statusService, localSettingsService) {
+        this.$get = function ($indexedDB, $q, torrentStore, remoteService, statusService, localSettingsService) {
             var dbTorrents = $indexedDB.objectStore(torrentStore);
 
             return {
@@ -226,6 +226,15 @@
 
                 getTorrent: function (id) {
                     return dbTorrents.find(id);
+                },
+
+                getNamesByIds: function (ids) {
+                    var pluckNames = function (arr) {
+                        return _.pluck(arr, 'name');
+                    };
+
+                    return $q.all(ids.map(this.getTorrent.bind(this)))
+                        .then(pluckNames);
                 },
 
                 insertTorrents: function (torrents) {

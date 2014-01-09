@@ -1,30 +1,28 @@
 ﻿angular.module('Directives', [])
-    .directive('activeLink', function ($location) {
+    .directive('winjsAppBar', function () {
         return {
             restrict: 'A',
-            link: function (scope, element, attrs, controller) {
-                var cls = attrs.activeLink || 'active';
-                var path = attrs.href;
-                path = path.substring(1); // remove the #
-                scope.location = $location;
-                scope.$watch('location.path()', function (newPath) {
-                    if (path === newPath) {
-                        element.addClass(cls);
-                    } else {
-                        element.removeClass(cls);
-                    }
+            link: function (scope, element) {
+                var $bar = element.find('.app-bar');
+                var bar = $bar.get(0);
+                WinJS.UI.processAll(bar);
+
+                var winControl = bar.winControl;
+
+                scope.$watch('selectedIds', function (ids) {
+                    var hasIds = !_.isEmpty(ids);
+                    winControl.sticky = hasIds;
+                    winControl.disabled = !hasIds;
+                    hasIds ? winControl.show() : winControl.hide();
+                });
+
+                scope.$on('$destroy', function () {
+                    winControl.dispose();
+                    delete winControl;
+                    $bar.remove();
                 });
             }
-        };
-    })
-    .directive('itemCount', function () {
-        return {
-            restrict: 'E',
-            scope: {
-                filterBy: '='
-            },
-            template: '<span>({{(torrents|filter:filterBy).length}})</span>'
-        };
+        }
     })
     .directive('winjsListView', function () {
         return {

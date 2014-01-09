@@ -56,7 +56,7 @@ EventEmitter.prototype.emit = function (type) {
 
 
     // exec event
-    this._listeners[type].fn(args);
+    this._listeners[type].fn.apply(null, args);
 
 
     // remove events that run only once
