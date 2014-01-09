@@ -1,4 +1,4 @@
-﻿angular.module('RemoteServices', ['WinServices', 'xc.indexedDB', 'ProgressService'])
+﻿angular.module('RemoteServices', ['WinServices', 'xc.indexedDB', 'ProgressService', 'StatusServices'])
     .constant('dbName', 'transmissionDB3')
     .constant('torrentStore', 'torrents')
     .constant('historyStore', 'history')

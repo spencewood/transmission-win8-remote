@@ -26,10 +26,10 @@
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 // TODO: This application has been newly launched. Initialize
                 // your application here.
-                var appName = 'app';
-
-                angular.module(appName, ['App', 'Login', 'Torrent', 'AppBar', 'Directives', 'Filters'])
-                angular.bootstrap(document.body, [appName]);
+                angular.module('appBar', ['AppBar']);
+                angular.module('statusBar', ['Status']);
+                angular.bootstrap($('#app-bars').get(0), ['appBar']);
+                angular.bootstrap($('#status').get(0), ['statusBar']);
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.

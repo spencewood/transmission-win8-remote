@@ -1,6 +1,6 @@
-﻿angular.module('ProgressService', [])
+﻿angular.module('ProgressService', ['EventService'])
     .provider('progress', function () {
-        this.$get = function ($rootScope) {
+        this.$get = function ($rootScope, event) {
             var Provider = function () {
                 this.q = 0;
             };
@@ -20,11 +20,11 @@
 
             Provider.prototype.check = function () {
                 if (this.q > 0) {
-                    $rootScope.$broadcast('spinner:start');
+                    event.emit('spinner:start');
                 }
                 else {
                     this.q = 0;
-                    $rootScope.$broadcast('spinner:stop');
+                    event.emit('spinner:stop');
                 }
             };
 

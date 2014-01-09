@@ -1,18 +1,19 @@
 ﻿(function () {
     "use strict";
 
-    var controllerSelector = '[ng-controller=LoginController]';
-
     WinJS.UI.Pages.define("/views/login.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
-            AppInjector.inject($(element).find(controllerSelector).get(0));
+            var appName = 'loginApp';
+
+            angular.module(appName, ['Login']);
+            angular.bootstrap(element, [appName]);
         },
 
         unload: function (e) {
             //destroy controller
-            angular.element(controllerSelector).scope().$destroy();
+            angular.element('[ng-controller=LoginController]').scope().$destroy();
             $(document).remove();
         },
 

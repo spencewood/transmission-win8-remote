@@ -20,20 +20,24 @@
 
     <!-- Transmission references -->
     <link href="/css/default.css" rel="stylesheet" />
-    
+
     <!-- Winjs -->
     <script src="/js/pages/default.js"></script>
     <script src="/js/filters/winjs-bytes-filter.js"></script>
-    <script src="/js/util/winjs-angular-app-injector.js"></script>
+
+    <!-- Other -->
+    <script src="/js/lib/tiny-eventemitter.js"></script>
+    <script src="/js/util/winjs-eventemitter.js"></script>
 
     <!-- Angular -->
     <script src="/js/filters/filters.js"></script>
+    <script src="/js/services/event-service.js"></script>
     <script src="/js/services/remote-services.js"></script>
     <script src="/js/services/status-services.js"></script>
     <script src="/js/services/win-services.js"></script>
     <script src="/js/services/polling-service.js"></script>
     <script src="/js/services/progress-service.js"></script>
-    <script src="/js/controllers/app-controller.js"></script>
+    <script src="/js/controllers/status-controller.js"></script>
     <script src="/js/controllers/settings-controllers.js"></script>
     <script src="/js/controllers/appbar-controllers.js"></script>
     <script src="/js/controllers/login-controllers.js"></script>
@@ -41,10 +45,62 @@
     <script src="/js/directives/directives.js"></script>
 </head>
 <body>
-    <div id="contenthost" ng-controller="AppController">
-        <progress ng-show="showSpinner"></progress>
+    <div id="contenthost">
+        <div id="status" ng-controller="StatusController">
+            <progress ng-show="showSpinner"></progress>
+        </div>
         <div data-win-control="Application.PageControlNavigator" data-win-options="{home: '/views/login.html'}">
         </div>
     </div>
+
+    <div id="app-bars">
+        <!-- Session App Bar -->
+        <div id="session-bar" data-win-control="WinJS.UI.AppBar" data-win-options="{placement: 'top'}" ng-controller="SessionBarController">
+
+        </div>
+        <!-- /Session App Bar -->
+        <!-- Torrent App Bar -->
+        <div id="torrent-bar" data-win-control="WinJS.UI.AppBar" data-win-options="{placement: 'bottom', disabled: 'true'}" ng-controller="TorrentBarController">
+            <button data-win-control="WinJS.UI.AppBarCommand"
+                    data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',
+                section:'selection',tooltip:'Remove torrent'}" ng-click="remove()"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand"
+                    data-win-options="{id:'cmdRemoveWithData',label:'Remove With Data',icon:'delete',
+                section:'selection',tooltip:'Remove torrent and data'}" ng-click="remove(true)"></button>
+
+            <hr data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{type:'separator',section:'global'}" />
+
+            <button data-win-control="WinJS.UI.AppBarCommand"
+                    data-win-options="{id: 'cmdMoveUp',label:'Move Up',icon:'up',
+                section:'global',tooltip:'Move up'}" ng-click="moveUp()"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand"
+                    data-win-options="{id: 'cmdMoveDown',label:'Move Down',icon:'up',
+                section:'global',tooltip:'Move down'}" ng-click="moveDown()" class="rotate180"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand"
+                    data-win-options="{id: 'cmdMoveTop',label:'Move Top',icon:'upload',
+                section:'global',tooltip:'Move top'}" ng-click="moveTop()"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand"
+                    data-win-options="{id: 'cmdMoveBottom',label:'Move Bottom',icon:'download',
+                section:'global',tooltip:'Move bottom'}" ng-click="moveBottom()"></button>
+
+            <hr data-win-control="WinJS.UI.AppBarCommand"
+                data-win-options="{type:'separator',section:'global'}" />
+
+            <button data-win-control="WinJS.UI.AppBarCommand"
+                    data-win-options="{id: 'cmdReannounce',label:'Reannounce',icon:'people',
+                section:'global',tooltip:'Reannounce torrent'}" ng-click="reannounce()"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand"
+                    data-win-options="{id:'cmdVerify',label:'Verify',icon:'zoom',
+                section:'global',tooltip:'Verify torrent'}" ng-click="verify()"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand"
+                    data-win-options="{id:'cmdStop',label:'Stop',icon:'stop',
+                section:'global',tooltip:'Stop torrent'}" ng-click="stop()"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand"
+                    data-win-options="{id:'cmdStart',label:'Start',icon:'play',
+                section:'global',tooltip:'Start torrent'}" ng-click="start()"></button>
+        </div>
+    </div>
+    <!-- /Torrent Bar -->
 </body>
 </html>

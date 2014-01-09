@@ -2,12 +2,11 @@
     .controller('StatsController', function ($scope) {
 
     })
-    .controller('TorrentDetailsController', function ($scope, $injector, remoteService, torrentService, pollFactory) {
+    .controller('TorrentDetailsController', function ($scope, $injector, remoteService, torrentService, id, pollFactory) {
         //TODO: handle torrent.pieces byte array
         //TODO: handle the possibility of multiple trackers in torrent.trackerStats
         remoteService.init();
 
-        //pulling from a global variable!
         var torrentCaller = _.idCaller(id);
 
         var extractTrackers = function (data) {
@@ -99,7 +98,7 @@
 
         $scope.$on('$destroy', poller.stop.bind(poller));
     })
-    .controller('TorrentController', function ($scope, torrentService, remoteService, statusService, navigationService, pollFactory) {
+    .controller('TorrentController', function ($scope, $rootScope, torrentService, remoteService, statusService, navigationService, pollFactory) {
         remoteService.init();
 
         var filterOnStatus = function (status, arr) {
@@ -153,8 +152,8 @@
 
         $scope.selectedTorrentIds = [];
         $scope.selectionChanged = function (items) {
-            $scope.selectedTorrentIds = _.pluck(_.pluck(items._value, 'data'), 'id');
-            $scope.$apply();
+            $rootScope.selectedTorrentIds = _.pluck(_.pluck(items._value, 'data'), 'id');
+            $rootScope.$apply();
         };
 
         $scope.selectItem = function (args) {
