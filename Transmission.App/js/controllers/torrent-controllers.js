@@ -2,11 +2,12 @@
     .controller('StatsController', function ($scope) {
 
     })
-    .controller('TorrentDetailsController', function ($scope, remoteService, torrentService, id, pollFactory) {
+    .controller('TorrentDetailsController', function ($scope, $injector, remoteService, torrentService, pollFactory) {
         //TODO: handle torrent.pieces byte array
         //TODO: handle the possibility of multiple trackers in torrent.trackerStats
         remoteService.init();
 
+        //pulling from a global variable!
         var torrentCaller = _.idCaller(id);
 
         var extractTrackers = function (data) {
@@ -152,7 +153,7 @@
 
         $scope.selectedTorrentIds = [];
         $scope.selectionChanged = function (items) {
-            $scope.selectedTorrentIds = _.pluck(_.pluck(selection._value, 'data'), 'id');
+            $scope.selectedTorrentIds = _.pluck(_.pluck(items._value, 'data'), 'id');
             $scope.$apply();
         };
 
@@ -162,14 +163,6 @@
         };
 
         $scope.$on('torrents:add', _.dropFirstArgument(torrentService.addTorrents));
-        $scope.$on('spinner:stop', function () {
-            $scope.showSpinner = false;
-            $scope.$apply();
-        });
-        $scope.$on('spinner:start', function () {
-            $scope.showSpinner = true;
-            $scope.$apply();
-        });
         $scope.$on('$destroy', function () {
             console.log('destroying torrent controller');
         });

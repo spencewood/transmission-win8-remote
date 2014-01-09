@@ -40,28 +40,25 @@
         var remote = null;
 
         var handleResult = function (res) {
-            if (res != null) {
+            try {
                 var r = JSON.parse(res);
                 if (r.result !== 'success') {
                     throw new Error(r.result, res);
                 }
                 return r.arguments;
+            } catch (e) {
+                handleError(e);
             }
-            throw new Error('No data');
+        };
+
+        var handleError = function (e) {
+            throw new Error(e);
         };
 
         var getSingle = function (key) {
             return function (data)  {
                 return _.first(data[key]);
             }
-        };
-
-        var spinnerStop = function () {
-            $rootScope.$broadcast('spinner:stop');
-        };
-
-        var spinnerStart = function () {
-            $rootScope.$broadcast('spinner:start');
         };
 
         return {
@@ -84,7 +81,8 @@
             },
 
             getSettings: function () {
-                return remote.getSession().then(handleResult);
+                return progress.update(remote.getSession.bind(remote))
+                    .then(handleResult);
             },
 
             setSettings: function (settings) {
@@ -160,7 +158,10 @@
             },
 
             getTorrentDetails: function (id) {
-                return remote.getTorrentDetails(id)
+                var remoteCaller = _.idCaller(id);
+                return progress.update(function () {
+                        return remoteCaller(remote.getTorrentDetails.bind(remote))
+                    })
                     .then(handleResult)
                     .then(getSingle('torrents'));
             },

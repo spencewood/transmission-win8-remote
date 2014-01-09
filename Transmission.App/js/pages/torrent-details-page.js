@@ -1,20 +1,22 @@
-﻿(function () {
+﻿//TODO: FIX THIS! Inject the value into the app
+var id = null;
+
+(function () {
     "use strict";
+
+    var controllerSelector = '[ng-controller=TorrentDetailsController]';
 
     WinJS.UI.Pages.define("/views/torrent-details.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
-            var appName = 'torrentDetailsApp';
-
-            angular.module(appName, ['Torrent', 'Filters', 'Directives'])
-                .constant('id', options.id);
-            angular.bootstrap(element, [appName]);
+            id = options.id;
+            AppInjector.inject($(element).find(controllerSelector).get(0));
         },
 
         unload: function () {
             //destroy controller
-            angular.element('[ng-controller=TorrentDetailsController]').scope().$destroy();
+            angular.element(controllerSelector).scope().$destroy();
             $(document).remove();
         },
 

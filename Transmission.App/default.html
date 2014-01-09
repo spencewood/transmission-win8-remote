@@ -24,6 +24,7 @@
     <!-- Winjs -->
     <script src="/js/pages/default.js"></script>
     <script src="/js/filters/winjs-bytes-filter.js"></script>
+    <script src="/js/util/winjs-angular-app-injector.js"></script>
 
     <!-- Angular -->
     <script src="/js/filters/filters.js"></script>
@@ -39,10 +40,11 @@
     <script src="/js/controllers/torrent-controllers.js"></script>
     <script src="/js/directives/directives.js"></script>
 </head>
-<body ng-controller="AppController">
-    <div id="contenthost"
-         data-win-control="Application.PageControlNavigator"
-         data-win-options="{home: '/views/login.html'}">
+<body>
+    <div id="contenthost" ng-controller="AppController">
+        <progress ng-show="showSpinner"></progress>
+        <div data-win-control="Application.PageControlNavigator" data-win-options="{home: '/views/login.html'}">
+        </div>
     </div>
 </body>
 </html>

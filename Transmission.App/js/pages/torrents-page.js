@@ -1,14 +1,13 @@
 ﻿(function () {
     "use strict";
 
+    var controllerSelector = '[ng-controller=TorrentController]';
+
     WinJS.UI.Pages.define("/views/torrents.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
-            var appName = 'mainApp';
-
-            angular.module(appName, ['Torrent', 'AppBar', 'Directives']);
-            angular.bootstrap(element, [appName]);
+            AppInjector.inject($(element).find(controllerSelector).get(0));
 
             //settings flyout
             WinJS.Application.onsettings = function (e) {
@@ -23,7 +22,7 @@
 
         unload: function () {
             //destroy controller
-            angular.element('[ng-controller=TorrentController]').scope().$destroy();
+            angular.element(controllerSelector).scope().$destroy();
             $(document).remove();
         },
 

@@ -89,6 +89,7 @@
     <Content Include="js\services\status-services.js" />
     <Content Include="js\services\win-services.js" />
     <Content Include="js\util\lodash-mixins.js" />
+    <Content Include="js\util\winjs-angular-app-injector.js" />
     <Content Include="views\login.html" />
     <Content Include="views\settings-interface.html" />
     <Content Include="views\settings-server.html" />
