@@ -1,5 +1,5 @@
 ﻿angular.module('Directives', [])
-    .directive('winjsAppBar', function () {
+    .directive('winjsTorrentAppBar', function () {
         return {
             restrict: 'A',
             link: function (scope, element) {

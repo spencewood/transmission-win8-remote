@@ -1,4 +1,4 @@
-﻿angular.module('WinServices', [])
+﻿angular.module('WinServices', ['EventService'])
     .factory('dialogService', function () {
         return {
             prompt: function (message) {
@@ -107,15 +107,18 @@
             }
         };
     })
-    .factory('navigationService', function () {
+    .factory('navigationService', function (event) {
         return {
-            navigate: WinJS.Navigation.navigate,
+            navigate: function () {
+                event.emit('navigated', _.first(arguments).match(/\/([^\/]+)\.\w+/).pop());
+                WinJS.Navigation.navigate.apply(WinJS, _.toArray(arguments));
+            },
             showTorrentDetails: function (id) {
-                WinJS.Navigation.navigate('/views/torrent-details.html', { id: id });
+                this.navigate('/views/torrent-details.html', { id: id });
             },
             showSettingsFlyout: WinJS.UI.SettingsFlyout.show,
             goHome: function () {
-                WinJS.Navigation.navigate('/views/torrents.html');
+                this.navigate('/views/torrents.html');
             }
         };
     });

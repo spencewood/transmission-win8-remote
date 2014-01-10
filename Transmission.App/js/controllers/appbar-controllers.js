@@ -1,8 +1,15 @@
 ﻿angular.module('AppBar', ['RemoteServices', 'WinServices', 'EventService'])
     .controller('TorrentBarController', function ($scope, torrentService, dialogService, event) {
         $scope.selectedIds = [];
+        $scope.torrentBarEnabled = false;
+
         event.on('torrent:selected', function (ids) {
             $scope.selectedIds = ids;
+            $scope.$apply();
+        });
+
+        event.on('navigated', function (view) {
+            $scope.selectedIds = [];
             $scope.$apply();
         });
 
