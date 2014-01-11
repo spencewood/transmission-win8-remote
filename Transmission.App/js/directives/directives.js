@@ -34,7 +34,7 @@
             },
             link: function (scope, element) {
                 var $list = element.find('.list-view');
-                var list = $list[0];
+                var list = $list.get(0);
                 WinJS.UI.processAll(list);
 
                 var listControl = list.winControl;

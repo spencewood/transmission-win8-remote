@@ -98,8 +98,22 @@
 
         $scope.$on('$destroy', poller.stop.bind(poller));
     })
-    .controller('TorrentController', function ($scope, $rootScope, torrentService, remoteService, statusService, navigationService, pollFactory, event) {
+    .controller('TorrentController', function ($scope, torrentService, remoteService, statusService, navigationService, pollFactory, event) {
         remoteService.init();
+
+        torrentService.getUniqueTrackers().then(function (trackers) {
+            $scope.trackers = trackers;
+        });
+
+        $scope.showHeaderMenu = function () {
+            var title = document.querySelector("header .titlearea");
+            var menu = document.getElementById("header-menu").winControl;
+            menu.anchor = title;
+            menu.placement = "bottom";
+            menu.alignment = "left";
+
+            menu.show();
+        }
 
         var filterOnStatus = function (status, arr) {
             return arr.filter(function (item) {
@@ -152,7 +166,7 @@
 
         $scope.selectedTorrentIds = [];
         $scope.selectionChanged = function (items) {
-            var ids = _.pluck(_.pluck(items._value, 'data'), 'id')
+            var ids = _.nestedPluck(items._value, 'data', 'id');
             event.emit('torrent:selected', ids);
         };
 

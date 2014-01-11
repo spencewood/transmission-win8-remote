@@ -224,6 +224,12 @@
                     return dbTorrents.getAll();
                 },
 
+                getUniqueTrackers: function () {
+                    return this.getTorrents().then(function (torrents) {
+                        return _.uniq(_.nestedPluck(torrents, 'trackerStats', 'host'));
+                    });
+                },
+
                 getTorrent: function (id) {
                     return dbTorrents.find(id);
                 },

@@ -46,4 +46,45 @@ describe('Lodash mixins', function(){
 			_.binaryArrayToNumber([1,1,1,1,1,1,1]).should.equal(127);
 		});
 	});
+
+	describe('Nested pluck', function(){
+		it('should pluck 2 deep', function(){
+			var data = [
+				{
+					name: 'a',
+					trackers: [{
+						host: 'a'
+					}]
+				},
+				{
+					name: 'b',
+					trackers: [{
+						host: 'b'
+					}]
+				}
+			];
+
+			var pl = _.nestedPluck(data, 'trackers', 'host')
+			pl.length.should.equal(2);
+			_.last(pl).should.equal('b');
+		});
+
+		it('should pluck 3 deep', function() {
+			var data = [
+				{
+					person: [
+						{
+							name: [
+								{
+									first: 'bob'
+								}
+							]
+						}
+					]
+				}
+			];
+
+			_.first(_.nestedPluck(data, 'person', 'name', 'first')).should.equal('bob');
+		});
+	});
 });

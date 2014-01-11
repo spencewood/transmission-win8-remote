@@ -22,14 +22,25 @@
 
     <!-- Content -->
     <div class="fragment groupeditemspage" ng-controller="TorrentController">
+        <!-- Header menu -->
+        <div winjs-header-menu>
+            <div id="header-menu" data-win-control="WinJS.UI.Menu">
+                <button ng-repeat="tracker in trackers" data-win-control="WinJS.UI.MenuCommand" data-win-options="{id: '{{tracker}}', label: '{{tracker}}'}"></button>
+            </div>
+        </div>
+
         <header aria-label="Header content" role="banner">
-            <button data-win-control="WinJS.UI.BackButton"></button>
-            <h1 class="titlearea win-type-ellipsis">
-                <span class="pagetitle">Torrents</span>
-            </h1>
+            <div class="titlearea win-type-ellipsis" ng-click="showHeaderMenu()">
+                <button class="titlecontainer">
+                    <h1>
+                        <span class="pagetitle">All Torrents</span>
+                        <span class="chevron win-type-x-large">&#xe099</span>
+                    </h1>
+                </button>
+            </div>
         </header>
         <section aria-label="Main content" role="main" winjs-list-view="torrents">
-            <h4>Total ({{torrents.length}})</h4>
+            <h4 ng-click="showHeaderMenu()">Total ({{torrents.length}})</h4>
             <div class="list-view groupeditemslist win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
                     layout: {type: WinJS.UI.GridLayout},
                     itemTemplate: select('#torrent-item-template')

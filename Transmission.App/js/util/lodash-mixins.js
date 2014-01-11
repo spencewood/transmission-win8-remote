@@ -142,6 +142,15 @@
 
         binaryArrayToNumber: function (arr) {
             return parseInt(arr.join(''), 2);
+        },
+
+        nestedPluck: function nestedPluck(arr) {
+            var plucks = _.rest(arguments);
+            if (plucks.length > 0) {
+                var a = _.flatten(_.pluck(arr, plucks.shift()), true);
+                return nestedPluck.apply(null, [a].concat(plucks));
+            }
+            return arr;
         }
     });
 }));
