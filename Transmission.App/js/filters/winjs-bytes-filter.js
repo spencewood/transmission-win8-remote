@@ -12,10 +12,16 @@
         return r === '-' ? '-' : r + '/sec';
     };
 
+    var rateUpDown = function (model) {
+        return rate(model.rateUpload) + '/' + 
+            rate(model.rateDownload);
+    };
+
     WinJS.Namespace.define("Bytes", {
         convert: convert,
         rate: rate,
         winjsConvert: WinJS.Binding.converter(convert),
-        winjsRate: WinJS.Binding.converter(rate)
+        winjsRate: WinJS.Binding.converter(rate),
+        winjsRateCombined: WinJS.Binding.converter(rateUpDown)
     });
 })();

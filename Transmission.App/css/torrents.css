@@ -2,60 +2,76 @@
     height: 100%;
 }
 
-#torrents-view #total-count{
-    position: absolute;
-    top: 80px;
-    left: 80px;
-}
-
-#torrents-view section{
-    height: 100%;
-}
-
-#torrents-view .win-listview{
-    height: 100%;
-}
-
-#torrents-view .win-surface {
-    margin-top: 180px;
-    margin-bottom: 80px;
-    margin-left: 120px;
-    margin-right: 120px;
-}
-
-/* Torrent item*/
-#torrents-view .win-container
-{
-    background-color: white;
-}
-
-#torrents-view .win-container:hover {
-    background-color: #fafafa;
-}
-
-#torrents-view .torrent-item {
-    padding: 5px 10px;
-    width: 300px;
-    height: 65px;
-    display: -ms-grid;
-    -ms-grid-columns: 20px 1fr;
-    -ms-grid-rows: 100px 1fr;
-}
-
-    #torrents-view .torrent-item .item-image {
-        -ms-grid-column: 1;
+    #torrents-view #total-count {
+        position: absolute;
+        top: 80px;
+        left: 80px;
     }
 
-    #torrents-view .torrent-item .item-overlay {
-        -ms-grid-column: 2;
+    #torrents-view section {
+        height: 100%;
     }
 
-        #torrents-view .torrent-item .item-overlay .item-title {
-            -ms-grid-row: 1;
+    #torrents-view .win-listview {
+        height: 100%;
+    }
+
+    #torrents-view .win-surface {
+        margin-top: 180px;
+        margin-bottom: 80px;
+        margin-left: 120px;
+        margin-right: 120px;
+    }
+
+    /* Torrent item*/
+    #torrents-view .win-container {
+        background-color: white;
+    }
+
+        #torrents-view .win-container:hover {
+            background-color: #fafafa;
+        }
+
+    #torrents-view .torrent-item {
+        padding: 5px 10px;
+        width: 300px;
+        height: 65px;
+        display: -ms-grid;
+        -ms-grid-columns: 20px 1fr;
+        -ms-grid-rows: 1fr 1fr 1fr;
+    }
+
+        #torrents-view .torrent-item .item-image {
+            -ms-grid-column: 1;
+        }
+
+        #torrents-view .torrent-item .item-overlay {
             -ms-grid-column: 2;
         }
 
-        #torrents-view .torrent-item .item-overlay progress {
-            -ms-grid-row: 2;
-            -ms-grid-column: 2;
-        }
+            #torrents-view .torrent-item .item-overlay .item-title {
+                -ms-grid-row: 1;
+                -ms-grid-column: 2;
+            }
+
+            #torrents-view .torrent-item .item-overlay progress {
+                -ms-grid-row: 2;
+                -ms-grid-column: 2;
+                width: 100%;
+            }
+
+            #torrents-view .torrent-item .item-overlay .details {
+                color: #777;
+                -ms-grid-row: 3;
+                display: -ms-grid;
+                -ms-grid-columns: 1fr 1fr;
+            }
+
+                #torrents-view .torrent-item .item-overlay .details .torrent-size {
+                    -ms-grid-column: 1;
+                }
+
+                #torrents-view .torrent-item .item-overlay .details .torrent-rate {
+                    -ms-grid-column: 2;
+                    text-align: right;
+                }

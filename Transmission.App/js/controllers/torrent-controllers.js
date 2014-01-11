@@ -134,7 +134,7 @@
         var mergeData = function (torrents) {
             var active = torrents.filter(statusService.statuses.active);
 
-            var statusFilter = _.partial(filterOnStatus, statusService.getLocationStatus());
+            var statusFilter = _.partial(filterOnStatus, 'all');
             var searchFilter = _.partial(filterOnSearch, $scope.search);
 
             var filteredTorrents = _.pipeline(torrents, statusFilter, searchFilter);
@@ -179,4 +179,14 @@
             console.log('destroying torrent controller');
         });
         $scope.$on('$destroy', poller.stop.bind(poller));
+    })
+    .controller('RateController', function ($scope, torrentService, remoteService, event) {
+        remoteService.init();
+
+        $scope.speeds = {};
+
+        event.on('speeds:updated', function (speeds) {
+            $scope.speeds = speeds;
+            $scope.$apply();
+        });
     });

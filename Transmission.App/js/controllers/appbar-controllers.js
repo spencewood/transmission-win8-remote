@@ -13,6 +13,7 @@
             $scope.$apply();
         });
 
+        //TODO: make this a flyout
         $scope.remove = function (removeData) {
             torrentService.getNamesByIds($scope.selectedIds).then(function (names) {
                 var prompt = [
@@ -32,35 +33,35 @@
         };
 
         $scope.start = function () {
-            torrentService.start($rootScope.selectedTorrentIds);
+            torrentService.start.call(torrentService, $scope.selectedTorrentIds);
         };
 
         $scope.stop = function () {
-            torrentService.stop($rootScope.selectedTorrentIds);
+            torrentService.stop.call(torrentService, $scope.selectedTorrentIds);
         };
 
         $scope.verify = function () {
-            torrentService.verify($rootScope.selectedTorrentIds);
+            torrentService.verify.call(torrentService, $scope.selectedTorrentIds);
         };
 
         $scope.reannounce = function () {
-            torrentService.reannounce($rootScope.selectedTorrentIds);
+            torrentService.reannounce.call(torrentService, $scope.selectedTorrentIds);
         };
 
         $scope.moveToTop = function () {
-            torrentService.moveToTop($rootScope.selectedTorrentIds);
+            torrentService.moveToTop.call(torrentService, $scope.selectedTorrentIds);
         };
 
         $scope.moveToBottom = function () {
-            torrentService.moveToBottom($rootScope.selectedTorrentIds);
+            torrentService.moveToBottom.call(torrentService, $scope.selectedTorrentIds);
         };
 
         $scope.moveUp = function () {
-            torrentService.moveUp($rootScope.selectedTorrentIds);
+            torrentService.moveUp.call(torrentService, $scope.selectedTorrentIds);
         };
 
         $scope.moveDown = function () {
-            torrentService.moveDown($rootScope.selectedTorrentIds);
+            torrentService.moveDown.call(torrentService, $scope.selectedTorrentIds);
         };
     })
     .controller('SessionBarController', function ($scope) {

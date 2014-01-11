@@ -1,36 +1,21 @@
 ﻿angular.module('StatusServices', [])
-    .constant('status', {
-        stopped: 0,
-        checkWait: 1,
-        check: 2,
-        downloadWait: 3,
-        download: 4,
-        seedWait: 5,
-        seed: 6
-    })
-    .factory('statusService', function ($location, status) {
-        var statusRegex = /\/(\w+)$/;
-
+    .factory('statusService', function ($location) {
         return {
-            getLocationStatus: function (){
-                return 'all';//$location.url().match(statusRegex)[1];
-            },
-
             statuses: {
                 downloading: function (item) {
-                    return item.status === status.downloadWait ||
-                        item.status === status.download;
+                    return item.status === Status.statuses.downloadWait ||
+                        item.status === Status.statuses.download;
                 },
 
                 seeding: function (item) {
-                    return item.status === status.seedWait ||
-                        item.status === status.seed;
+                    return item.status === Status.statuses.seedWait ||
+                        item.status === Status.statuses.seed;
                 },
 
                 active: function (item) {
                     return (item.rateDownload
                         + item.rateUpload > 0) ||
-                        item.status === status.check;
+                        item.status === Status.statuses.check;
                 },
 
                 inactive: function (item) {
@@ -38,7 +23,7 @@
                 },
 
                 stopped: function (item) {
-                    return item.status === status.stopped;
+                    return item.status === Status.statuses.stopped;
                 },
 
                 paused: function (item) {
@@ -50,8 +35,8 @@
                 },
 
                 verifying: function (item) {
-                    return item.status === status.checkWait ||
-                        item.status === status.check;
+                    return item.status === Status.statuses.checkWait ||
+                        item.status === Status.statuses.check;
                 },
 
                 error: function (item) {

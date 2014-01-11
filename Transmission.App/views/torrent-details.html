@@ -114,9 +114,15 @@
     <div id="torrent-details-view" class="fragment full-screen" ng-controller="TorrentDetailsController">
         <div id="app-header">
             <button data-win-control="WinJS.UI.BackButton"></button>
-            <h1 class="win-type-ellipsis">
-                <span>{{torrent.name}}</span>
-            </h1>
+            <h1 class="win-type-ellipsis">{{torrent.name}}</h1>
+        </div>
+
+        <!-- Rate container (copied because of WinJS injection limitations) -->
+        <div id="rate-container" ng-controller="RateController">
+            <ul id="speeds">
+                <li class="win-type-medium win-rightalign">Upload: {{speeds.up | rate}}</li>
+                <li class="win-type-medium win-rightalign">Download: {{speeds.down | rate}}</li>
+            </ul>
         </div>
 
         <section aria-label="Main content" role="main" data-win-control="WinJS.UI.Hub">
@@ -128,7 +134,7 @@
                         </div>
                         <div class="details">
                             <h3>Download Speed</h3>
-                            <span class="speed win-type-xx-large">{{torrent.rateDownload | rate}}</span>
+                            <span class="speed win-type-large">{{torrent.rateDownload | rate}}</span>
                         </div>
                     </div>
                     <div class="transfer-box upload-box">
@@ -137,7 +143,7 @@
                         </div>
                         <div class="details">
                             <h3>Upload Speed</h3>
-                            <span class="speed win-type-xx-large">{{torrent.rateUpload | rate}}</span>
+                            <span class="speed win-type-large">{{torrent.rateUpload | rate}}</span>
                         </div>
                     </div>
                 </div>

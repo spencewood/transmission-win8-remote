@@ -72,6 +72,8 @@
     <Content Include="js\directives\directives.js" />
     <Content Include="js\filters\filters.js" />
     <Content Include="js\filters\winjs-bytes-filter.js" />
+    <Content Include="js\filters\winjs-progress-filter.js" />
+    <Content Include="js\filters\winjs-status-filter.js" />
     <Content Include="js\lib\angular.js" />
     <Content Include="js\lib\angular-indexeddb.js" />
     <Content Include="js\lib\jquery-2.0.3.js" />

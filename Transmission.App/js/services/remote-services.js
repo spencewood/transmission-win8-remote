@@ -216,7 +216,7 @@
         };
     })
     .provider('torrentService', function () {
-        this.$get = function ($indexedDB, $q, torrentStore, remoteService, statusService, localSettingsService) {
+        this.$get = function ($indexedDB, $q, torrentStore, remoteService, statusService, localSettingsService, event) {
             var dbTorrents = $indexedDB.objectStore(torrentStore);
 
             return {
@@ -247,6 +247,18 @@
                     return dbTorrents.upsert(torrents);
                 },
 
+                updateSpeeds: function (torrents) {
+                    //TODO: make these mixins and as part of a single parse loop to collect/parse/manipulate details
+                    event.emit('speeds:updated', _.reduce(torrents, function (sum, torrent) {
+                        return {
+                            up: sum.up + torrent.rateUpload,
+                            down: sum.down + torrent.rateDownload
+                        }
+                    }, { up: 0, down: 0 }));
+
+                    return torrents;
+                },
+
                 updateTorrents: function () {
                     return remoteService.getTorrents()
                         .then(function (val) {
@@ -256,7 +268,8 @@
                         .then(function (val) {
                             this.insertTorrents(val);
                             return val;
-                        }.bind(this));
+                        }.bind(this))
+                        .then(this.updateSpeeds.bind(this));
                 },
 
                 updateTorrent: function (id) {

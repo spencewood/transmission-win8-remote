@@ -15,7 +15,13 @@
             <div class="item-image"></div>
             <div class="item-overlay">
                 <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:name"></h4>
-                <progress data-win-bind="value:metadataPercentComplete"></progress>
+                <progress data-win-bind="value:metadataPercentComplete;className:status Progress.winjsClass"></progress>
+                <div class="details">
+                    <div class="torrent-size" data-win-bind="innerText:sizeWhenDone Bytes.winjsConvert"></div>
+                    <div class="torrent-rate">
+                        <span data-win-bind="innerText:this Bytes.winjsRateCombined"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -25,6 +31,14 @@
         <!-- Header menu -->
         <div id="tracker-menu" data-win-control="WinJS.UI.Menu">
             <button ng-repeat="tracker in trackers" data-win-control="WinJS.UI.MenuCommand" data-win-options="{id: '{{tracker}}', label: '{{tracker}}'}"></button>
+        </div>
+
+        <!-- Rate container (copied because of WinJS injection limitations) -->
+        <div id="rate-container" ng-controller="RateController">
+            <ul id="speeds">
+                <li class="win-type-medium win-rightalign">Upload: {{speeds.up | rate}}</li>
+                <li class="win-type-medium win-rightalign">Download: {{speeds.down | rate}}</li>
+            </ul>
         </div>
 
         <div id="app-header">
