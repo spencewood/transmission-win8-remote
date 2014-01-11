@@ -1,0 +1,81 @@
+﻿#torrent-details-view .win-hub-section {
+    width: 650px;
+    height: 100%;
+    overflow: hidden;
+}
+
+#torrent-details-view .dash-section.win-hub-section {
+    width: 650px;
+}
+
+#torrent-details-view .dash-section.white .win-hub-section-header {
+    background-color: white;
+    color: black;
+}
+
+#torrent-details-view .dash-section.white.win-hub-section .content {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+}
+
+/* Transfer box */
+#torrent-details-view .transfer-boxes {
+    display: -ms-grid;
+    -ms-grid-columns: 1fr 1fr;
+}
+
+#torrent-details-view .transfer-boxes .transfer-box.download-box {
+    -ms-grid-column: 1;
+}
+
+#torrent-details-view .transfer-boxes .transfer-box.upload-box {
+    -ms-grid-column: 2;
+}
+
+#torrent-details-view .transfer-box {
+    display: -ms-grid;
+    -ms-grid-columns: 100px 1fr;
+    -ms-grid-rows: 100px 1fr;
+    width: 300px;
+    background-color: #dedede;
+    border: 1px solid #808080;
+    padding: 10px;
+    overflow: hidden;
+}
+
+#torrent-details-view .transfer-box .icon{
+    -ms-grid-column: 1;
+    -ms-grid-row-span: 2;
+    padding: 20px;
+}
+
+#torrent-details-view .transfer-box .details{
+    -ms-grid-column: 2;
+}
+
+#torrent-details-view .transfer-box .details h2{
+    -ms-grid-row: 1;
+    text-transform: uppercase;
+}
+
+#torrent-details-view .transfer-box .details .speed{
+    -ms-grid-row: 2;
+}
+
+/* Details display */
+#torrent-details-view ul.details-display {
+    list-style: none;
+    margin: 0;
+}
+
+#torrent-details-view .details-display li{
+    padding: 5px 0;
+}
+
+#torrent-details-view .details-display .name{
+    font-weight: bold;
+}
+
+#torrent-details-view .details-display .desc{
+}

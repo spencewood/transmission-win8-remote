@@ -13,7 +13,9 @@
     };
 
     WinJS.Namespace.define("Bytes", {
-        convert: WinJS.Binding.converter(convert),
-        rate: WinJS.Binding.converter(rate)
+        convert: convert,
+        rate: rate,
+        winjsConvert: WinJS.Binding.converter(convert),
+        winjsRate: WinJS.Binding.converter(rate)
     });
 })();

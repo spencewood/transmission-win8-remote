@@ -22,7 +22,7 @@
                     $bar.remove();
                 });
             }
-        }
+        };
     })
     .directive('winjsListView', function () {
         return {
@@ -98,5 +98,5 @@
                     $inputs.off('change');
                 });
             }
-        }
+        };
     });

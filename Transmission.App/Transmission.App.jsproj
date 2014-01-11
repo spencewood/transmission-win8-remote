@@ -55,6 +55,7 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="css\torrent-details.css" />
     <Content Include="css\torrents.css" />
     <Content Include="default.html" />
     <Content Include="images\logo.scale-100.png" />

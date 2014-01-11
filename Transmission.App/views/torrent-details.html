@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Torrent Details</title>
+    <link rel="stylesheet" href="/css/torrent-details.css" />
 
     <!-- Page -->
     <script src="/js/pages/torrent-details-page.js"></script>
@@ -110,120 +111,143 @@
     </div>
 
     <!-- Content -->
-    <div class="fragment groupeditemspage" ng-controller="TorrentDetailsController">
-        <header aria-label="Header content" role="banner">
+    <div id="torrent-details-view" class="fragment full-screen" ng-controller="TorrentDetailsController">
+        <div id="app-header">
             <button data-win-control="WinJS.UI.BackButton"></button>
-            <h1 class="titlearea win-type-ellipsis">
-                <span class="pagetitle">{{torrent.name}}</span>
+            <h1 class="win-type-ellipsis">
+                <span>{{torrent.name}}</span>
             </h1>
-        </header>
-        <section aria-label="Main content" role="main">
-            <div data-win-control="WinJS.UI.Hub">
-                <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Torrent', isHeaderStatic: true}">
-                    <div>
-                        Name: {{torrent.downloadDir}}
+        </div>
+
+        <section aria-label="Main content" role="main" data-win-control="WinJS.UI.Hub">
+            <div class="dash-section section1" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Details', isHeaderStatic: true}">
+                <div class="transfer-boxes">
+                    <div class="transfer-box download-box">
+                        <div class="icon">
+                            <span class="win-type-xx-large">&#xe1fd;</span>
+                        </div>
+                        <div class="details">
+                            <h3>Download Speed</h3>
+                            <span class="speed win-type-xx-large">{{torrent.rateDownload | rate}}</span>
+                        </div>
                     </div>
-                    <div>
-                        Total size: {{torrent.totalSize}}
-                    </div>
-                    <div>
-                        Hash: {{torrent.hashString}}
-                    </div>
-                    <div>
-                        Added on: {{torrent.addedDate * 1000 | date:'medium'}}
-                    </div>
-                    <div>
-                        Creator: {{torrent.creator}}
-                    </div>
-                    <div>
-                        Pieces: {{torrent.pieceCount}} &times; {{torrent.pieceSize | bytes}}
-                    </div>
-                    <div>
-                        Comment: {{torrent.comment}}
-                    </div>
-                    <div>
-                        Completed on {{torrent.doneDate * 1000 | date:'medium'}}
+                    <div class="transfer-box upload-box">
+                        <div class="icon">
+                            <span class="win-type-xx-large">&#xe110;</span>
+                        </div>
+                        <div class="details">
+                            <h3>Upload Speed</h3>
+                            <span class="speed win-type-xx-large">{{torrent.rateUpload | rate}}</span>
+                        </div>
                     </div>
                 </div>
-                <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Transfer', isHeaderStatic: true}">
-                    <div>
-                        Status: {{torrent.status}} <!-- Get status string -->
-                    </div>
-                    <div>
-                        Downloaded: {{torrent.downloadedEver | bytes}}
-                    </div>
-                    <div>
-                        Download speed: {{torrent.downloadLimit}} <!-- what is this type -->
-                    </div>
-                    <div>
-                        Download limit: {{torrent.downloadLimited}}
-                    </div>
-                    <div>
-                        Seeds: {{torrent.peersSendingToUs}} of {{torrent.trackerStats[0].seederCount}} connected
-                    </div>
-                    <div>
-                        Tracker: {{torrent.trackerStats[0].host}}
-                    </div>
-                    <div>
-                        Error: {{torrent.errorString}}
-                    </div>
-                    <div>
-                        Uploaded: {{torrent.uploadedEver | bytes}}
-                    </div>
-                    <div>
-                        Upload speed: {{torrent.uploadLimit}} <!-- figure out type -->
-                    </div>
-                    <div>
-                        Upload limited: {{torrent.uploadLimited}}
-                    </div>
-                    <div>
-                        Peers: {{torrent.peersGettingFromUs}} of {{torrent.trackerStats[0].leecherCount}}
-                    </div>
-                    <div>
-                        Tracker update on: {{torrent.trackerStats[0].lastAnnounceTime * 1000 | date:'medium'}}
-                    </div>
-                    <div>
-                        Remaining: {{torrent.eta}} <!-- need filter for this -->
-                    </div>
-                    <div>
-                        Wasted: {{torrent.corruptEver | bytes}} ({{torrent.hashFails}} hashfails)
-                    </div>
-                    <div>
-                        Share ratio: {{torrent.uploadRatio}}
-                    </div>
-                    <div>
-                        Max peers: {{torrent.maxConnectedPeers}}
-                    </div>
-                    <div>
-                        Last active: {{torrent.trackerStats[0].lastScrapeTime * 1000 | date:'medium'}}
-                    </div>
+                <div>
+                    <ul class="details-display">
+                        <li>
+                            <div class="name">Name:</div><div class="desc">{{torrent.downloadDir}}</div>
+                        </li>
+                        <li>
+                            <div class="name">Total size:</div><div class="desc">{{torrent.totalSize | bytes}}</div>
+                        </li>
+                        <li>
+                            <div class="name">Hash:</div><div class="desc">{{torrent.hashString}}</div>
+                        </li>
+                        <li>
+                            <div class="name">Added on:</div><div class="desc">{{torrent.addedDate * 1000 | date:'medium'}}</div>
+                        </li>
+                        <li>
+                            <div class="name">Completed on:</div><div class="desc">{{torrent.doneDate * 1000 | date:'medium'}}</div>
+                        </li>
+                        <li>
+                            <div class="name">Creator:</div><div class="desc">{{torrent.creator}}</div>
+                        </li>
+                        <li>
+                            <div class="name">Comment:</div><div class="desc">{{torrent.comment}}</div>
+                        </li>
+                        <li>
+                            <div class="name">Pieces:</div><div class="desc">{{torrent.pieceCount}} &times; {{torrent.pieceSize | bytes}}</div>
+                        </li>
+                    </ul>
                 </div>
-                <div winjs-list-view="trackers" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Trackers', isHeaderStatic: true}">
-                    <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+            </div>
+            <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Transfer', isHeaderStatic: true}">
+                <div>
+                    Status: {{torrent.status}} <!-- Get status string -->
+                </div>
+                <div>
+                    Downloaded: {{torrent.downloadedEver | bytes}}
+                </div>
+                <div>
+                    Download speed: {{torrent.downloadLimit}} <!-- what is this type -->
+                </div>
+                <div>
+                    Download limit: {{torrent.downloadLimited}}
+                </div>
+                <div>
+                    Seeds: {{torrent.peersSendingToUs}} of {{torrent.trackerStats[0].seederCount}} connected
+                </div>
+                <div>
+                    Tracker: {{torrent.trackerStats[0].host}}
+                </div>
+                <div>
+                    Error: {{torrent.errorString}}
+                </div>
+                <div>
+                    Uploaded: {{torrent.uploadedEver | bytes}}
+                </div>
+                <div>
+                    Upload speed: {{torrent.uploadLimit}} <!-- figure out type -->
+                </div>
+                <div>
+                    Upload limited: {{torrent.uploadLimited}}
+                </div>
+                <div>
+                    Peers: {{torrent.peersGettingFromUs}} of {{torrent.trackerStats[0].leecherCount}}
+                </div>
+                <div>
+                    Tracker update on: {{torrent.trackerStats[0].lastAnnounceTime * 1000 | date:'medium'}}
+                </div>
+                <div>
+                    Remaining: {{torrent.eta}} <!-- need filter for this -->
+                </div>
+                <div>
+                    Wasted: {{torrent.corruptEver | bytes}} ({{torrent.hashFails}} hashfails)
+                </div>
+                <div>
+                    Share ratio: {{torrent.uploadRatio}}
+                </div>
+                <div>
+                    Max peers: {{torrent.maxConnectedPeers}}
+                </div>
+                <div>
+                    Last active: {{torrent.trackerStats[0].lastScrapeTime * 1000 | date:'medium'}}
+                </div>
+            </div>
+            <div winjs-list-view="trackers" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Trackers', isHeaderStatic: true}">
+                <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
                             itemTemplate: select('#tracker-item-template'),
                             selectionMode: 'none',
                             tapBehavior: 'none',
                             swipeBehavior: 'none'
                         }">
-                    </div>
                 </div>
-                <div winjs-list-view="peers" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Peers', isHeaderStatic: true}">
-                    <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+            </div>
+            <div winjs-list-view="peers" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Peers', isHeaderStatic: true}">
+                <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
                             itemTemplate: select('#peer-item-template'),
                             selectionMode: 'none',
                             tapBehavior: 'none',
                             swipeBehavior: 'none'
                         }">
-                    </div>
                 </div>
-                <div winjs-list-view="files" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Files', isHeaderStatic: true}">
-                    <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+            </div>
+            <div winjs-list-view="files" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Files', isHeaderStatic: true}">
+                <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
                             itemTemplate: select('#file-item-template'),
                             selectionMode: 'none',
                             tapBehavior: 'none',
                             swipeBehavior: 'none'
                         }">
-                    </div>
                 </div>
             </div>
         </section>

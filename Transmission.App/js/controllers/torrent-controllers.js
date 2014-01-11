@@ -105,15 +105,14 @@
             $scope.trackers = trackers;
         });
 
-        $scope.showHeaderMenu = function () {
-            var title = document.querySelector("header .titlearea");
-            var menu = document.getElementById("header-menu").winControl;
-            menu.anchor = title;
-            menu.placement = "bottom";
-            menu.alignment = "left";
-
-            menu.show();
-        }
+        //TODO: move to directive
+        $scope.showTrackerMenu = function () {
+            var control = $('#tracker-menu').get(0).winControl;
+            control.anchor = $('#tracker-list-display').get(0);
+            control.placement = 'bottom';
+            control.alignment = 'left';
+            control.show();
+        };
 
         var filterOnStatus = function (status, arr) {
             return arr.filter(function (item) {

@@ -11,7 +11,7 @@
 <body>
     <!-- Templates -->
     <div id="torrent-item-template" data-win-control="WinJS.Binding.Template">
-        <div class="item">
+        <div class="torrent-item">
             <div class="item-image"></div>
             <div class="item-overlay">
                 <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:name"></h4>
@@ -21,30 +21,26 @@
     </div>
 
     <!-- Content -->
-    <div class="fragment groupeditemspage" ng-controller="TorrentController">
+    <div id="torrents-view" class="fragment full-screen" ng-controller="TorrentController">
         <!-- Header menu -->
-        <div winjs-header-menu>
-            <div id="header-menu" data-win-control="WinJS.UI.Menu">
-                <button ng-repeat="tracker in trackers" data-win-control="WinJS.UI.MenuCommand" data-win-options="{id: '{{tracker}}', label: '{{tracker}}'}"></button>
-            </div>
+        <div id="tracker-menu" data-win-control="WinJS.UI.Menu">
+            <button ng-repeat="tracker in trackers" data-win-control="WinJS.UI.MenuCommand" data-win-options="{id: '{{tracker}}', label: '{{tracker}}'}"></button>
         </div>
 
-        <header aria-label="Header content" role="banner">
-            <div class="titlearea win-type-ellipsis" ng-click="showHeaderMenu()">
-                <button class="titlecontainer">
-                    <h1>
-                        <span class="pagetitle">All Torrents</span>
-                        <span class="chevron win-type-x-large">&#xe099</span>
-                    </h1>
-                </button>
-            </div>
-        </header>
+        <div id="app-header">
+            <button data-win-control="WinJS.UI.BackButton"></button>
+            <h1>
+                <span id="tracker-list-display">All Torrents</span>
+                <span class="chevron win-type-x-large" ng-click="showTrackerMenu()">&#xe099</span>
+            </h1>
+            <h3 id="total-count" class="win-type-x-large win-type win-type-interactive">Total ({{torrents.length}})</h3>
+        </div>
+
         <section aria-label="Main content" role="main" winjs-list-view="torrents">
-            <h4 ng-click="showHeaderMenu()">Total ({{torrents.length}})</h4>
-            <div class="list-view groupeditemslist win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
-                    layout: {type: WinJS.UI.GridLayout},
-                    itemTemplate: select('#torrent-item-template')
-                }">
+            <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+                layout: {type: WinJS.UI.GridLayout},
+                itemTemplate: select('#torrent-item-template')
+            }">
             </div>
         </section>
     </div>

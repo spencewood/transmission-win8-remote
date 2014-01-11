@@ -128,7 +128,9 @@ namespace Transmission.Runtime
                 "secondsSeeding",
                 "files",
                 "priorities",
-                "wanted"
+                "wanted",
+                "rateDownload",
+                "rateUpload"
             };
 
             return GetTorrentsAsync(fields, id).AsAsyncOperation();

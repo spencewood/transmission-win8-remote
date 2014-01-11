@@ -1,103 +1,61 @@
-﻿.groupeditemspage section[role=main] {
-    -ms-grid-row: 1;
-    -ms-grid-row-span: 2;
-}
-
-.groupeditemspage .groupeditemslist {
+﻿#torrents-view {
     height: 100%;
-    position: relative;
-    width: 100%;
-    z-index: 0;
-    margin-top: 25px;
 }
 
-    /* This selector is used to prevent ui-dark/light.css from overwriting changes
-       to .win-surface. */
-    .groupeditemspage .groupeditemslist .win-horizontal.win-viewport .win-surface {
-        margin-bottom: 60px;
-        margin-left: 45px;
-        margin-right: 115px;
-        margin-top: 128px;
-    }
-
-    .groupeditemspage .groupeditemslist.win-rtl .win-horizontal.win-viewport .win-surface {
-        margin-left: 115px;
-        margin-right: 45px;
-    }
-
-    /*.groupeditemspage .groupeditemslist .win-groupheader {
-        padding: 0;
-    }*/
-
-    /* Use grid and top level layout for truncation */
-    /*.groupeditemspage .groupeditemslist .group-header {
-        -ms-grid-columns: minmax(0, max-content) 7px max-content;
-        -ms-grid-rows: max-content;
-        display: -ms-inline-grid;
-        line-height: 1.5;
-    }*/
-
-    /* Override default button styles */
-    .groupeditemspage .groupeditemslist .group-header, .group-header:hover, .group-header:hover:active {
-        background: transparent;
-        border: 0;
-        margin-bottom: 1px;
-        margin-left: 5px;
-        margin-right: 5px;
-        margin-top: 1px;
-        min-height: 0;
-        padding: 0;
-    }
-
-        /*.groupeditemspage .groupeditemslist .group-header .group-title {
-            display: inline-block;
-        }*/
-
-        /*.groupeditemspage .groupeditemslist .group-header .group-chevron {
-            -ms-grid-column: 3;
-            display: inline-block;
-        }*/
-
-            /*.groupeditemspage .groupeditemslist .group-header .group-chevron::before {
-                content: "\E26B";
-                font-family: 'Segoe UI Symbol';
-            }
-
-            .groupeditemspage .groupeditemslist .group-header .group-chevron:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm)::before {
-                content: "\E26C";
-            }*/
-
-    .groupeditemspage .groupeditemslist .item {
-        -ms-grid-columns: 20px 1fr;
-        -ms-grid-rows: 100px 1fr;
-        padding: 5px 10px;
-        width: 250px;
-        height: 65px;
-        display: -ms-grid;
-        color: rgba(0, 0, 0, 0.87);
-        background: rgba(255, 255, 255, 0.65);
-    }
-
-        .groupeditemspage .groupeditemslist .item .item-image {
-            -ms-grid-column: 1;
-        }
-
-        .groupeditemspage .groupeditemslist .item .item-overlay {
-            -ms-grid-column: 2;            
-        }
-
-            .groupeditemspage .groupeditemslist .item .item-overlay .item-title {
-                -ms-grid-row: 1;
-                -ms-grid-column: 2;
-            }
-
-            .groupeditemspage .groupeditemslist .item .item-overlay progress {
-                -ms-grid-row: 2;
-                -ms-grid-column: 2;
-            }
-
-@media screen and (-ms-high-contrast) {
-    .groupeditemspage .groupeditemslist .item .item-overlay {
-        color: WindowText;
-    }
+#torrents-view #total-count{
+    position: absolute;
+    top: 80px;
+    left: 80px;
 }
+
+#torrents-view section{
+    height: 100%;
+}
+
+#torrents-view .win-listview{
+    height: 100%;
+}
+
+#torrents-view .win-surface {
+    margin-top: 180px;
+    margin-bottom: 80px;
+    margin-left: 120px;
+    margin-right: 120px;
+}
+
+/* Torrent item*/
+#torrents-view .win-container
+{
+    background-color: white;
+}
+
+#torrents-view .win-container:hover {
+    background-color: #fafafa;
+}
+
+#torrents-view .torrent-item {
+    padding: 5px 10px;
+    width: 300px;
+    height: 65px;
+    display: -ms-grid;
+    -ms-grid-columns: 20px 1fr;
+    -ms-grid-rows: 100px 1fr;
+}
+
+    #torrents-view .torrent-item .item-image {
+        -ms-grid-column: 1;
+    }
+
+    #torrents-view .torrent-item .item-overlay {
+        -ms-grid-column: 2;
+    }
+
+        #torrents-view .torrent-item .item-overlay .item-title {
+            -ms-grid-row: 1;
+            -ms-grid-column: 2;
+        }
+
+        #torrents-view .torrent-item .item-overlay progress {
+            -ms-grid-row: 2;
+            -ms-grid-column: 2;
+        }
