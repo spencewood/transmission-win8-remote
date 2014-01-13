@@ -1,4 +1,4 @@
-﻿angular.module('Directives', [])
+﻿angular.module('Directives', ['EventService'])
     .directive('winjsTorrentAppBar', function () {
         return {
             restrict: 'A',
@@ -24,7 +24,7 @@
             }
         };
     })
-    .directive('winjsListView', function () {
+    .directive('winjsListView', function (event) {
         return {
             restrict: 'A',
             scope: {
@@ -43,6 +43,10 @@
                 listControl.onselectionchanged = function () {
                     scope.$parent.selectionChanged(listControl.selection.getItems());
                 };
+
+                event.on('torrent:selected:clear', function () {
+                    listControl.selection.clear();
+                });
 
                 scope.$on('$destroy', function () {
                     listControl.dispose();

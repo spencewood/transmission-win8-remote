@@ -18,28 +18,28 @@ ul {
 
 /* Status progress bar */
 
-#status progress{
+#status progress {
     position: absolute;
     width: 100%;
 }
 
 /* Rates box */
-#rate-container{
+#rate-container {
     position: absolute;
     top: 25px;
     right: 60px;
 }
 
-#rate-container #speeds li{
-    width: 150px;
-}
+    #rate-container #speeds li {
+        width: 150px;
+    }
 
 /*App header*/
 #app-header {
     position: absolute;
     z-index: 1;
     top: 45px;
-    left: 50px;
+    left: 125px;
 }
 
     #app-header .win-navigation-backbutton {
@@ -48,6 +48,7 @@ ul {
 
     #app-header h1 {
         display: inline;
+        overflow: hidden;
     }
 
 /* Icons */
@@ -66,12 +67,11 @@ ul {
     width: 500px;
 }
 
-.win-settingsflyout .win-header { 
+.win-settingsflyout .win-header {
     background-color: #464646;
-    color: #fff; 
+    color: #fff;
 }
 
-.win-settingsflyout ul{
+.win-settingsflyout ul {
     list-style: none;
 }
-

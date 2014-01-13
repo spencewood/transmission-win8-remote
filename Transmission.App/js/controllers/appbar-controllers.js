@@ -1,11 +1,12 @@
-﻿angular.module('AppBar', ['RemoteServices', 'WinServices', 'EventService'])
-    .controller('TorrentBarController', function ($scope, torrentService, dialogService, event) {
+﻿angular.module('AppBar', ['RemoteServices', 'WinServices', 'EventService', 'AngularServices'])
+    .controller('TorrentBarController', function ($scope, torrentService, remoteService, dialogService, event, safeApply) {
+        remoteService.init();
+
         $scope.selectedIds = [];
-        $scope.torrentBarEnabled = false;
 
         event.on('torrent:selected', function (ids) {
             $scope.selectedIds = ids;
-            $scope.$apply();
+            safeApply($scope);
         });
 
         event.on('navigated', function (view) {
@@ -28,41 +29,28 @@
                         if (command.label === 'Ok') {
                             torrentService.remove($scope.selectedIds, removeData);
                         }
-                    });    
+                    });
             });
         };
 
-        $scope.start = function () {
-            torrentService.start.call(torrentService, $scope.selectedTorrentIds);
+        var clearIds = function () {
+            event.emit('torrent:selected:clear');
         };
 
-        $scope.stop = function () {
-            torrentService.stop.call(torrentService, $scope.selectedTorrentIds);
+        var passIds = function (fun) {
+            return function () {
+                fun.call(null, $scope.selectedIds);
+            };
         };
 
-        $scope.verify = function () {
-            torrentService.verify.call(torrentService, $scope.selectedTorrentIds);
-        };
-
-        $scope.reannounce = function () {
-            torrentService.reannounce.call(torrentService, $scope.selectedTorrentIds);
-        };
-
-        $scope.moveToTop = function () {
-            torrentService.moveToTop.call(torrentService, $scope.selectedTorrentIds);
-        };
-
-        $scope.moveToBottom = function () {
-            torrentService.moveToBottom.call(torrentService, $scope.selectedTorrentIds);
-        };
-
-        $scope.moveUp = function () {
-            torrentService.moveUp.call(torrentService, $scope.selectedTorrentIds);
-        };
-
-        $scope.moveDown = function () {
-            torrentService.moveDown.call(torrentService, $scope.selectedTorrentIds);
-        };
+        $scope.start = _.compose(clearIds, passIds(torrentService.start.bind(torrentService)));
+        $scope.stop = _.compose(clearIds, passIds(torrentService.stop.bind(torrentService)));
+        $scope.verify = _.compose(clearIds, passIds(torrentService.verify.bind(torrentService)));
+        $scope.reannounce = _.compose(clearIds, passIds(torrentService.reannounce.bind(torrentService)));
+        $scope.moveToTop = _.compose(clearIds, passIds(torrentService.moveToTop.bind(torrentService)));
+        $scope.moveToBottom = _.compose(clearIds, passIds(torrentService.moveToBottom.bind(torrentService)));
+        $scope.moveUp = _.compose(clearIds, passIds(torrentService.moveUp.bind(torrentService)));
+        $scope.moveDown = _.compose(clearIds, passIds(torrentService.moveDown.bind(torrentService)));
     })
     .controller('SessionBarController', function ($scope) {
 

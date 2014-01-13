@@ -112,9 +112,9 @@
 
     <!-- Content -->
     <div id="torrent-details-view" class="fragment full-screen" ng-controller="TorrentDetailsController">
-        <div id="app-header">
+        <div id="app-header" class="win-type-ellipsis">
             <button data-win-control="WinJS.UI.BackButton"></button>
-            <h1 class="win-type-ellipsis">{{torrent.name}}</h1>
+            <h1>{{torrent.name}}</h1>
         </div>
 
         <!-- Rate container (copied because of WinJS injection limitations) -->

@@ -144,6 +144,13 @@
             return parseInt(arr.join(''), 2);
         },
 
+        multiPluck: function (arr) {
+            var plucks = _.rest(arguments);
+            return _.flatten(arr).map(function (item) {
+                return _.pick.apply(null, [item].concat(plucks));
+            });
+        },
+
         nestedPluck: function nestedPluck(arr) {
             var plucks = _.rest(arguments);
             if (plucks.length > 0) {

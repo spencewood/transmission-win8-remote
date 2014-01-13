@@ -87,4 +87,14 @@ describe('Lodash mixins', function(){
 			_.first(_.nestedPluck(data, 'person', 'name', 'first')).should.equal('bob');
 		});
 	});
+
+	describe('Multi pluck', function(){
+		it('should pluck any number of passed in keys', function(){
+			var data = [{id: 1, name: 'foo'}, {id: 2, name: 'bar'}];
+
+			var p = _.multiPluck(data, 'id', 'name');
+			_.last(p).name.should.equal('bar');
+			_.size(p).should.equal(2);
+		});
+	});
 });

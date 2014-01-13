@@ -30,7 +30,7 @@
     <div id="torrents-view" class="fragment full-screen" ng-controller="TorrentController">
         <!-- Header menu -->
         <div id="tracker-menu" data-win-control="WinJS.UI.Menu">
-            <button ng-repeat="tracker in trackers" data-win-control="WinJS.UI.MenuCommand" data-win-options="{id: '{{tracker}}', label: '{{tracker}}'}"></button>
+            <button ng-repeat="tracker in trackers" ng-click="selectTracker(tracker.host)" data-win-control="WinJS.UI.MenuCommand" data-win-options="{label: '{{tracker.host}}'}"></button>
         </div>
 
         <!-- Rate container (copied because of WinJS injection limitations) -->
@@ -42,11 +42,18 @@
         </div>
 
         <div id="app-header">
-            <button data-win-control="WinJS.UI.BackButton"></button>
-            <h1>
-                <span id="tracker-list-display">All Torrents</span>
-                <span class="chevron win-type-x-large" ng-click="showTrackerMenu()">&#xe099</span>
-            </h1>
+            <button id="tracker-button" ng-click="showTrackerMenu()">
+                <h1>
+                    <span id="tracker-list-display">All Trackers</span>
+                    <span class="chevron win-type-x-large">&#xe099;</span>
+                </h1>
+            </button>
+            <button id="status-button" ng-click="showStatusMenu()">
+                <h2>
+                    <span id="status-list-display">All Torrents</span>
+                    <span class="chevron win-type-large">&#xe099;</span>
+                </h2>
+            </button>
             <h3 id="total-count" class="win-type-x-large win-type win-type-interactive">Total ({{torrents.length}})</h3>
         </div>
 

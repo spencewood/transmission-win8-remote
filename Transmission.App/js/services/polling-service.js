@@ -7,15 +7,22 @@
         };
 
         Factory.prototype.start = function () {
-            this.polls.forEach(function (poll) {
-                poll.start();
+            this.polls.forEach(function (p) {
+                p.start();
             });
             return this;
         };
 
         Factory.prototype.stop = function () {
-            this.polls.forEach(function (poll) {
-                poll.stop();
+            this.polls.forEach(function (p) {
+                p.stop();
+            });
+            return this;
+        };
+
+        Factory.prototype.reset = function () {
+            this.polls.forEach(function (p) {
+                p.reset();
             });
             return this;
         };
@@ -57,8 +64,10 @@
         };
 
         Poller.prototype.reset = function () {
+            //TODO: could cause multiples
             this.blockTimeout = false;
-        }
+            this.start();
+        };
 
         return {
             Poller: Poller

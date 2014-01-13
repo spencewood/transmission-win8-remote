@@ -114,6 +114,14 @@
             control.show();
         };
 
+        $scope.showStatusMenu = function () {
+
+        };
+
+        $scope.selectTracker = function (id) {
+            var a = 'a';
+        };
+
         var filterOnStatus = function (status, arr) {
             return arr.filter(function (item) {
                 if (status in statusService.statuses) {
@@ -163,7 +171,7 @@
         $scope.search = { filter: '' };
         $scope.torrents = new WinJS.Binding.List();
 
-        $scope.selectedTorrentIds = [];
+        $scope.selectedIds = [];
         $scope.selectionChanged = function (items) {
             var ids = _.nestedPluck(items._value, 'data', 'id');
             event.emit('torrent:selected', ids);
@@ -179,6 +187,10 @@
             console.log('destroying torrent controller');
         });
         $scope.$on('$destroy', poller.stop.bind(poller));
+
+        event.on('torrent:update', function () {
+            poller.reset();
+        });
     })
     .controller('RateController', function ($scope, torrentService, remoteService, event) {
         remoteService.init();

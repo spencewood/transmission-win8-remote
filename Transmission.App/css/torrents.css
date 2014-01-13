@@ -3,9 +3,7 @@
 }
 
     #torrents-view #total-count {
-        position: absolute;
-        top: 80px;
-        left: 80px;
+        margin-top: 10px;
     }
 
     #torrents-view section {
