@@ -3,6 +3,7 @@
 }
 
     #torrents-view #total-count {
+        margin-left: 10px;
         margin-top: 10px;
     }
 
@@ -15,8 +16,8 @@
     }
 
     #torrents-view .win-surface {
-        margin-top: 180px;
-        margin-bottom: 80px;
+        margin-top: 20px;
+        margin-bottom: 200px;
         margin-left: 120px;
         margin-right: 120px;
     }

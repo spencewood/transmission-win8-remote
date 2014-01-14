@@ -92,6 +92,7 @@
             .then(updateTorrentData);
 
         //updates
+        //TODO: reset poller on poll setting change
         var poller = new pollFactory.Factory([
             updateTorrentDetails
         ]).start();
@@ -115,11 +116,30 @@
         };
 
         $scope.showStatusMenu = function () {
-
+            var control = $('#status-menu').get(0).winControl;
+            control.anchor = $('#status-list-display').get(0);
+            control.placement = 'bottom';
+            control.alignment = 'left';
+            control.show();
         };
 
-        $scope.selectTracker = function (id) {
-            var a = 'a';
+        $scope.selectTracker = function (tracker) {
+            $scope.tracker = tracker;
+            torrentService.getTorrents().then(mergeData);
+        };
+
+        var filterOnTracker = function (tracker, arr) {
+            var groupByTracker = function (torrents) {
+                return _.groupBy(torrents, function (torrent) {
+                    return torrent.trackerStats[0].host;
+                });
+            };
+
+            if (tracker.length === 0) {
+                return arr;
+            }
+
+            return groupByTracker(arr)[tracker];
         };
 
         var filterOnStatus = function (status, arr) {
@@ -142,10 +162,11 @@
         var mergeData = function (torrents) {
             var active = torrents.filter(statusService.statuses.active);
 
+            var trackerFilter = _.partial(filterOnTracker, $scope.tracker);
             var statusFilter = _.partial(filterOnStatus, 'all');
             var searchFilter = _.partial(filterOnSearch, $scope.search);
 
-            var filteredTorrents = _.pipeline(torrents, statusFilter, searchFilter);
+            var filteredTorrents = _.pipeline(torrents, trackerFilter, statusFilter, searchFilter);
 
             //genericize this more for torrent details
             return _.addUpdateDelete(
@@ -169,6 +190,7 @@
         torrentService.getTorrents().then(mergeData);
 
         $scope.search = { filter: '' };
+        $scope.tracker = '';
         $scope.torrents = new WinJS.Binding.List();
 
         $scope.selectedIds = [];

@@ -73,22 +73,20 @@
                 }
             });
 
-            if (typeof deletefun !== 'undefined') {
-                //delete
-                var toDelete = coll1.filter(function (obj) {
-                    var o = {};
-                    o[key] = obj[key];
-                    return !_.findWhere(coll2, o);
-                });
+            //delete
+            var toDelete = coll1.filter(function (obj) {
+                var o = {};
+                o[key] = obj[key];
+                return !_.findWhere(coll2, o);
+            });
 
-                toDelete.forEach(function (rm) {
-                    coll1.forEach(function (item, idx) {
-                        if (item.id === rm.id) {
-                            deleteFun(coll1, idx);
-                        }
-                    });
+            toDelete.forEach(function (rm) {
+                coll1.forEach(function (item, idx) {
+                    if (item.id === rm.id) {
+                        deleteFun(coll1, idx);
+                    }
                 });
-            }
+            });
         },
 
         dropFirstArgument: function (fun) {

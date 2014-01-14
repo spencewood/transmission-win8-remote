@@ -26,8 +26,8 @@ ul {
 /* Rates box */
 #rate-container {
     position: absolute;
-    top: 25px;
-    right: 60px;
+    top: 20px;
+    right: 80px;
 }
 
     #rate-container #speeds li {
@@ -35,21 +35,65 @@ ul {
     }
 
 /*App header*/
-#app-header {
-    position: absolute;
-    z-index: 1;
-    top: 45px;
-    left: 125px;
+header[role=banner] {
+    /* Define a grid with columns for the back button and page title. */
+    -ms-grid-columns: 120px 1fr;
+    -ms-grid-rows: 1fr;
+    display: -ms-grid;
 }
 
-    #app-header .win-navigation-backbutton {
-        margin-right: 20px;
+    header[role=banner] .win-backbutton {
+        -ms-grid-column: 1;
+        margin-left: 39px;
+        margin-top: 59px;
     }
 
-    #app-header h1 {
-        display: inline;
-        overflow: hidden;
+    header[role=banner] .titlearea {
+        -ms-grid-column: 2;
+        padding-top: 43px;
+        position: relative;
     }
+
+    header[role=banner] .titlecontainer {
+        display: inline;
+        background-color: transparent;
+        border: none;
+    }
+
+    header[role=banner] .titlearea .pagetitle {
+        width: calc(100% - 20px);
+    }
+
+    header[role=banner] .titlearea .chevron {
+        vertical-align: 8px;
+    }
+
+    header[role=banner] .titlecontainer:hover {
+        color: rgb(50,154,163);
+    }
+
+    header[role=banner] .titlecontainer:active {
+        color: rgb(37,187,196);
+    }
+
+/*#app-header .win-navigation-backbutton {
+    margin-right: 20px;
+}
+
+#app-header h1 {
+    display: inline;
+    overflow: hidden;
+}
+
+#app-header #tracker-button {
+    display: inline;
+    background-color: transparent;
+    border: none;
+}
+
+#app-header .chevron {
+    vertical-align: 8px;
+}*/
 
 /* Icons */
 .rotate180 .win-commandimage {

@@ -112,10 +112,16 @@
 
     <!-- Content -->
     <div id="torrent-details-view" class="fragment full-screen" ng-controller="TorrentDetailsController">
-        <div id="app-header" class="win-type-ellipsis">
+        <header aria-label="Header content" role="banner" id="app-header">
             <button data-win-control="WinJS.UI.BackButton"></button>
-            <h1>{{torrent.name}}</h1>
-        </div>
+            <div class="titlearea win-type-ellipsis">
+                <div class="titlecontainer">
+                    <h1 class=" pagetitle">
+                        {{torrent.name}}
+                    </h1>
+                </div>
+            </div>
+        </header>
 
         <!-- Rate container (copied because of WinJS injection limitations) -->
         <div id="rate-container" ng-controller="RateController">

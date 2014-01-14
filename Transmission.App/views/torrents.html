@@ -9,61 +9,75 @@
     <script src="/js/pages/torrents-page.js"></script>
 </head>
 <body>
-    <!-- Templates -->
-    <div id="torrent-item-template" data-win-control="WinJS.Binding.Template">
-        <div class="torrent-item">
-            <div class="item-image"></div>
-            <div class="item-overlay">
-                <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:name"></h4>
-                <progress data-win-bind="value:metadataPercentComplete;className:status Progress.winjsClass"></progress>
-                <div class="details">
-                    <div class="torrent-size" data-win-bind="innerText:sizeWhenDone Bytes.winjsConvert"></div>
-                    <div class="torrent-rate">
-                        <span data-win-bind="innerText:this Bytes.winjsRateCombined"></span>
+    <div ng-controller="TorrentController">
+        <!-- Templates -->
+        <div id="torrent-item-template" data-win-control="WinJS.Binding.Template">
+            <div class="torrent-item">
+                <div class="item-image"></div>
+                <div class="item-overlay">
+                    <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:name"></h4>
+                    <progress data-win-bind="value:metadataPercentComplete;className:status Progress.winjsClass"></progress>
+                    <div class="details">
+                        <div class="torrent-size" data-win-bind="innerText:sizeWhenDone Bytes.winjsConvert"></div>
+                        <div class="torrent-rate">
+                            <span data-win-bind="innerText:this Bytes.winjsRateCombined"></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Content -->
-    <div id="torrents-view" class="fragment full-screen" ng-controller="TorrentController">
-        <!-- Header menu -->
+        <!-- Header menus -->
         <div id="tracker-menu" data-win-control="WinJS.UI.Menu">
             <button ng-repeat="tracker in trackers" ng-click="selectTracker(tracker.host)" data-win-control="WinJS.UI.MenuCommand" data-win-options="{label: '{{tracker.host}}'}"></button>
         </div>
 
-        <!-- Rate container (copied because of WinJS injection limitations) -->
-        <div id="rate-container" ng-controller="RateController">
-            <ul id="speeds">
-                <li class="win-type-medium win-rightalign">Upload: {{speeds.up | rate}}</li>
-                <li class="win-type-medium win-rightalign">Download: {{speeds.down | rate}}</li>
-            </ul>
+        <div id="status-menu" data-win-control="WinJS.UI.Menu">
+            <button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label: 'All Torrents', id: 'all'}"></button>
+            <button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label: 'Downloading', id: 'downloading'}"></button>
+            <button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label: 'Completed', id: 'completed'}"></button>
+            <button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label: 'Active', id: 'active'}"></button>
+            <button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label: 'Inactive', id: 'inactive'}"></button>
+            <button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label: 'Stopped', id: 'stopped'}"></button>
+            <button data-win-control="WinJS.UI.MenuCommand" data-win-options="{label: 'Error', id: 'error'}"></button>
         </div>
 
-        <div id="app-header">
-            <button id="tracker-button" ng-click="showTrackerMenu()">
-                <h1>
-                    <span id="tracker-list-display">All Trackers</span>
-                    <span class="chevron win-type-x-large">&#xe099;</span>
-                </h1>
-            </button>
-            <button id="status-button" ng-click="showStatusMenu()">
-                <h2>
-                    <span id="status-list-display">All Torrents</span>
-                    <span class="chevron win-type-large">&#xe099;</span>
-                </h2>
-            </button>
-            <h3 id="total-count" class="win-type-x-large win-type win-type-interactive">Total ({{torrents.length}})</h3>
-        </div>
+        <!-- Content -->
+        <div id="torrents-view" class="fragment full-screen">
+            <!-- Rate container (copied because of WinJS injection limitations) -->
+            <div id="rate-container" ng-controller="RateController">
+                <ul id="speeds">
+                    <li class="win-type-medium win-rightalign">Upload: {{speeds.up | rate}}</li>
+                    <li class="win-type-medium win-rightalign">Download: {{speeds.down | rate}}</li>
+                </ul>
+            </div>
 
-        <section aria-label="Main content" role="main" winjs-list-view="torrents">
-            <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+            <header aria-label="Header content" role="banner" id="app-header">
+                <div class="titlearea win-type-ellipsis">
+                    <button id="tracker-button" class="titlecontainer" ng-click="showTrackerMenu()">
+                        <h1>
+                            <span id="tracker-list-display">All Trackers</span>
+                            <span class="chevron win-type-x-large">&#xe099;</span>
+                        </h1>
+                    </button>
+                    <button id="status-button" class="titlecontainer" ng-click="showStatusMenu()">
+                        <h2>
+                            <span id="status-list-display">All Torrents</span>
+                            <span class="chevron win-type-large">&#xe099;</span>
+                        </h2>
+                    </button>
+                    <h3 id="total-count" class="win-type-x-large win-type win-type-interactive">Total ({{torrents.length}})</h3>
+                </div>
+            </header>
+
+            <section aria-label="Main content" role="main" winjs-list-view="torrents">
+                <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
                 layout: {type: WinJS.UI.GridLayout},
                 itemTemplate: select('#torrent-item-template')
             }">
-            </div>
-        </section>
+                </div>
+            </section>
+        </div>
     </div>
 </body>
 </html>

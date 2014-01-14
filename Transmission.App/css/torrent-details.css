@@ -1,4 +1,8 @@
-﻿#torrent-details-view .win-hub-section {
+﻿#torrent-details-view #app-header .page-title {
+    width: calc(100% - 20px);
+}
+
+#torrent-details-view .win-hub-section {
     width: 650px;
     height: 100%;
     overflow: hidden;
