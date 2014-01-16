@@ -44,14 +44,6 @@
 
         <!-- Content -->
         <div id="torrents-view" class="fragment full-screen">
-            <!-- Rate container (copied because of WinJS injection limitations) -->
-            <div id="rate-container" ng-controller="RateController">
-                <ul id="speeds">
-                    <li class="win-type-medium win-rightalign">Upload: {{speeds.up | rate}}</li>
-                    <li class="win-type-medium win-rightalign">Download: {{speeds.down | rate}}</li>
-                </ul>
-            </div>
-
             <header aria-label="Header content" role="banner" id="app-header">
                 <div class="titlearea win-type-ellipsis">
                     <button id="tracker-button" class="titlecontainer" ng-click="showTrackerMenu()">

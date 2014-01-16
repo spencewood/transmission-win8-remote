@@ -11,4 +11,12 @@
             $scope.showSpinner = true;
             $scope.$apply();
         });
+    })
+    .controller('RateController', function ($scope, event) {
+        $scope.speeds = {};
+
+        event.on('speeds:updated', function (speeds) {
+            $scope.speeds = speeds;
+            $scope.$apply();
+        });
     });

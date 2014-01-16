@@ -123,14 +123,6 @@
             </div>
         </header>
 
-        <!-- Rate container (copied because of WinJS injection limitations) -->
-        <div id="rate-container" ng-controller="RateController">
-            <ul id="speeds">
-                <li class="win-type-medium win-rightalign">Upload: {{speeds.up | rate}}</li>
-                <li class="win-type-medium win-rightalign">Download: {{speeds.down | rate}}</li>
-            </ul>
-        </div>
-
         <section aria-label="Main content" role="main" data-win-control="WinJS.UI.Hub">
             <div class="dash-section section1" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Details', isHeaderStatic: true}">
                 <div class="transfer-boxes">

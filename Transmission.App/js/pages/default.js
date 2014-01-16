@@ -17,6 +17,7 @@
         if (args.detail.kind === Windows.ApplicationModel.Activation.ActivationKind.file) {
             var ngApp = $ngApp.get(0);
             if (ngApp != null) {
+                //user launched app with file(s) reference
                 var rootScope = angular.element(ngApp).scope();
                 rootScope.$broadcast('torrents:add', args.detail.files);
             }
@@ -27,7 +28,7 @@
                 // TODO: This application has been newly launched. Initialize
                 // your application here.
                 angular.module('appBar', ['AppBar', 'Directives']);
-                angular.module('statusBar', ['Status']);
+                angular.module('statusBar', ['Status', 'Filters']);
                 angular.bootstrap($('#app-bars').get(0), ['appBar']);
                 angular.bootstrap($('#status').get(0), ['statusBar']);
             } else {

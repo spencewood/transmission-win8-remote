@@ -50,6 +50,14 @@
 <body>
     <div>
         <div id="status" ng-controller="StatusController">
+            <!-- Rate container (copied because of WinJS injection limitations) -->
+            <div id="rate-container" ng-controller="RateController">
+                <ul id="speeds">
+                    <li class="win-type-medium win-rightalign">Upload: {{speeds.up | rate}}</li>
+                    <li class="win-type-medium win-rightalign">Download: {{speeds.down | rate}}</li>
+                </ul>
+            </div>
+
             <progress ng-show="showSpinner"></progress>
         </div>
         <div data-win-control="Application.PageControlNavigator" data-win-options="{home: '/views/login.html'}">

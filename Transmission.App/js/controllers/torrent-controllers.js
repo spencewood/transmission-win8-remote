@@ -213,14 +213,4 @@
         event.on('torrent:update', function () {
             poller.reset();
         });
-    })
-    .controller('RateController', function ($scope, torrentService, remoteService, event) {
-        remoteService.init();
-
-        $scope.speeds = {};
-
-        event.on('speeds:updated', function (speeds) {
-            $scope.speeds = speeds;
-            $scope.$apply();
-        });
     });
