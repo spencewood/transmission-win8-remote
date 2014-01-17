@@ -1,80 +1,106 @@
-﻿#torrent-details-view #app-header .page-title {
-    width: calc(100% - 20px);
+﻿#speeds {
+    display: block;
 }
 
-#torrent-details-view .win-hub-section {
-    width: 650px;
+#torrent-details-view {
     height: 100%;
-    overflow: hidden;
+    position: relative;
 }
 
-#torrent-details-view .dash-section.win-hub-section {
-    width: 650px;
-}
+    #torrent-details-view .win-hub-surface {
+        height: calc(100% - 200px);
+        overflow: auto;
+        margin-top: 20px;
+    }
 
-#torrent-details-view .dash-section.white .win-hub-section-header {
-    background-color: white;
-    color: black;
-}
+    #torrent-details-view .win-hub-section {
+        height: 100%;
+    }
 
-#torrent-details-view .dash-section.white.win-hub-section .content {
-    background-color: white;
-    height: 100%;
-    width: 100%;
-}
+        #torrent-details-view .win-hub-section div {
+            margin: 0;
+            padding: 0;
+        }
 
-/* Transfer box */
-#torrent-details-view .transfer-boxes {
-    display: -ms-grid;
-    -ms-grid-columns: 1fr 1fr;
-}
+    #torrent-details-view .win-hub-viewport {
+    }
 
-#torrent-details-view .transfer-boxes .transfer-box.download-box {
-    -ms-grid-column: 1;
-}
+    #torrent-details-view .win-hub-section {
+        width: 650px;
+    }
 
-#torrent-details-view .transfer-boxes .transfer-box.upload-box {
-    -ms-grid-column: 2;
-}
+    #torrent-details-view .win-hub-section-header {
+        background-color: white;
+        color: black;
+    }
 
-#torrent-details-view .transfer-box {
-    display: -ms-grid;
-    -ms-grid-columns: 100px 1fr;
-    -ms-grid-rows: 100px 1fr;
-    width: 300px;
-    background-color: #dedede;
-    border: 1px solid #808080;
-    padding: 10px;
-    overflow: hidden;
-}
+    #torrent-details-view .win-hub-section-content {
+        background-color: white;
+        color: black;
+    }
 
-#torrent-details-view .transfer-box .icon{
-    -ms-grid-column: 1;
-    -ms-grid-row-span: 2;
-    padding: 20px;
-}
+    #torrent-details-view .dash-section .win-hub-section-header {
+        display: none;
+    }
 
-#torrent-details-view .transfer-box .details{
-    -ms-grid-column: 2;
-}
+    #torrent-details-view .dash-section .hero-box {
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #999;
+    }
 
-#torrent-details-view .transfer-box .details h2{
-    -ms-grid-row: 1;
-    text-transform: uppercase;
-}
+    /* Transfer box */
+    #torrent-details-view .transfer-boxes {
+        display: -ms-grid;
+        -ms-grid-columns: 1fr 1fr;
+    }
 
-#torrent-details-view .transfer-box .details .speed{
-    -ms-grid-row: 2;
-}
+        #torrent-details-view .transfer-boxes .transfer-box.download-box {
+            -ms-grid-column: 1;
+        }
 
-/* Details display */
-#torrent-details-view .details-display li{
-    padding: 5px 0;
-}
+        #torrent-details-view .transfer-boxes .transfer-box.upload-box {
+            -ms-grid-column: 2;
+        }
 
-#torrent-details-view .details-display .name{
-    font-weight: bold;
-}
+    #torrent-details-view .transfer-box {
+        display: -ms-grid;
+        -ms-grid-columns: 100px 1fr;
+        -ms-grid-rows: 100px 1fr;
+        width: 300px;
+        background-color: #dedede;
+        border: 1px solid #808080;
+        padding: 10px;
+        overflow: hidden;
+    }
 
-#torrent-details-view .details-display .desc{
-}
+        #torrent-details-view .transfer-box .icon {
+            -ms-grid-column: 1;
+            -ms-grid-row-span: 2;
+            padding: 20px;
+        }
+
+        #torrent-details-view .transfer-box .details {
+            -ms-grid-column: 2;
+        }
+
+            #torrent-details-view .transfer-box .details h2 {
+                -ms-grid-row: 1;
+                text-transform: uppercase;
+            }
+
+            #torrent-details-view .transfer-box .details .speed {
+                -ms-grid-row: 2;
+            }
+
+    /* Details display */
+    #torrent-details-view .details-display li {
+        padding: 5px 0;
+    }
+
+    #torrent-details-view .details-display .name {
+        font-weight: bold;
+    }
+
+    #torrent-details-view .details-display .desc {
+    }

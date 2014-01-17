@@ -3,46 +3,68 @@
 <head>
     <meta charset="utf-8" />
     <title>Transmission Login</title>
+    <link rel="stylesheet" href="/css/login.css" />
 
     <!-- Page -->
     <script src="/js/pages/login-page.js"></script>
 </head>
 <body>
-    <div ng-controller="LoginController">
-        <div id="login-area">
-            <form ng-submit="login()">
-                <div class="row">
-                    <div class="pull-right">
-                        <input ng-model="settings.port" placeholder="port" type="number" required />
+    <div id="login-view" ng-controller="LoginController">
+        <header role="heading">
+            logo
+        </header>
+        <section>
+            <div id="login-area">
+                <form ng-submit="login()">
+                    <div class="login-settings-server">
+                        <div class="login-settings-server-host">
+                            <input ng-model="settings.host" placeholder="server.name" type="text" required />
+                        </div>
+                        <div class="login-settings-server-default-rpc">
+                            <label>
+                                <input type="checkbox" ng-model="defaultRpc" />
+                                <span>Default RPC Path</span>
+                            </label>
+                        </div>
                     </div>
-                    <input ng-model="settings.host" placeholder="host" type="text" required />
-                </div>
-                <div class="row">
-                    <label class="pull-right">
-                        <input ng-model="settings.useSsl" type="checkbox" />
-                        Use SSL
-                    </label>
-                    <input ng-model="settings.rpcPath" type="text" />
-                </div>
-                <div class="row">
-                    <label>
-                        <input ng-model="authRequired" type="checkbox" ng-checked="{{settings.username.length > 0}}" />
-                        Authentication required
-                    </label>
-                </div>
-                <div ng-show="authRequired">
-                    <div class="row">
-                        <input ng-model="settings.username" placeholder="username" type="text" required />
+                    <div ng-show="!defaultRpc" class="login-settings-rpc-path">
+                        <input ng-model="settings.rpcPath" type="text" placeholder="/transmission/rpc" />
                     </div>
-                    <div class="row">
-                        <input ng-model="settings.password" placeholder="password" type="password" required />
+                    <div class="login-settings-server-more">
+                        <div class="login-settings-server-port">
+                            <input ng-model="settings.port" placeholder="9091" type="number" required />
+                        </div>
+                        <div class="login-settings-server-ssl">
+                            <label>
+                                <input ng-model="settings.useSsl" type="checkbox" />
+                                <span>Use SSL</span>
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <input type="submit" id="submit" value="Submit" />
+                    <div class="login-settings-server-auth">
+                        <label>
+                            <input ng-model="authRequired" type="checkbox" ng-checked="{{settings.username.length > 0}}" />
+                            Authentication required
+                        </label>
+                        <div ng-show="authRequired">
+                            <div class="row">
+                                <input ng-model="settings.username" placeholder="username" type="text" required />
+                            </div>
+                            <div class="row">
+                                <input ng-model="settings.password" placeholder="password" type="password" required />
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" id="submit" value="Submit" />
 
-                <div ng-show="errorMessage.length > 0">{{errorMessage}}</div>
-            </form>
-        </div>
+                    <div ng-show="errorMessage.length > 0">{{errorMessage}}</div>
+                </form>
+            </div>
+            <div id="info-area">
+                info about torrent stuff
+
+            </div>
+        </section>
     </div>
 </body>
 </html>

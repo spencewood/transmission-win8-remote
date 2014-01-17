@@ -42,7 +42,7 @@ header[role=banner] {
     display: -ms-grid;
 }
 
-    header[role=banner] .win-backbutton {
+    header[role=banner] .back-button {
         -ms-grid-column: 1;
         margin-left: 39px;
         margin-top: 59px;
@@ -50,12 +50,12 @@ header[role=banner] {
 
     header[role=banner] .titlearea {
         -ms-grid-column: 2;
-        padding-top: 43px;
+        margin-top: 38px;
         position: relative;
+        padding: 5px 0;
     }
 
     header[role=banner] .titlecontainer {
-        display: inline;
         background-color: transparent;
         border: none;
     }
@@ -75,25 +75,6 @@ header[role=banner] {
     header[role=banner] .titlecontainer:active {
         color: rgb(37,187,196);
     }
-
-/*#app-header .win-navigation-backbutton {
-    margin-right: 20px;
-}
-
-#app-header h1 {
-    display: inline;
-    overflow: hidden;
-}
-
-#app-header #tracker-button {
-    display: inline;
-    background-color: transparent;
-    border: none;
-}
-
-#app-header .chevron {
-    vertical-align: 8px;
-}*/
 
 /* Icons */
 .rotate180 .win-commandimage {

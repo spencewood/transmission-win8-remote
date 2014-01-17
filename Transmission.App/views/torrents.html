@@ -28,6 +28,7 @@
         </div>
 
         <!-- Header menus -->
+        </winjs-menu>
         <div id="tracker-menu" data-win-control="WinJS.UI.Menu">
             <button ng-repeat="tracker in trackers" ng-click="selectTracker(tracker.host)" data-win-control="WinJS.UI.MenuCommand" data-win-options="{label: '{{tracker.host}}'}"></button>
         </div>
@@ -44,7 +45,7 @@
 
         <!-- Content -->
         <div id="torrents-view" class="fragment full-screen">
-            <header aria-label="Header content" role="banner" id="app-header">
+            <header aria-label="Header content" role="banner">
                 <div class="titlearea win-type-ellipsis">
                     <button id="tracker-button" class="titlecontainer" ng-click="showTrackerMenu()">
                         <h1>

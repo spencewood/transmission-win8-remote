@@ -1,11 +1,19 @@
 ﻿angular.module('Login', ['RemoteServices', 'WinServices'])
-    .controller('LoginController', function ($scope, localSettingsService, remoteService, navigationService) {
+    .constant('loginDefault', {
+        rpcPath: '/transmission/rpc',
+        rpcPathMatch: /^\/transmission\/rpc\/?$/
+    })
+    .controller('LoginController', function ($scope, localSettingsService, remoteService, navigationService, loginDefault) {
         $scope.settings = localSettingsService.getServerSettings();
+        $scope.defaultRpc = loginDefault.rpcPathMatch.test($scope.settings.rpcPath);
         $scope.login = function () {
             $scope.errorMessage = '';
             if (!$scope.authRequired) {
                 $scope.settings.username = '';
                 $scope.settings.password = '';
+            }
+            if ($scope.defaultRpc) {
+                $scope.settings.rpcPath = loginDefault.rpcPath;
             }
             localSettingsService.setServerSettings($scope.settings);
             remoteService.init().getSettings()

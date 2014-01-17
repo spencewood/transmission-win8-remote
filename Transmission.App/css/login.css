@@ -1,0 +1,81 @@
+﻿#speeds {
+    display: none;
+}
+
+/* Login area */
+#login-view {
+    display: -ms-grid;
+    -ms-grid-rows: 200px 1fr;
+    -ms-grid-columns: 1fr;
+    height: 100%;
+    width: 100%;
+}
+
+    #login-view header {
+        -ms-grid-column: 1;
+        -ms-grid-row: 1;
+        width: 100%;
+    }
+
+    #login-view section {
+        -ms-grid-column: 1;
+        -ms-grid-row: 2;
+        display: -ms-grid;
+        -ms-grid-columns: 1fr 1fr;
+    }
+
+        #login-view section #login-area {
+            -ms-grid-column: 1;
+            border-right: 1px solid #999;
+            padding-left: 200px;
+            padding-right: 60px;
+            margin-bottom: 200px;
+        }
+
+            #login-view section #login-area input[type=text],
+            #login-view section #login-area input[type=number],
+            #login-view section #login-area input[type=password] {
+                width: 100%;
+            }
+
+            #login-view section #login-area .login-settings-server {
+                display: -ms-grid;
+                -ms-grid-columns: 1fr 160px;
+            }
+
+                #login-view section #login-area .login-settings-server .login-settings-server-host {
+                    -ms-grid-column: 1;
+                }
+
+                #login-view section #login-area .login-settings-server .login-settings-server-default-rpc {
+                    -ms-grid-column: 2;
+                }
+
+                    #login-view section #login-area .login-settings-server .login-settings-server-default-rpc label {
+                        margin-left: 10px;
+                    }
+
+            #login-view section #login-area .login-settings-server-more {
+                display: -ms-grid;
+                -ms-grid-columns: 100px 1fr;
+            }
+
+                #login-view section #login-area .login-settings-server-more .login-settings-server-port {
+                    -ms-grid-column: 1;
+                }
+
+                #login-view section #login-area .login-settings-server-more .login-settings-server-ssl {
+                    -ms-grid-column: 2;
+                }
+
+                    #login-view section #login-area .login-settings-server-more .login-settings-server-ssl label {
+                        margin-left: 10px;
+                    }
+
+                #login-view section #login-area .login-settings-server-more .login-settings-server-rpc-path {
+                    -ms-grid-column: 3;
+                }
+
+        #login-view section #info-area {
+            -ms-grid-column: 2;
+        }

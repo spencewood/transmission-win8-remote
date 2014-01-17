@@ -1,4 +1,9 @@
 ﻿angular.module('Directives', ['EventService'])
+    .directive('winjsMenu', function () {
+        return {
+            template: '<button data-win-control="WinJS.UI.MenuCommand" data-win-options="{id: \'{{id}}\',label: \'{{label}}\'}"></button>'
+        }
+    })
     .directive('winjsTorrentAppBar', function () {
         return {
             restrict: 'A',
