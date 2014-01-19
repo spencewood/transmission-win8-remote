@@ -60,7 +60,12 @@
                 _.extend,
                 _.removeElement
             )
-        }
+        };
+
+        var updateProgress = function (data) {
+            $scope.progress = data.metadataPercentComplete;
+            delete data.metadataPercentComplete;
+        };
 
         var updateTorrentData = function (data) {
             return _.merge($scope.torrent, data);
@@ -71,6 +76,7 @@
                 .then(_.pipeBranch(extractTrackers, updateTrackerData))
                 .then(_.pipeBranch(extractPeers, updatePeerData))
                 .then(_.pipeBranch(extractFiles, updateFileData))
+                .then(_.pipeBranch(updateProgress))
                 .then(updateTorrentData);
         };
 
@@ -78,6 +84,7 @@
         $scope.trackers = new WinJS.Binding.List();
         $scope.peers = new WinJS.Binding.List();
         $scope.files = new WinJS.Binding.List();
+        $scope.progress = 0;
 
         $scope.selectionChange = function (items) {
 

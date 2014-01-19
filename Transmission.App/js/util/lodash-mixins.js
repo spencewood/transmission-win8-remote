@@ -156,6 +156,17 @@
                 return nestedPluck.apply(null, [a].concat(plucks));
             }
             return arr;
+        },
+
+        base64ToArrayBuffer: function (string_base64) {
+            var binary_string = atob(string_base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array( len );
+            for (var i = 0; i < len; i++)        {
+                var ascii = string_base64.charCodeAt(i);
+                bytes[i] = ascii;
+            }
+            return bytes.buffer;
         }
     });
 }));

@@ -26,16 +26,16 @@
     }
 
     #torrent-details-view .win-hub-section {
-        width: 650px;
+        /*width: 650px;*/
     }
 
     #torrent-details-view .win-hub-section-header {
-        background-color: white;
+        /*background-color: white;*/
         color: black;
     }
 
     #torrent-details-view .win-hub-section-content {
-        background-color: white;
+        /*background-color: white;*/
         color: black;
     }
 

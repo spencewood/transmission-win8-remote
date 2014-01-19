@@ -16,13 +16,21 @@
             return percentage;
         };
     })
+    .filter('status', function () {
+        return function (status) {
+            return Status.get(status);
+        };
+    })
     .filter('timeuntilstring', function () {
         return function (future) {
-            function numberEnding (number) {
+            function numberEnding(number) {
                 return (number > 1) ? 's' : '';
             }
 
             var milliseconds = future - Date.now();
+            if (milliseconds < 0) {
+                return 'Unknown';
+            }
 
             var temp = milliseconds / 1000;
             var years = Math.floor(temp / 31536000);
@@ -47,4 +55,42 @@
             }
             return 'less then a second';
         };
+    })
+    .filter('timeagostring', function () {
+        function timeSince(date) {
+            var seconds = Math.floor((new Date() - date) / 1000);
+
+            var interval = Math.floor(seconds / 31536000);
+
+            if (interval > 1) {
+                return interval + " years";
+            }
+            interval = Math.floor(seconds / 2592000);
+            if (interval > 1) {
+                return interval + " months";
+            }
+            interval = Math.floor(seconds / 86400);
+            if (interval > 1) {
+                return interval + " days";
+            }
+            interval = Math.floor(seconds / 3600);
+            if (interval > 1) {
+                return interval + " hours";
+            }
+            interval = Math.floor(seconds / 60);
+            if (interval > 1) {
+                return interval + " minutes";
+            }
+            return Math.floor(seconds) + " seconds";
+        };
+
+        return function (past) {
+            return timeSince(past) + ' ago';
+        };
+    })
+    .filter('replaceempty', function () {
+        return function (str, filler) {
+            return str || filler || 'Unknown';
+        }
     });
+;

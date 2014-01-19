@@ -1,8 +1,14 @@
 ﻿angular.module('Directives', ['EventService'])
-    .directive('winjsMenu', function () {
+    .directive('winjsProgress', function () {
         return {
-            template: '<button data-win-control="WinJS.UI.MenuCommand" data-win-options="{id: \'{{id}}\',label: \'{{label}}\'}"></button>'
-        }
+            restrict: 'A',
+            link: function (scope, element) {
+                var el = element[0];
+                scope.$watch('progress', function (progress) {
+                    el.value = progress;
+                });
+            }
+        };
     })
     .directive('winjsTorrentAppBar', function () {
         return {

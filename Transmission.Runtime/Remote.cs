@@ -130,7 +130,8 @@ namespace Transmission.Runtime
                 "priorities",
                 "wanted",
                 "rateDownload",
-                "rateUpload"
+                "rateUpload",
+                "metadataPercentComplete"
             };
 
             return GetTorrentsAsync(fields, id).AsAsyncOperation();

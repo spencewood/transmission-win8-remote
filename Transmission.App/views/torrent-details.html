@@ -145,87 +145,65 @@
                         </div>
                     </div>
                 </div>
-
+                <div>
+                    <progress data-win-bind="value:metadataPercentComplete;className:status Progress.winjsClass" winjs-progress="progress" value="0"></progress>
+                </div>
                 <div>
                     <ul class="details-display">
                         <li>
-                            <div class="name">Name:</div><div class="desc">{{torrent.downloadDir}}</div>
+                            <div class="name">Name:</div><div class="desc">{{torrent.name}}</div>
                         </li>
                         <li>
-                            <div class="name">Total size:</div><div class="desc">{{torrent.totalSize | bytes}}</div>
+                            <div class="name">Size:</div><div class="desc">{{torrent.totalSize | bytes}} ({{torrent.pieceCount}} pieces @ {{torrent.pieceSize | bytes}})</div>
+                        </li>
+                        <li>
+                            <div class="name">Location:</div><div class="desc">{{torrent.downloadDir}}</div>
                         </li>
                         <li>
                             <div class="name">Hash:</div><div class="desc">{{torrent.hashString}}</div>
                         </li>
                         <li>
-                            <div class="name">Added on:</div><div class="desc">{{torrent.addedDate * 1000 | date:'medium'}}</div>
+                            <div class="name">Created by:</div><div class="desc">{{torrent.creator}} on {{torrent.dateCreated | date:'shortDate'}}</div>
                         </li>
                         <li>
-                            <div class="name">Completed on:</div><div class="desc">{{torrent.doneDate * 1000 | date:'medium'}}</div>
+                            <div class="name">Comment:</div><div class="desc">{{torrent.comment || 'None'}}</div>
                         </li>
                         <li>
-                            <div class="name">Creator:</div><div class="desc">{{torrent.creator}}</div>
+                            <div class="name">Added:</div><div class="desc">{{torrent.addedDate * 1000 | timeagostring}}</div>
                         </li>
                         <li>
-                            <div class="name">Comment:</div><div class="desc">{{torrent.comment}}</div>
-                        </li>
-                        <li>
-                            <div class="name">Pieces:</div><div class="desc">{{torrent.pieceCount}} &times; {{torrent.pieceSize | bytes}}</div>
+                            <div class="name">Completed:</div><div class="desc">{{torrent.doneDate * 1000 | timeagostring}}</div>
                         </li>
                     </ul>
                 </div>
             </div>
             <div data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Transfer', isHeaderStatic: true}">
                 <div>
-                    Status: {{torrent.status}} <!-- Get status string -->
+                    Status: {{torrent.status | status}}
                 </div>
                 <div>
                     Downloaded: {{torrent.downloadedEver | bytes}}
                 </div>
                 <div>
-                    Download speed: {{torrent.downloadLimit}} <!-- what is this type -->
+                    Uploaded: {{torrent.uploadedEver | bytes}} (Ratio: {{torrent.uploadRatio}})
                 </div>
                 <div>
-                    Download limit: {{torrent.downloadLimited}}
+                    Error: {{torrent.errorString || 'None'}}
                 </div>
                 <div>
                     Seeds: {{torrent.peersSendingToUs}} of {{torrent.trackerStats[0].seederCount}} connected
                 </div>
                 <div>
-                    Tracker: {{torrent.trackerStats[0].host}}
-                </div>
-                <div>
-                    Error: {{torrent.errorString}}
-                </div>
-                <div>
-                    Uploaded: {{torrent.uploadedEver | bytes}}
-                </div>
-                <div>
-                    Upload speed: {{torrent.uploadLimit}} <!-- figure out type -->
-                </div>
-                <div>
-                    Upload limited: {{torrent.uploadLimited}}
-                </div>
-                <div>
                     Peers: {{torrent.peersGettingFromUs}} of {{torrent.trackerStats[0].leecherCount}}
                 </div>
                 <div>
-                    Tracker update on: {{torrent.trackerStats[0].lastAnnounceTime * 1000 | date:'medium'}}
+                    Remaining: {{torrent.eta | timeuntilstring}}
                 </div>
                 <div>
-                    Remaining: {{torrent.eta}} <!-- need filter for this -->
+                    Last activity: {{torrent.activityDate * 1000 | timeagostring}}
                 </div>
                 <div>
-                    Wasted: {{torrent.corruptEver | bytes}} ({{torrent.hashFails}} hashfails)
-                </div>
-                <div>
-                    Share ratio: {{torrent.uploadRatio}}
-                </div>
-                <div>
-                    Max peers: {{torrent.maxConnectedPeers}}
-                </div>
-                <div>
-                    Last active: {{torrent.trackerStats[0].lastScrapeTime * 1000 | date:'medium'}}
+                    Wasted: {{torrent.corruptEver | bytes}}
                 </div>
             </div>
             <div winjs-list-view="trackers" data-win-control="WinJS.UI.HubSection" data-win-options="{header: 'Trackers', isHeaderStatic: true}">

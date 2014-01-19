@@ -15,8 +15,9 @@
         return inverted[id];
     };
 
-    WinJS.Namespace.define("Status", {
+    WinJS.Namespace.define('Status', {
         statuses: statuses,
+        get: getStatus,
         winjsGet: WinJS.Binding.converter(getStatus)
     });
 })();
