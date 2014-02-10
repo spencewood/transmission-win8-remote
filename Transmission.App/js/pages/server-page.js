@@ -1,28 +1,27 @@
 ﻿(function () {
     "use strict";
 
-    WinJS.UI.Pages.define("/views/torrents.html", {
+    WinJS.UI.Pages.define("/views/choose-server.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
         ready: function (element, options) {
-            var appName = 'torrentsApp';
+            var appName = 'serverApp';
 
-            angular.module(appName, ['Torrent', 'Directives', 'Filters']);
+            angular.module(appName, ['Server', 'Settings', 'Directives']);
             angular.bootstrap(element, [appName]);
 
             //settings flyout
             WinJS.Application.onsettings = function (e) {
                 e.detail.applicationcommands = {
-                    'settings-transmission': { title: 'Transmission Settings', href: '/views/settings-transmission.html' },
-                    'settings-interface': { title: 'Interface Settings', href: '/views/settings-interface.html' }
+                    'settings-server': { title: 'Server Settings', href: '/views/settings-server.html' }
                 };
                 WinJS.UI.SettingsFlyout.populateSettings(e);
             };
         },
 
-        unload: function () {
+        unload: function (e) {
             //destroy controller
-            angular.element('[ng-controller=TorrentController]').scope().$destroy();
+            angular.element('[ng-controller=ServerController]').scope().$destroy();
             $(document).remove();
         },
 

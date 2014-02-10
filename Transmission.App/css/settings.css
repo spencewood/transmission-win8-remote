@@ -1,0 +1,29 @@
+﻿.win-settings-section {
+}
+
+    .win-settings-section .two-columns {
+        display: -ms-grid;
+    }
+
+    .win-settings-section input[type=text],
+    .win-settings-section input[type=number],
+    .win-settings-section input[type=password] {
+        width: 100%;
+    }
+
+    .win-settings-section .two-columns.wide-left {
+        -ms-grid-columns: 2fr 1fr;
+    }
+
+    .win-settings-section .two-columns.wide-right {
+        -ms-grid-columns: 1fr 2fr;
+    }
+
+        .win-settings-section .two-columns div:first-child {
+            -ms-grid-column: 1;
+        }
+
+        .win-settings-section .two-columns div:last-child {
+            padding-left: 10px;
+            -ms-grid-column: 2;
+        }

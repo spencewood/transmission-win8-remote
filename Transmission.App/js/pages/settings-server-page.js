@@ -12,7 +12,7 @@
         },
 
         unload: function () {
-            // TODO: Respond to navigations away from this page.
+
         },
 
         updateLayout: function (element) {

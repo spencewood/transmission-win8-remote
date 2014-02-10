@@ -1,10 +1,48 @@
-﻿angular.module('Settings', ['RemoteServices', 'WinServices'])
-    .controller('ServerSettings', function ($scope, localSettingsService, navigationService) {
-        $scope.settings = localSettingsService.getServerSettings();
+﻿angular.module('Settings', ['RemoteServices', 'WinServices', 'EventService'])
+    .constant('loginDefault', {
+        rpcPath: '/transmission/rpc',
+        port: 9091,
+        rpcPathMatch: /^\/transmission\/rpc\/?$/
+    })
+    .controller('ServerSettings', function ($scope, localSettingsService, navigationService, event, loginDefault) {
+        var getSettings = function () {
+            $scope.errorMessage = '';
+            if (!$scope.authRequired) {
+                $scope.settings.username = '';
+                $scope.settings.password = '';
+            }
+            if ($scope.defaultRpc) {
+                $scope.settings.rpcPath = loginDefault.rpcPath;
+            }
+
+            return $scope.settings;
+        };
+
+        var serverIdx = null;
+        if (serverIdx !== null) {
+            $scope.settings = localSettingsService.getServerSettings();
+            $scope.authRequired = $scope.settings.username.length > 0;
+        }
+        else {
+            $scope.settings = {
+                rpcPath: loginDefault.rpcPath,
+                port: loginDefault.port
+            };
+        }
+        $scope.defaultRpc = loginDefault.rpcPathMatch.test($scope.settings.rpcPath);
+        $scope.errorMessage = '';
+
         var back = $scope.back = navigationService.showSettingsFlyout;
 
         $scope.save = function () {
-            localSettingsService.setServerSettings($scope.settings);
+            if (serverIdx !== null) {
+                localSettingsService.setServerSettings(serverIdx, $scope.settings);
+            }
+            else {
+                localSettingsService.addServerSettings($scope.settings);
+            }
+            event.emit('settings:server:save');
+
             back();
         };
     })

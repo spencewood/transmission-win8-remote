@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Server Settings</title>
+    <link rel="stylesheet" href="/css/settings.css" />
 
     <!-- Page -->
     <script src="/js/pages/settings-server-page.js"></script>
@@ -19,32 +20,39 @@
                 <div class="win-settings-section">
                     <ul>
                         <li>
-                            <div class="pull-right">
-                                <input ng-model="settings.port" placeholder="port" type="number" required />
+                            <input ng-model="settings.name" type="text" placeholder="Server label (e.g. My Server)" required />
+                        </li>
+                        <li class="two-columns wide-left">
+                            <div>
+                                <input ng-model="settings.host" type="text" placeholder="Server host (IP Address or Hostname)" required />
                             </div>
-                            <input ng-model="settings.host" type="text" placeholder="server" />
+                            <div>
+                                <input ng-model="settings.port" type="number" placeholder="Port" required />
+                            </div>
                         </li>
                         <li>
-                            <label class="pull-right">
+                            <label>
                                 <input ng-model="settings.useSsl" type="checkbox" />
                                 Use SSL
                             </label>
-                            <input ng-model="settings.rpcPath" type="text" />
                         </li>
                         <li>
-                            <div class="row">
-                                <label>
-                                    <input ng-model="authRequired" type="checkbox" ng-checked="{{settings.username.length > 0}}" />
-                                    Authentication required
-                                </label>
+                            <label>
+                                <input type="checkbox" ng-model="defaultRpc" />
+                                <span>Default RPC Path</span>
+                            </label>
+                            <div ng-show="!defaultRpc" class="login-settings-rpc-path">
+                                <input ng-model="settings.rpcPath" type="text" placeholder="/transmission/rpc" />
                             </div>
+                        </li>
+                        <li>
+                            <label>
+                                <input ng-model="authRequired" type="checkbox" />
+                                Authentication required
+                            </label>
                             <div ng-show="authRequired">
-                                <div class="row">
-                                    <input ng-model="settings.username" type="text" placeholder="username" />
-                                </div>
-                                <div class="row">
-                                    <input ng-model="settings.password" type="password" placeholder="password" />
-                                </div>
+                                <input ng-model="settings.username" type="text" placeholder="username" />
+                                <input ng-model="settings.password" type="password" placeholder="password" />
                             </div>
                         </li>
                     </ul>

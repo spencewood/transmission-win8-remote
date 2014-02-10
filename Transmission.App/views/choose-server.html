@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Choose server</title>
+    <link rel="stylesheet" href="/css/login.css" />
+
+    <!-- Page -->
+    <script src="/js/pages/server-page.js"></script>
+</head>
+<body>
+    <!-- Templates -->
+    <div id="server-item-template" data-win-control="WinJS.Binding.Template">
+        <div class="server-item">
+            <div class="item-image"></div>
+            <div class="item-overlay">
+                <h4 class="item-title win-type-ellipsis" data-win-bind="innerText:name"></h4>
+            </div>
+        </div>
+    </div>
+
+    <div ng-controller="ServerController">
+        <header aria-label="Header content" role="banner">
+            <button class="back-button" data-win-control="WinJS.UI.BackButton"></button>
+            <div class="titlearea win-type-ellipsis">
+                <div class="titlecontainer">
+                    <h1 class="page-title">
+                        Choose a server
+                    </h1>
+                </div>
+                <h3 class="win-type-x-large win-type win-type-interactive" ng-click="showSettings()">Add server</h3>
+            </div>
+        </header>
+
+        <section aria-label="Main content" role="main" winjs-list-view="servers">
+            <div class="list-view win-selectionstylefilled" data-win-control="WinJS.UI.ListView" data-win-options="{
+                layout: {type: WinJS.UI.GridLayout},
+                itemTemplate: select('#server-item-template')
+            }">
+            </div>
+        </section>
+    </div>
+</body>
+</html>

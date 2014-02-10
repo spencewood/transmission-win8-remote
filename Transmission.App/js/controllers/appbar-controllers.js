@@ -1,6 +1,6 @@
 ﻿angular.module('AppBar', ['RemoteServices', 'WinServices', 'EventService', 'AngularServices'])
     .controller('TorrentBarController', function ($scope, torrentService, remoteService, dialogService, event, safeApply) {
-        remoteService.init();
+        //remoteService.init();
 
         $scope.selectedIds = [];
 

@@ -26,13 +26,32 @@ ul {
 /* Rates box */
 #rate-container {
     position: absolute;
-    top: 20px;
-    right: 80px;
+    top: 135px;
+    right: 60px;
+    z-index: 100;
 }
 
-    #rate-container #speeds li {
-        width: 150px;
+
+header{
+    height: 170px;
+}
+
+    #rate-container #speeds {
+        display: -ms-grid;
+        -ms-grid-rows: 1fr;
+        -ms-grid-columns: 1fr 1fr;
+        width: 200px;
     }
+
+        #rate-container #speeds .down {
+            -ms-grid-row: 1;
+            -ms-grid-column: 1;
+        }
+
+        #rate-container #speeds .up {
+            -ms-grid-row: 1;
+            -ms-grid-column: 2;
+        }
 
 /*App header*/
 header[role=banner] {

@@ -158,6 +158,10 @@
             return arr;
         },
 
+        uid: function () {
+            return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).substr(-4);
+        },
+
         base64ToArrayBuffer: function (string_base64) {
             var binary_string = atob(string_base64);
             var len = binary_string.length;

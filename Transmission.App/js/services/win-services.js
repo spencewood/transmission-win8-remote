@@ -18,7 +18,7 @@
 
         var get = function (key) {
             if (key in localSettings.values) {
-                return localSettings.values[key];
+                return JSON.parse(localSettings.values[key]);
             }
             return '';
         };
@@ -45,7 +45,7 @@
             }
             else {
                 //set one value
-                localSettings.values[key] = value;
+                localSettings.values[key] = JSON.stringify(value);
             }
             return localSettings;
         };
@@ -69,18 +69,45 @@
         return {
             get: get,
             set: set,
-            getServerSettings: function () {
-                return _.merge(
+            getServerSettings: function (id) {
+                /*return _.merge(
                     {//defaults
                         port: 9091,
                         rpcPath: '/transmission/rpc'
                     },
                     getAllByPrefix('server', true)
-                );
-                
+                );*/
+                var servers = get('servers');
+
+
+
+                if (typeof id !== 'undefined') {
+                    return _.findWhere(servers, { id: id });
+                }
+                return servers;
             },
             setServerSettings: function (settings) {
-                setAllByPrefix('server', settings);
+                //var servers = this.getServerSettings();
+                //servers.list.find({ id: settings.id });[idx] = settings;
+                //setAllByPrefix('servers', servers);
+            },
+            addServerSettings: function (settings) {
+                var servers = this.getServerSettings();
+
+                if (settings.id !== null) {
+                    settings.id = _.uid();
+                }
+                if (!_.isArray(servers)) {
+                    servers = [];
+                }
+                
+                servers.push(settings);
+                set('servers', servers);
+            },
+            removeServerSettings: function (id) {
+                var servers = this.getServerSettings();
+                _.remove(servers, function (server) { return server.id === id; });
+                set('servers', servers);
             },
             getTransmissionSettings: function (settings) {
                 return getAllByPrefix('transmission', true);
@@ -116,7 +143,15 @@
             showTorrentDetails: function (id) {
                 this.navigate('/views/torrent-details.html', { id: id });
             },
-            showSettingsFlyout: WinJS.UI.SettingsFlyout.show,
+            showSettingsFlyout: function () {
+                var args = _.toArray(arguments);
+                if (args.length === 0) {
+                    WinJS.UI.SettingsFlyout.show;
+                }
+                else {
+                    WinJS.UI.SettingsFlyout.showSettings.apply(WinJS, args);
+                }
+            },
             goHome: function () {
                 this.navigate('/views/torrents.html');
             }

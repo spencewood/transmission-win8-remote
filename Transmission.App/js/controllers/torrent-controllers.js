@@ -113,22 +113,7 @@
             $scope.trackers = trackers;
         });
 
-        //TODO: move to directive
-        $scope.showTrackerMenu = function () {
-            var control = $('#tracker-menu').get(0).winControl;
-            control.anchor = $('#tracker-list-display').get(0);
-            control.placement = 'bottom';
-            control.alignment = 'left';
-            control.show();
-        };
-
-        $scope.showStatusMenu = function () {
-            var control = $('#status-menu').get(0).winControl;
-            control.anchor = $('#status-list-display').get(0);
-            control.placement = 'bottom';
-            control.alignment = 'left';
-            control.show();
-        };
+        $scope.server = { name: 'Server name' };
 
         $scope.selectTracker = function (tracker) {
             $scope.tracker = tracker;

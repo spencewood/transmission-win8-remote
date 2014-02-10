@@ -43,6 +43,7 @@
     <script src="/js/controllers/status-controller.js"></script>
     <script src="/js/controllers/settings-controllers.js"></script>
     <script src="/js/controllers/appbar-controllers.js"></script>
+    <script src="/js/controllers/server-controllers.js"></script>
     <script src="/js/controllers/login-controllers.js"></script>
     <script src="/js/controllers/torrent-controllers.js"></script>
     <script src="/js/directives/directives.js"></script>
@@ -50,16 +51,16 @@
 <body>
     <div id="status" ng-controller="StatusController">
         <div id="rate-container" ng-controller="RateController">
-            <ul id="speeds">
-                <li class="win-type-medium win-rightalign">Upload: {{speeds.up | rate}}</li>
-                <li class="win-type-medium win-rightalign">Download: {{speeds.down | rate}}</li>
-            </ul>
+            <div id="speeds">
+                <div class="win-type-large down">Download: {{speeds.down | rate}}</div>
+                <div class="win-type-large up">Uplodad: {{speeds.up | rate}}</div>
+            </div>
         </div>
 
         <progress ng-show="showSpinner"></progress>
     </div>
     
-    <div data-win-control="Application.PageControlNavigator" data-win-options="{home: '/views/login.html'}">
+    <div data-win-control="Application.PageControlNavigator" data-win-options="{home: '/views/choose-server.html'}">
     </div>
 
     <div id="app-bars">
