@@ -52,6 +52,14 @@
         $scope.moveUp = _.compose(clearIds, passIds(torrentService.moveUp.bind(torrentService)));
         $scope.moveDown = _.compose(clearIds, passIds(torrentService.moveDown.bind(torrentService)));
     })
+    .controller('ServerBarController', function ($scope, event, safeApply) {
+        $scope.selectedIds = [];
+
+        event.on('server:selected', function (ids) {
+            $scope.selectedIds = ids;
+            safeApply($scope);
+        });
+    })
     .controller('SessionBarController', function ($scope) {
 
     });

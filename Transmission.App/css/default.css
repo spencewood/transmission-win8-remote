@@ -31,11 +31,6 @@ ul {
     z-index: 100;
 }
 
-
-header{
-    height: 170px;
-}
-
     #rate-container #speeds {
         display: -ms-grid;
         -ms-grid-rows: 1fr;
@@ -53,45 +48,56 @@ header{
             -ms-grid-column: 2;
         }
 
+/*Login header*/
+header[role=banner].login {
+    margin-top: 200px;
+    margin-left: 120px;
+}
+
+header[role=banner].login .logo-title {
+    color: #999;
+}
+
 /*App header*/
-header[role=banner] {
+header[role=banner].main {
     /* Define a grid with columns for the back button and page title. */
     -ms-grid-columns: 120px 1fr;
     -ms-grid-rows: 1fr;
     display: -ms-grid;
+    height: 170px;
 }
 
-    header[role=banner] .back-button {
+    header[role=banner].main .back-button {
         -ms-grid-column: 1;
         margin-left: 39px;
         margin-top: 59px;
     }
 
-    header[role=banner] .titlearea {
+    header[role=banner].main .titlearea {
         -ms-grid-column: 2;
         margin-top: 38px;
         position: relative;
         padding: 5px 0;
     }
 
-    header[role=banner] .titlecontainer {
+    header[role=banner].main .titlecontainer {
         background-color: transparent;
         border: none;
     }
 
-    header[role=banner] .titlearea .pagetitle {
+    header[role=banner].main .titlearea .pagetitle {
         width: calc(100% - 20px);
     }
 
-    header[role=banner] .titlearea .chevron {
+    header[role=banner].main .titlearea .chevron {
         vertical-align: 8px;
     }
 
-    header[role=banner] .titlecontainer:hover {
+    header[role=banner].main .titlecontainer:hover {
         color: rgb(50,154,163);
     }
 
-    header[role=banner] .titlecontainer:active {
+    header[role=banner].main .titlecontainer:active {
         color: rgb(37,187,196);
     }
 

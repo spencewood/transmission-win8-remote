@@ -59,7 +59,7 @@
 
         <progress ng-show="showSpinner"></progress>
     </div>
-    
+
     <div data-win-control="Application.PageControlNavigator" data-win-options="{home: '/views/choose-server.html'}">
     </div>
 
@@ -70,7 +70,7 @@
         </div>
         <!-- /Session App Bar -->
         <!-- Torrent App Bar -->
-        <div winjs-torrent-app-bar ng-controller="TorrentBarController">
+        <div winjs-app-bar ng-controller="TorrentBarController">
             <div class="app-bar" data-win-control="WinJS.UI.AppBar" data-win-options="{placement: 'bottom', disabled: 'true'}">
                 <button data-win-control="WinJS.UI.AppBarCommand"
                         data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',
@@ -112,7 +112,16 @@
                 section:'global',tooltip:'Start torrent'}" ng-click="start()"></button>
             </div>
         </div>
+        <!-- /Torrent Bar -->
+        <!-- Server Bar -->
+        <div winjs-app-bar ng-controller="ServerBarController">
+            <div class="app-bar" data-win-control="WinJS.UI.AppBar" data-win-options="{placement: 'bottom', disabled: 'true'}">
+                <button data-win-control="WinJS.UI.AppBarCommand"
+                        data-win-options="{id:'cmdRemove',label:'Remove',icon:'remove',
+                section:'selection',tooltip:'Remove torrent'}" ng-click="remove()"></button>
+            </div>
+        </div>
+        <!-- /Server Bar -->
     </div>
-    <!-- /Torrent Bar -->
 </body>
 </html>

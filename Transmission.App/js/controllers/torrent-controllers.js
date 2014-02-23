@@ -86,13 +86,13 @@
         $scope.files = new WinJS.Binding.List();
         $scope.progress = 0;
 
-        $scope.selectionChange = function (items) {
+        //$scope.selectionChange = function (items) {
 
-        };
+        //};
 
-        $scope.selectItem = function (args) {
+        //$scope.selectItem = function (args) {
 
-        };
+        //};
 
         //for local db, if exists
         torrentCaller(torrentService.getTorrent)
@@ -185,7 +185,7 @@
         $scope.tracker = '';
         $scope.torrents = new WinJS.Binding.List();
 
-        $scope.selectedIds = [];
+        //$scope.selectedIds = [];
         $scope.selectionChanged = function (items) {
             var ids = _.nestedPluck(items._value, 'data', 'id');
             event.emit('torrent:selected', ids);

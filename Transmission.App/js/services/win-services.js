@@ -94,7 +94,7 @@
             addServerSettings: function (settings) {
                 var servers = this.getServerSettings();
 
-                if (settings.id !== null) {
+                if (settings.id == null) {
                     settings.id = _.uid();
                 }
                 if (!_.isArray(servers)) {
@@ -142,6 +142,9 @@
             },
             showTorrentDetails: function (id) {
                 this.navigate('/views/torrent-details.html', { id: id });
+            },
+            showServerDetails: function (id) {
+                this.navigate('/views/torrents.html', { id: id });
             },
             showSettingsFlyout: function () {
                 var args = _.toArray(arguments);

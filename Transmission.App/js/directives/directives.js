@@ -10,7 +10,7 @@
             }
         };
     })
-    .directive('winjsTorrentAppBar', function () {
+    .directive('winjsAppBar', function () {
         return {
             restrict: 'A',
             link: function (scope, element) {

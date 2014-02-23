@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Choose server</title>
-    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/choose-server.css" />
 
     <!-- Page -->
     <script src="/js/pages/server-page.js"></script>
@@ -19,17 +19,11 @@
         </div>
     </div>
 
-    <div ng-controller="ServerController">
-        <header aria-label="Header content" role="banner">
-            <button class="back-button" data-win-control="WinJS.UI.BackButton"></button>
-            <div class="titlearea win-type-ellipsis">
-                <div class="titlecontainer">
-                    <h1 class="page-title">
-                        Choose a server
-                    </h1>
-                </div>
-                <h3 class="win-type-x-large win-type win-type-interactive" ng-click="showSettings()">Add server</h3>
-            </div>
+    <div id="choose-server-view" ng-controller="ServerController">
+        <header aria-label="Header content" role="banner" class="login">
+            <h1 class="logo-title">Transmission</h1>
+            <h2><strong>Choose a server</strong></h2>
+            <h3 class="win-type-x-large win-type win-type-interactive" ng-click="showSettings()">Add server</h3>
         </header>
 
         <section aria-label="Main content" role="main" winjs-list-view="servers">

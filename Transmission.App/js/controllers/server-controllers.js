@@ -12,6 +12,16 @@
 
         resetSettings();
 
+        $scope.selectionChanged = function (items) {
+            var ids = _.nestedPluck(items._value, 'data', 'id');
+            event.emit('server:selected', ids);
+        };
+
+        $scope.selectItem = function (args) {
+            var item = $scope.servers.getAt(args.detail.itemIndex);
+            navigationService.showServerDetails(item.id);
+        };
+
         $scope.showSettings = function () {
             navigationService.showSettingsFlyout('settings-server', '/views/settings-server.html');
         };
